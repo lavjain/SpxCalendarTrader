@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Streamlit app",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/app.py",
+      "envFile": "${workspaceFolder}/.env",
+      "justMyCode": true
+    },
+    {
+      "name": "Self-test (calendar_math)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/calendar_math.py",
+      "args": ["selftest"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Schwab demo pull (no network)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/schwab_api.py",
+      "args": ["chain", "--demo", "--out", "data/demo_chain.csv", "--smile", "data/demo_smile.csv"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

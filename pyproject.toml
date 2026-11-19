@@ -1,0 +1,21 @@
+[project]
+name = "spx-calendar-trader"
+version = "0.1.0"
+description = "Find and paper-trade ~40-delta SPX put calendars using Schwab option chains."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "streamlit>=1.37",   # st.fragment
+    "pandas>=2.2",
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "pydantic>=2.7",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+mockups = ["playwright>=1.45", "matplotlib>=3.8"]   # docs/mockups only, not the app
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# App data and secrets: never commit
+data/
+docs/mockups/build/
+*.db
+.env
+.schwab/
+*token*.json
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
