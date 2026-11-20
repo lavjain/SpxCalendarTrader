@@ -448,6 +448,19 @@ def parse_calls(chain, pairs):
                   key=lambda q: (q.expiry, q.strike))
 
 
+def parse_parity_quotes(put_chain, call_chain, pairs):
+    """Puts AND calls at the strikes where both were pulled, on every Finder expiry. This is the
+    input forward_from_parity() needs: the call pull is a few strikes around the money, and the OTM
+    put pull reaches up to the money, so they overlap there."""
+    exps = {p.short for p in pairs} | {p.long for p in pairs}
+    calls = parse_calls(call_chain, pairs)
+    puts = {(q.expiry, q.strike): q for e, q in _contracts(put_chain, "putExpDateMap", "P")
+            if e in exps and None not in (q.mark, q.iv)}
+    both = [c for c in calls if (c.expiry, c.strike) in puts]
+    return sorted(both + [puts[(c.expiry, c.strike)] for c in both],
+                  key=lambda q: (q.expiry, q.strike, q.right))
+
+
 def calendar_legs(rows, short_exp, long_exp, strike):
     """The short and long put at the SAME strike, or None if either is missing."""
     def pick(exp):
