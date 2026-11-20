@@ -1,0 +1,8402 @@
+{
+ "symbol": "$SPX",
+ "underlyingPrice": 6800.0,
+ "putExpDateMap": {
+  "2026-12-18:24": {
+   "6200.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06200000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6200.0,
+     "bid": 1.32,
+     "ask": 1.42,
+     "mark": 1.37,
+     "delta": -0.0134,
+     "gamma": 0.00012,
+     "theta": -0.2062,
+     "vega": 0.6004,
+     "volatility": 16.44,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06200000",
+     "optionRoot": "SPX",
+     "strikePrice": 6200.0,
+     "bid": 2.01,
+     "ask": 2.11,
+     "mark": 2.06,
+     "delta": -0.0184,
+     "gamma": 0.00015,
+     "theta": -0.2858,
+     "vega": 0.7845,
+     "volatility": 17.44,
+     "daysToExpiration": 24
+    }
+   ],
+   "6205.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06205000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6205.0,
+     "bid": 1.38,
+     "ask": 1.48,
+     "mark": 1.43,
+     "delta": -0.014,
+     "gamma": 0.00012,
+     "theta": -0.2136,
+     "vega": 0.6227,
+     "volatility": 16.42,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06205000",
+     "optionRoot": "SPX",
+     "strikePrice": 6205.0,
+     "bid": 2.1,
+     "ask": 2.2,
+     "mark": 2.15,
+     "delta": -0.0191,
+     "gamma": 0.00015,
+     "theta": -0.2949,
+     "vega": 0.8105,
+     "volatility": 17.42,
+     "daysToExpiration": 24
+    }
+   ],
+   "6210.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06210000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6210.0,
+     "bid": 1.45,
+     "ask": 1.55,
+     "mark": 1.5,
+     "delta": -0.0146,
+     "gamma": 0.00013,
+     "theta": -0.2212,
+     "vega": 0.6456,
+     "volatility": 16.4,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06210000",
+     "optionRoot": "SPX",
+     "strikePrice": 6210.0,
+     "bid": 2.19,
+     "ask": 2.29,
+     "mark": 2.24,
+     "delta": -0.0198,
+     "gamma": 0.00016,
+     "theta": -0.3043,
+     "vega": 0.8373,
+     "volatility": 17.4,
+     "daysToExpiration": 24
+    }
+   ],
+   "6215.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06215000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6215.0,
+     "bid": 1.52,
+     "ask": 1.62,
+     "mark": 1.57,
+     "delta": -0.0152,
+     "gamma": 0.00013,
+     "theta": -0.229,
+     "vega": 0.6692,
+     "volatility": 16.38,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06215000",
+     "optionRoot": "SPX",
+     "strikePrice": 6215.0,
+     "bid": 2.28,
+     "ask": 2.38,
+     "mark": 2.33,
+     "delta": -0.0206,
+     "gamma": 0.00016,
+     "theta": -0.3139,
+     "vega": 0.8647,
+     "volatility": 17.38,
+     "daysToExpiration": 24
+    }
+   ],
+   "6220.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06220000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6220.0,
+     "bid": 1.59,
+     "ask": 1.69,
+     "mark": 1.64,
+     "delta": -0.0159,
+     "gamma": 0.00014,
+     "theta": -0.237,
+     "vega": 0.6935,
+     "volatility": 16.36,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06220000",
+     "optionRoot": "SPX",
+     "strikePrice": 6220.0,
+     "bid": 2.38,
+     "ask": 2.48,
+     "mark": 2.43,
+     "delta": -0.0214,
+     "gamma": 0.00017,
+     "theta": -0.3238,
+     "vega": 0.8929,
+     "volatility": 17.36,
+     "daysToExpiration": 24
+    }
+   ],
+   "6225.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06225000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6225.0,
+     "bid": 1.67,
+     "ask": 1.77,
+     "mark": 1.72,
+     "delta": -0.0166,
+     "gamma": 0.00014,
+     "theta": -0.2453,
+     "vega": 0.7186,
+     "volatility": 16.34,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06225000",
+     "optionRoot": "SPX",
+     "strikePrice": 6225.0,
+     "bid": 2.49,
+     "ask": 2.59,
+     "mark": 2.54,
+     "delta": -0.0222,
+     "gamma": 0.00017,
+     "theta": -0.3339,
+     "vega": 0.9218,
+     "volatility": 17.34,
+     "daysToExpiration": 24
+    }
+   ],
+   "6230.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06230000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6230.0,
+     "bid": 1.75,
+     "ask": 1.85,
+     "mark": 1.8,
+     "delta": -0.0173,
+     "gamma": 0.00015,
+     "theta": -0.2538,
+     "vega": 0.7444,
+     "volatility": 16.32,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06230000",
+     "optionRoot": "SPX",
+     "strikePrice": 6230.0,
+     "bid": 2.59,
+     "ask": 2.69,
+     "mark": 2.64,
+     "delta": -0.023,
+     "gamma": 0.00018,
+     "theta": -0.3442,
+     "vega": 0.9514,
+     "volatility": 17.32,
+     "daysToExpiration": 24
+    }
+   ],
+   "6235.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06235000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6235.0,
+     "bid": 1.83,
+     "ask": 1.93,
+     "mark": 1.88,
+     "delta": -0.018,
+     "gamma": 0.00016,
+     "theta": -0.2625,
+     "vega": 0.771,
+     "volatility": 16.3,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06235000",
+     "optionRoot": "SPX",
+     "strikePrice": 6235.0,
+     "bid": 2.7,
+     "ask": 2.8,
+     "mark": 2.75,
+     "delta": -0.0239,
+     "gamma": 0.00019,
+     "theta": -0.3548,
+     "vega": 0.9818,
+     "volatility": 17.3,
+     "daysToExpiration": 24
+    }
+   ],
+   "6240.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06240000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6240.0,
+     "bid": 1.91,
+     "ask": 2.01,
+     "mark": 1.96,
+     "delta": -0.0187,
+     "gamma": 0.00016,
+     "theta": -0.2715,
+     "vega": 0.7983,
+     "volatility": 16.28,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06240000",
+     "optionRoot": "SPX",
+     "strikePrice": 6240.0,
+     "bid": 2.82,
+     "ask": 2.92,
+     "mark": 2.87,
+     "delta": -0.0248,
+     "gamma": 0.00019,
+     "theta": -0.3656,
+     "vega": 1.0129,
+     "volatility": 17.28,
+     "daysToExpiration": 24
+    }
+   ],
+   "6245.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06245000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6245.0,
+     "bid": 2.0,
+     "ask": 2.1,
+     "mark": 2.05,
+     "delta": -0.0195,
+     "gamma": 0.00017,
+     "theta": -0.2807,
+     "vega": 0.8264,
+     "volatility": 16.26,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06245000",
+     "optionRoot": "SPX",
+     "strikePrice": 6245.0,
+     "bid": 2.94,
+     "ask": 3.04,
+     "mark": 2.99,
+     "delta": -0.0258,
+     "gamma": 0.0002,
+     "theta": -0.3767,
+     "vega": 1.0448,
+     "volatility": 17.26,
+     "daysToExpiration": 24
+    }
+   ],
+   "6250.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06250000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6250.0,
+     "bid": 2.1,
+     "ask": 2.2,
+     "mark": 2.15,
+     "delta": -0.0203,
+     "gamma": 0.00017,
+     "theta": -0.2901,
+     "vega": 0.8553,
+     "volatility": 16.24,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06250000",
+     "optionRoot": "SPX",
+     "strikePrice": 6250.0,
+     "bid": 3.06,
+     "ask": 3.16,
+     "mark": 3.11,
+     "delta": -0.0267,
+     "gamma": 0.00021,
+     "theta": -0.388,
+     "vega": 1.0775,
+     "volatility": 17.24,
+     "daysToExpiration": 24
+    }
+   ],
+   "6255.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06255000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6255.0,
+     "bid": 2.19,
+     "ask": 2.29,
+     "mark": 2.24,
+     "delta": -0.0212,
+     "gamma": 0.00018,
+     "theta": -0.2998,
+     "vega": 0.885,
+     "volatility": 16.22,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06255000",
+     "optionRoot": "SPX",
+     "strikePrice": 6255.0,
+     "bid": 3.19,
+     "ask": 3.29,
+     "mark": 3.24,
+     "delta": -0.0277,
+     "gamma": 0.00021,
+     "theta": -0.3996,
+     "vega": 1.111,
+     "volatility": 17.22,
+     "daysToExpiration": 24
+    }
+   ],
+   "6260.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06260000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6260.0,
+     "bid": 2.3,
+     "ask": 2.4,
+     "mark": 2.35,
+     "delta": -0.022,
+     "gamma": 0.00019,
+     "theta": -0.3098,
+     "vega": 0.9155,
+     "volatility": 16.2,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06260000",
+     "optionRoot": "SPX",
+     "strikePrice": 6260.0,
+     "bid": 3.33,
+     "ask": 3.43,
+     "mark": 3.38,
+     "delta": -0.0288,
+     "gamma": 0.00022,
+     "theta": -0.4115,
+     "vega": 1.1453,
+     "volatility": 17.2,
+     "daysToExpiration": 24
+    }
+   ],
+   "6265.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06265000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6265.0,
+     "bid": 2.4,
+     "ask": 2.5,
+     "mark": 2.45,
+     "delta": -0.0229,
+     "gamma": 0.00019,
+     "theta": -0.32,
+     "vega": 0.9469,
+     "volatility": 16.18,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06265000",
+     "optionRoot": "SPX",
+     "strikePrice": 6265.0,
+     "bid": 3.46,
+     "ask": 3.56,
+     "mark": 3.51,
+     "delta": -0.0298,
+     "gamma": 0.00023,
+     "theta": -0.4236,
+     "vega": 1.1804,
+     "volatility": 17.18,
+     "daysToExpiration": 24
+    }
+   ],
+   "6270.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06270000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6270.0,
+     "bid": 2.51,
+     "ask": 2.61,
+     "mark": 2.56,
+     "delta": -0.0238,
+     "gamma": 0.0002,
+     "theta": -0.3305,
+     "vega": 0.9791,
+     "volatility": 16.16,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06270000",
+     "optionRoot": "SPX",
+     "strikePrice": 6270.0,
+     "bid": 3.61,
+     "ask": 3.71,
+     "mark": 3.66,
+     "delta": -0.0309,
+     "gamma": 0.00023,
+     "theta": -0.436,
+     "vega": 1.2163,
+     "volatility": 17.16,
+     "daysToExpiration": 24
+    }
+   ],
+   "6275.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06275000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6275.0,
+     "bid": 2.62,
+     "ask": 2.72,
+     "mark": 2.67,
+     "delta": -0.0248,
+     "gamma": 0.00021,
+     "theta": -0.3412,
+     "vega": 1.0122,
+     "volatility": 16.14,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06275000",
+     "optionRoot": "SPX",
+     "strikePrice": 6275.0,
+     "bid": 3.76,
+     "ask": 3.86,
+     "mark": 3.81,
+     "delta": -0.0321,
+     "gamma": 0.00024,
+     "theta": -0.4486,
+     "vega": 1.253,
+     "volatility": 17.14,
+     "daysToExpiration": 24
+    }
+   ],
+   "6280.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06280000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6280.0,
+     "bid": 2.74,
+     "ask": 2.84,
+     "mark": 2.79,
+     "delta": -0.0258,
+     "gamma": 0.00021,
+     "theta": -0.3522,
+     "vega": 1.0461,
+     "volatility": 16.12,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06280000",
+     "optionRoot": "SPX",
+     "strikePrice": 6280.0,
+     "bid": 3.91,
+     "ask": 4.01,
+     "mark": 3.96,
+     "delta": -0.0332,
+     "gamma": 0.00025,
+     "theta": -0.4615,
+     "vega": 1.2906,
+     "volatility": 17.12,
+     "daysToExpiration": 24
+    }
+   ],
+   "6285.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06285000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6285.0,
+     "bid": 2.87,
+     "ask": 2.97,
+     "mark": 2.92,
+     "delta": -0.0268,
+     "gamma": 0.00022,
+     "theta": -0.3635,
+     "vega": 1.0809,
+     "volatility": 16.1,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06285000",
+     "optionRoot": "SPX",
+     "strikePrice": 6285.0,
+     "bid": 4.07,
+     "ask": 4.17,
+     "mark": 4.12,
+     "delta": -0.0344,
+     "gamma": 0.00026,
+     "theta": -0.4747,
+     "vega": 1.329,
+     "volatility": 17.1,
+     "daysToExpiration": 24
+    }
+   ],
+   "6290.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06290000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6290.0,
+     "bid": 2.99,
+     "ask": 3.09,
+     "mark": 3.04,
+     "delta": -0.0279,
+     "gamma": 0.00023,
+     "theta": -0.3751,
+     "vega": 1.1167,
+     "volatility": 16.08,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06290000",
+     "optionRoot": "SPX",
+     "strikePrice": 6290.0,
+     "bid": 4.24,
+     "ask": 4.34,
+     "mark": 4.29,
+     "delta": -0.0357,
+     "gamma": 0.00026,
+     "theta": -0.4881,
+     "vega": 1.3682,
+     "volatility": 17.08,
+     "daysToExpiration": 24
+    }
+   ],
+   "6295.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06295000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6295.0,
+     "bid": 3.13,
+     "ask": 3.23,
+     "mark": 3.18,
+     "delta": -0.029,
+     "gamma": 0.00024,
+     "theta": -0.3869,
+     "vega": 1.1533,
+     "volatility": 16.06,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06295000",
+     "optionRoot": "SPX",
+     "strikePrice": 6295.0,
+     "bid": 4.41,
+     "ask": 4.51,
+     "mark": 4.46,
+     "delta": -0.037,
+     "gamma": 0.00027,
+     "theta": -0.5019,
+     "vega": 1.4083,
+     "volatility": 17.06,
+     "daysToExpiration": 24
+    }
+   ],
+   "6300.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06300000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6300.0,
+     "bid": 3.27,
+     "ask": 3.37,
+     "mark": 3.32,
+     "delta": -0.0302,
+     "gamma": 0.00024,
+     "theta": -0.399,
+     "vega": 1.1909,
+     "volatility": 16.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06300000",
+     "optionRoot": "SPX",
+     "strikePrice": 6300.0,
+     "bid": 4.59,
+     "ask": 4.69,
+     "mark": 4.64,
+     "delta": -0.0383,
+     "gamma": 0.00028,
+     "theta": -0.5158,
+     "vega": 1.4493,
+     "volatility": 17.04,
+     "daysToExpiration": 24
+    }
+   ],
+   "6305.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06305000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6305.0,
+     "bid": 3.41,
+     "ask": 3.51,
+     "mark": 3.46,
+     "delta": -0.0313,
+     "gamma": 0.00025,
+     "theta": -0.4114,
+     "vega": 1.2294,
+     "volatility": 16.02,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06305000",
+     "optionRoot": "SPX",
+     "strikePrice": 6305.0,
+     "bid": 4.77,
+     "ask": 4.87,
+     "mark": 4.82,
+     "delta": -0.0396,
+     "gamma": 0.00029,
+     "theta": -0.5301,
+     "vega": 1.4911,
+     "volatility": 17.02,
+     "daysToExpiration": 24
+    }
+   ],
+   "6310.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06310000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6310.0,
+     "bid": 3.56,
+     "ask": 3.66,
+     "mark": 3.61,
+     "delta": -0.0326,
+     "gamma": 0.00026,
+     "theta": -0.424,
+     "vega": 1.2688,
+     "volatility": 16.0,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06310000",
+     "optionRoot": "SPX",
+     "strikePrice": 6310.0,
+     "bid": 4.96,
+     "ask": 5.06,
+     "mark": 5.01,
+     "delta": -0.041,
+     "gamma": 0.0003,
+     "theta": -0.5446,
+     "vega": 1.5338,
+     "volatility": 17.0,
+     "daysToExpiration": 24
+    }
+   ],
+   "6315.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06315000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6315.0,
+     "bid": 3.72,
+     "ask": 3.82,
+     "mark": 3.77,
+     "delta": -0.0338,
+     "gamma": 0.00027,
+     "theta": -0.437,
+     "vega": 1.3092,
+     "volatility": 15.98,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06315000",
+     "optionRoot": "SPX",
+     "strikePrice": 6315.0,
+     "bid": 5.16,
+     "ask": 5.26,
+     "mark": 5.21,
+     "delta": -0.0425,
+     "gamma": 0.00031,
+     "theta": -0.5595,
+     "vega": 1.5773,
+     "volatility": 16.98,
+     "daysToExpiration": 24
+    }
+   ],
+   "6320.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06320000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6320.0,
+     "bid": 3.88,
+     "ask": 3.98,
+     "mark": 3.93,
+     "delta": -0.0351,
+     "gamma": 0.00028,
+     "theta": -0.4502,
+     "vega": 1.3505,
+     "volatility": 15.96,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06320000",
+     "optionRoot": "SPX",
+     "strikePrice": 6320.0,
+     "bid": 5.37,
+     "ask": 5.47,
+     "mark": 5.42,
+     "delta": -0.044,
+     "gamma": 0.00031,
+     "theta": -0.5745,
+     "vega": 1.6218,
+     "volatility": 16.96,
+     "daysToExpiration": 24
+    }
+   ],
+   "6325.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06325000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6325.0,
+     "bid": 4.05,
+     "ask": 4.15,
+     "mark": 4.1,
+     "delta": -0.0365,
+     "gamma": 0.00029,
+     "theta": -0.4637,
+     "vega": 1.3928,
+     "volatility": 15.94,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06325000",
+     "optionRoot": "SPX",
+     "strikePrice": 6325.0,
+     "bid": 5.58,
+     "ask": 5.68,
+     "mark": 5.63,
+     "delta": -0.0455,
+     "gamma": 0.00032,
+     "theta": -0.5899,
+     "vega": 1.6671,
+     "volatility": 16.94,
+     "daysToExpiration": 24
+    }
+   ],
+   "6330.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06330000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6330.0,
+     "bid": 4.22,
+     "ask": 4.32,
+     "mark": 4.27,
+     "delta": -0.0379,
+     "gamma": 0.0003,
+     "theta": -0.4776,
+     "vega": 1.4361,
+     "volatility": 15.92,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06330000",
+     "optionRoot": "SPX",
+     "strikePrice": 6330.0,
+     "bid": 5.8,
+     "ask": 5.9,
+     "mark": 5.85,
+     "delta": -0.0471,
+     "gamma": 0.00033,
+     "theta": -0.6055,
+     "vega": 1.7133,
+     "volatility": 16.92,
+     "daysToExpiration": 24
+    }
+   ],
+   "6335.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06335000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6335.0,
+     "bid": 4.4,
+     "ask": 4.5,
+     "mark": 4.45,
+     "delta": -0.0393,
+     "gamma": 0.00031,
+     "theta": -0.4917,
+     "vega": 1.4803,
+     "volatility": 15.9,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06335000",
+     "optionRoot": "SPX",
+     "strikePrice": 6335.0,
+     "bid": 6.02,
+     "ask": 6.12,
+     "mark": 6.07,
+     "delta": -0.0487,
+     "gamma": 0.00034,
+     "theta": -0.6214,
+     "vega": 1.7604,
+     "volatility": 16.9,
+     "daysToExpiration": 24
+    }
+   ],
+   "6340.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06340000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6340.0,
+     "bid": 4.59,
+     "ask": 4.69,
+     "mark": 4.64,
+     "delta": -0.0408,
+     "gamma": 0.00032,
+     "theta": -0.506,
+     "vega": 1.5256,
+     "volatility": 15.88,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06340000",
+     "optionRoot": "SPX",
+     "strikePrice": 6340.0,
+     "bid": 6.26,
+     "ask": 6.36,
+     "mark": 6.31,
+     "delta": -0.0504,
+     "gamma": 0.00035,
+     "theta": -0.6376,
+     "vega": 1.8084,
+     "volatility": 16.88,
+     "daysToExpiration": 24
+    }
+   ],
+   "6345.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06345000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6345.0,
+     "bid": 4.79,
+     "ask": 4.89,
+     "mark": 4.84,
+     "delta": -0.0423,
+     "gamma": 0.00033,
+     "theta": -0.5207,
+     "vega": 1.5718,
+     "volatility": 15.86,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06345000",
+     "optionRoot": "SPX",
+     "strikePrice": 6345.0,
+     "bid": 6.5,
+     "ask": 6.6,
+     "mark": 6.55,
+     "delta": -0.0521,
+     "gamma": 0.00036,
+     "theta": -0.6541,
+     "vega": 1.8573,
+     "volatility": 16.86,
+     "daysToExpiration": 24
+    }
+   ],
+   "6350.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06350000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6350.0,
+     "bid": 4.99,
+     "ask": 5.09,
+     "mark": 5.04,
+     "delta": -0.0439,
+     "gamma": 0.00034,
+     "theta": -0.5357,
+     "vega": 1.619,
+     "volatility": 15.84,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06350000",
+     "optionRoot": "SPX",
+     "strikePrice": 6350.0,
+     "bid": 6.75,
+     "ask": 6.85,
+     "mark": 6.8,
+     "delta": -0.0539,
+     "gamma": 0.00037,
+     "theta": -0.6708,
+     "vega": 1.907,
+     "volatility": 16.84,
+     "daysToExpiration": 24
+    }
+   ],
+   "6355.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06355000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6355.0,
+     "bid": 5.2,
+     "ask": 5.3,
+     "mark": 5.25,
+     "delta": -0.0455,
+     "gamma": 0.00035,
+     "theta": -0.551,
+     "vega": 1.6673,
+     "volatility": 15.82,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06355000",
+     "optionRoot": "SPX",
+     "strikePrice": 6355.0,
+     "bid": 7.01,
+     "ask": 7.11,
+     "mark": 7.06,
+     "delta": -0.0557,
+     "gamma": 0.00038,
+     "theta": -0.6878,
+     "vega": 1.9576,
+     "volatility": 16.82,
+     "daysToExpiration": 24
+    }
+   ],
+   "6360.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06360000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6360.0,
+     "bid": 5.42,
+     "ask": 5.52,
+     "mark": 5.47,
+     "delta": -0.0472,
+     "gamma": 0.00036,
+     "theta": -0.5665,
+     "vega": 1.7165,
+     "volatility": 15.8,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06360000",
+     "optionRoot": "SPX",
+     "strikePrice": 6360.0,
+     "bid": 7.28,
+     "ask": 7.38,
+     "mark": 7.33,
+     "delta": -0.0576,
+     "gamma": 0.00039,
+     "theta": -0.7051,
+     "vega": 2.0092,
+     "volatility": 16.8,
+     "daysToExpiration": 24
+    }
+   ],
+   "6365.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06365000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6365.0,
+     "bid": 5.65,
+     "ask": 5.75,
+     "mark": 5.7,
+     "delta": -0.0489,
+     "gamma": 0.00037,
+     "theta": -0.5824,
+     "vega": 1.7668,
+     "volatility": 15.78,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06365000",
+     "optionRoot": "SPX",
+     "strikePrice": 6365.0,
+     "bid": 7.56,
+     "ask": 7.66,
+     "mark": 7.61,
+     "delta": -0.0595,
+     "gamma": 0.0004,
+     "theta": -0.7226,
+     "vega": 2.0616,
+     "volatility": 16.78,
+     "daysToExpiration": 24
+    }
+   ],
+   "6370.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06370000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6370.0,
+     "bid": 5.88,
+     "ask": 5.98,
+     "mark": 5.93,
+     "delta": -0.0507,
+     "gamma": 0.00038,
+     "theta": -0.5985,
+     "vega": 1.818,
+     "volatility": 15.76,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06370000",
+     "optionRoot": "SPX",
+     "strikePrice": 6370.0,
+     "bid": 7.85,
+     "ask": 7.95,
+     "mark": 7.9,
+     "delta": -0.0614,
+     "gamma": 0.00042,
+     "theta": -0.7404,
+     "vega": 2.1148,
+     "volatility": 16.76,
+     "daysToExpiration": 24
+    }
+   ],
+   "6375.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06375000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6375.0,
+     "bid": 6.12,
+     "ask": 6.22,
+     "mark": 6.17,
+     "delta": -0.0526,
+     "gamma": 0.00039,
+     "theta": -0.6149,
+     "vega": 1.8703,
+     "volatility": 15.74,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06375000",
+     "optionRoot": "SPX",
+     "strikePrice": 6375.0,
+     "bid": 8.14,
+     "ask": 8.24,
+     "mark": 8.19,
+     "delta": -0.0635,
+     "gamma": 0.00043,
+     "theta": -0.7584,
+     "vega": 2.169,
+     "volatility": 16.74,
+     "daysToExpiration": 24
+    }
+   ],
+   "6380.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06380000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6380.0,
+     "bid": 6.38,
+     "ask": 6.48,
+     "mark": 6.43,
+     "delta": -0.0545,
+     "gamma": 0.0004,
+     "theta": -0.6316,
+     "vega": 1.9236,
+     "volatility": 15.72,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06380000",
+     "optionRoot": "SPX",
+     "strikePrice": 6380.0,
+     "bid": 8.45,
+     "ask": 8.55,
+     "mark": 8.5,
+     "delta": -0.0655,
+     "gamma": 0.00044,
+     "theta": -0.7767,
+     "vega": 2.224,
+     "volatility": 16.72,
+     "daysToExpiration": 24
+    }
+   ],
+   "6385.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06385000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6385.0,
+     "bid": 6.64,
+     "ask": 6.74,
+     "mark": 6.69,
+     "delta": -0.0564,
+     "gamma": 0.00041,
+     "theta": -0.6486,
+     "vega": 1.9779,
+     "volatility": 15.7,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06385000",
+     "optionRoot": "SPX",
+     "strikePrice": 6385.0,
+     "bid": 8.77,
+     "ask": 8.87,
+     "mark": 8.82,
+     "delta": -0.0677,
+     "gamma": 0.00045,
+     "theta": -0.7953,
+     "vega": 2.2799,
+     "volatility": 16.7,
+     "daysToExpiration": 24
+    }
+   ],
+   "6390.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06390000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6390.0,
+     "bid": 6.91,
+     "ask": 7.01,
+     "mark": 6.96,
+     "delta": -0.0584,
+     "gamma": 0.00043,
+     "theta": -0.6659,
+     "vega": 2.0332,
+     "volatility": 15.68,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06390000",
+     "optionRoot": "SPX",
+     "strikePrice": 6390.0,
+     "bid": 9.09,
+     "ask": 9.19,
+     "mark": 9.14,
+     "delta": -0.0699,
+     "gamma": 0.00046,
+     "theta": -0.8141,
+     "vega": 2.3366,
+     "volatility": 16.68,
+     "daysToExpiration": 24
+    }
+   ],
+   "6395.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06395000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6395.0,
+     "bid": 7.19,
+     "ask": 7.29,
+     "mark": 7.24,
+     "delta": -0.0605,
+     "gamma": 0.00044,
+     "theta": -0.6835,
+     "vega": 2.0895,
+     "volatility": 15.66,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06395000",
+     "optionRoot": "SPX",
+     "strikePrice": 6395.0,
+     "bid": 9.43,
+     "ask": 9.53,
+     "mark": 9.48,
+     "delta": -0.0721,
+     "gamma": 0.00047,
+     "theta": -0.8332,
+     "vega": 2.3941,
+     "volatility": 16.66,
+     "daysToExpiration": 24
+    }
+   ],
+   "6400.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06400000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6400.0,
+     "bid": 7.48,
+     "ask": 7.58,
+     "mark": 7.53,
+     "delta": -0.0626,
+     "gamma": 0.00045,
+     "theta": -0.7013,
+     "vega": 2.1467,
+     "volatility": 15.64,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06400000",
+     "optionRoot": "SPX",
+     "strikePrice": 6400.0,
+     "bid": 9.78,
+     "ask": 9.88,
+     "mark": 9.83,
+     "delta": -0.0744,
+     "gamma": 0.00048,
+     "theta": -0.8525,
+     "vega": 2.4525,
+     "volatility": 16.64,
+     "daysToExpiration": 24
+    }
+   ],
+   "6405.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06405000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6405.0,
+     "bid": 7.78,
+     "ask": 7.88,
+     "mark": 7.83,
+     "delta": -0.0648,
+     "gamma": 0.00046,
+     "theta": -0.7194,
+     "vega": 2.205,
+     "volatility": 15.62,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06405000",
+     "optionRoot": "SPX",
+     "strikePrice": 6405.0,
+     "bid": 10.14,
+     "ask": 10.24,
+     "mark": 10.19,
+     "delta": -0.0768,
+     "gamma": 0.0005,
+     "theta": -0.872,
+     "vega": 2.5118,
+     "volatility": 16.62,
+     "daysToExpiration": 24
+    }
+   ],
+   "6410.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06410000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6410.0,
+     "bid": 8.09,
+     "ask": 8.19,
+     "mark": 8.14,
+     "delta": -0.0671,
+     "gamma": 0.00048,
+     "theta": -0.7378,
+     "vega": 2.2643,
+     "volatility": 15.6,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06410000",
+     "optionRoot": "SPX",
+     "strikePrice": 6410.0,
+     "bid": 10.51,
+     "ask": 10.61,
+     "mark": 10.56,
+     "delta": -0.0792,
+     "gamma": 0.00051,
+     "theta": -0.8918,
+     "vega": 2.5718,
+     "volatility": 16.6,
+     "daysToExpiration": 24
+    }
+   ],
+   "6415.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06415000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6415.0,
+     "bid": 8.41,
+     "ask": 8.51,
+     "mark": 8.46,
+     "delta": -0.0694,
+     "gamma": 0.00049,
+     "theta": -0.7565,
+     "vega": 2.3245,
+     "volatility": 15.58,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06415000",
+     "optionRoot": "SPX",
+     "strikePrice": 6415.0,
+     "bid": 10.89,
+     "ask": 11.0,
+     "mark": 10.94,
+     "delta": -0.0817,
+     "gamma": 0.00052,
+     "theta": -0.9117,
+     "vega": 2.6326,
+     "volatility": 16.58,
+     "daysToExpiration": 24
+    }
+   ],
+   "6420.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06420000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6420.0,
+     "bid": 8.75,
+     "ask": 8.85,
+     "mark": 8.8,
+     "delta": -0.0718,
+     "gamma": 0.0005,
+     "theta": -0.7754,
+     "vega": 2.3857,
+     "volatility": 15.56,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06420000",
+     "optionRoot": "SPX",
+     "strikePrice": 6420.0,
+     "bid": 11.28,
+     "ask": 11.4,
+     "mark": 11.34,
+     "delta": -0.0843,
+     "gamma": 0.00054,
+     "theta": -0.932,
+     "vega": 2.6942,
+     "volatility": 16.56,
+     "daysToExpiration": 24
+    }
+   ],
+   "6425.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06425000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6425.0,
+     "bid": 9.09,
+     "ask": 9.19,
+     "mark": 9.14,
+     "delta": -0.0742,
+     "gamma": 0.00052,
+     "theta": -0.7946,
+     "vega": 2.4479,
+     "volatility": 15.54,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06425000",
+     "optionRoot": "SPX",
+     "strikePrice": 6425.0,
+     "bid": 11.69,
+     "ask": 11.81,
+     "mark": 11.75,
+     "delta": -0.0869,
+     "gamma": 0.00055,
+     "theta": -0.9524,
+     "vega": 2.7566,
+     "volatility": 16.54,
+     "daysToExpiration": 24
+    }
+   ],
+   "6430.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06430000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6430.0,
+     "bid": 9.45,
+     "ask": 9.55,
+     "mark": 9.5,
+     "delta": -0.0768,
+     "gamma": 0.00053,
+     "theta": -0.814,
+     "vega": 2.5109,
+     "volatility": 15.52,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06430000",
+     "optionRoot": "SPX",
+     "strikePrice": 6430.0,
+     "bid": 12.11,
+     "ask": 12.23,
+     "mark": 12.17,
+     "delta": -0.0896,
+     "gamma": 0.00056,
+     "theta": -0.973,
+     "vega": 2.8197,
+     "volatility": 16.52,
+     "daysToExpiration": 24
+    }
+   ],
+   "6435.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06435000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6435.0,
+     "bid": 9.82,
+     "ask": 9.92,
+     "mark": 9.87,
+     "delta": -0.0794,
+     "gamma": 0.00055,
+     "theta": -0.8337,
+     "vega": 2.575,
+     "volatility": 15.5,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06435000",
+     "optionRoot": "SPX",
+     "strikePrice": 6435.0,
+     "bid": 12.54,
+     "ask": 12.66,
+     "mark": 12.6,
+     "delta": -0.0923,
+     "gamma": 0.00057,
+     "theta": -0.9939,
+     "vega": 2.8836,
+     "volatility": 16.5,
+     "daysToExpiration": 24
+    }
+   ],
+   "6440.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06440000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6440.0,
+     "bid": 10.2,
+     "ask": 10.3,
+     "mark": 10.25,
+     "delta": -0.082,
+     "gamma": 0.00056,
+     "theta": -0.8536,
+     "vega": 2.6399,
+     "volatility": 15.48,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06440000",
+     "optionRoot": "SPX",
+     "strikePrice": 6440.0,
+     "bid": 12.98,
+     "ask": 13.11,
+     "mark": 13.05,
+     "delta": -0.0951,
+     "gamma": 0.00059,
+     "theta": -1.0149,
+     "vega": 2.9482,
+     "volatility": 16.48,
+     "daysToExpiration": 24
+    }
+   ],
+   "6445.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06445000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6445.0,
+     "bid": 10.59,
+     "ask": 10.7,
+     "mark": 10.65,
+     "delta": -0.0848,
+     "gamma": 0.00058,
+     "theta": -0.8738,
+     "vega": 2.7057,
+     "volatility": 15.46,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06445000",
+     "optionRoot": "SPX",
+     "strikePrice": 6445.0,
+     "bid": 13.44,
+     "ask": 13.57,
+     "mark": 13.51,
+     "delta": -0.098,
+     "gamma": 0.0006,
+     "theta": -1.0361,
+     "vega": 3.0135,
+     "volatility": 16.46,
+     "daysToExpiration": 24
+    }
+   ],
+   "6450.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06450000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6450.0,
+     "bid": 11.0,
+     "ask": 11.11,
+     "mark": 11.05,
+     "delta": -0.0876,
+     "gamma": 0.00059,
+     "theta": -0.8941,
+     "vega": 2.7724,
+     "volatility": 15.44,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06450000",
+     "optionRoot": "SPX",
+     "strikePrice": 6450.0,
+     "bid": 13.91,
+     "ask": 14.05,
+     "mark": 13.98,
+     "delta": -0.101,
+     "gamma": 0.00062,
+     "theta": -1.0575,
+     "vega": 3.0794,
+     "volatility": 16.44,
+     "daysToExpiration": 24
+    }
+   ],
+   "6455.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06455000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6455.0,
+     "bid": 11.42,
+     "ask": 11.53,
+     "mark": 11.47,
+     "delta": -0.0904,
+     "gamma": 0.00061,
+     "theta": -0.9147,
+     "vega": 2.84,
+     "volatility": 15.42,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06455000",
+     "optionRoot": "SPX",
+     "strikePrice": 6455.0,
+     "bid": 14.4,
+     "ask": 14.54,
+     "mark": 14.47,
+     "delta": -0.104,
+     "gamma": 0.00063,
+     "theta": -1.079,
+     "vega": 3.1461,
+     "volatility": 16.42,
+     "daysToExpiration": 24
+    }
+   ],
+   "6460.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06460000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6460.0,
+     "bid": 11.85,
+     "ask": 11.97,
+     "mark": 11.91,
+     "delta": -0.0934,
+     "gamma": 0.00062,
+     "theta": -0.9356,
+     "vega": 2.9083,
+     "volatility": 15.4,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06460000",
+     "optionRoot": "SPX",
+     "strikePrice": 6460.0,
+     "bid": 14.9,
+     "ask": 15.05,
+     "mark": 14.97,
+     "delta": -0.1071,
+     "gamma": 0.00064,
+     "theta": -1.1008,
+     "vega": 3.2133,
+     "volatility": 16.4,
+     "daysToExpiration": 24
+    }
+   ],
+   "6465.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06465000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6465.0,
+     "bid": 12.3,
+     "ask": 12.42,
+     "mark": 12.36,
+     "delta": -0.0964,
+     "gamma": 0.00064,
+     "theta": -0.9566,
+     "vega": 2.9775,
+     "volatility": 15.38,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06465000",
+     "optionRoot": "SPX",
+     "strikePrice": 6465.0,
+     "bid": 15.41,
+     "ask": 15.57,
+     "mark": 15.49,
+     "delta": -0.1102,
+     "gamma": 0.00066,
+     "theta": -1.1226,
+     "vega": 3.2812,
+     "volatility": 16.38,
+     "daysToExpiration": 24
+    }
+   ],
+   "6470.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06470000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6470.0,
+     "bid": 12.76,
+     "ask": 12.89,
+     "mark": 12.82,
+     "delta": -0.0995,
+     "gamma": 0.00065,
+     "theta": -0.9778,
+     "vega": 3.0475,
+     "volatility": 15.36,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06470000",
+     "optionRoot": "SPX",
+     "strikePrice": 6470.0,
+     "bid": 15.95,
+     "ask": 16.11,
+     "mark": 16.03,
+     "delta": -0.1135,
+     "gamma": 0.00067,
+     "theta": -1.1447,
+     "vega": 3.3496,
+     "volatility": 16.36,
+     "daysToExpiration": 24
+    }
+   ],
+   "6475.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06475000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6475.0,
+     "bid": 13.24,
+     "ask": 13.37,
+     "mark": 13.3,
+     "delta": -0.1027,
+     "gamma": 0.00067,
+     "theta": -0.9992,
+     "vega": 3.1183,
+     "volatility": 15.34,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06475000",
+     "optionRoot": "SPX",
+     "strikePrice": 6475.0,
+     "bid": 16.49,
+     "ask": 16.66,
+     "mark": 16.58,
+     "delta": -0.1168,
+     "gamma": 0.00069,
+     "theta": -1.1668,
+     "vega": 3.4186,
+     "volatility": 16.34,
+     "daysToExpiration": 24
+    }
+   ],
+   "6480.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06480000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6480.0,
+     "bid": 13.73,
+     "ask": 13.87,
+     "mark": 13.8,
+     "delta": -0.106,
+     "gamma": 0.00068,
+     "theta": -1.0207,
+     "vega": 3.1898,
+     "volatility": 15.32,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06480000",
+     "optionRoot": "SPX",
+     "strikePrice": 6480.0,
+     "bid": 17.06,
+     "ask": 17.23,
+     "mark": 17.14,
+     "delta": -0.1201,
+     "gamma": 0.0007,
+     "theta": -1.1891,
+     "vega": 3.4881,
+     "volatility": 16.32,
+     "daysToExpiration": 24
+    }
+   ],
+   "6485.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06485000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6485.0,
+     "bid": 14.24,
+     "ask": 14.38,
+     "mark": 14.31,
+     "delta": -0.1093,
+     "gamma": 0.0007,
+     "theta": -1.0425,
+     "vega": 3.2619,
+     "volatility": 15.3,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06485000",
+     "optionRoot": "SPX",
+     "strikePrice": 6485.0,
+     "bid": 17.63,
+     "ask": 17.81,
+     "mark": 17.72,
+     "delta": -0.1236,
+     "gamma": 0.00072,
+     "theta": -1.2114,
+     "vega": 3.5581,
+     "volatility": 16.3,
+     "daysToExpiration": 24
+    }
+   ],
+   "6490.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06490000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6490.0,
+     "bid": 14.76,
+     "ask": 14.91,
+     "mark": 14.84,
+     "delta": -0.1128,
+     "gamma": 0.00072,
+     "theta": -1.0644,
+     "vega": 3.3348,
+     "volatility": 15.28,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06490000",
+     "optionRoot": "SPX",
+     "strikePrice": 6490.0,
+     "bid": 18.23,
+     "ask": 18.41,
+     "mark": 18.32,
+     "delta": -0.1271,
+     "gamma": 0.00073,
+     "theta": -1.2339,
+     "vega": 3.6285,
+     "volatility": 16.28,
+     "daysToExpiration": 24
+    }
+   ],
+   "6495.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06495000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6495.0,
+     "bid": 15.3,
+     "ask": 15.46,
+     "mark": 15.38,
+     "delta": -0.1163,
+     "gamma": 0.00073,
+     "theta": -1.0864,
+     "vega": 3.4083,
+     "volatility": 15.26,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06495000",
+     "optionRoot": "SPX",
+     "strikePrice": 6495.0,
+     "bid": 18.84,
+     "ask": 19.03,
+     "mark": 18.94,
+     "delta": -0.1307,
+     "gamma": 0.00075,
+     "theta": -1.2565,
+     "vega": 3.6994,
+     "volatility": 16.26,
+     "daysToExpiration": 24
+    }
+   ],
+   "6500.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06500000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6500.0,
+     "bid": 15.86,
+     "ask": 16.02,
+     "mark": 15.94,
+     "delta": -0.1199,
+     "gamma": 0.00075,
+     "theta": -1.1086,
+     "vega": 3.4824,
+     "volatility": 15.24,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06500000",
+     "optionRoot": "SPX",
+     "strikePrice": 6500.0,
+     "bid": 19.47,
+     "ask": 19.67,
+     "mark": 19.57,
+     "delta": -0.1344,
+     "gamma": 0.00076,
+     "theta": -1.2791,
+     "vega": 3.7707,
+     "volatility": 16.24,
+     "daysToExpiration": 24
+    }
+   ],
+   "6505.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06505000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6505.0,
+     "bid": 16.44,
+     "ask": 16.6,
+     "mark": 16.52,
+     "delta": -0.1235,
+     "gamma": 0.00077,
+     "theta": -1.1309,
+     "vega": 3.5571,
+     "volatility": 15.22,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06505000",
+     "optionRoot": "SPX",
+     "strikePrice": 6505.0,
+     "bid": 20.12,
+     "ask": 20.32,
+     "mark": 20.22,
+     "delta": -0.1381,
+     "gamma": 0.00078,
+     "theta": -1.3018,
+     "vega": 3.8423,
+     "volatility": 16.22,
+     "daysToExpiration": 24
+    }
+   ],
+   "6510.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06510000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6510.0,
+     "bid": 17.03,
+     "ask": 17.2,
+     "mark": 17.12,
+     "delta": -0.1273,
+     "gamma": 0.00079,
+     "theta": -1.1533,
+     "vega": 3.6323,
+     "volatility": 15.2,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06510000",
+     "optionRoot": "SPX",
+     "strikePrice": 6510.0,
+     "bid": 20.79,
+     "ask": 21.0,
+     "mark": 20.89,
+     "delta": -0.1419,
+     "gamma": 0.00079,
+     "theta": -1.3246,
+     "vega": 3.9143,
+     "volatility": 16.2,
+     "daysToExpiration": 24
+    }
+   ],
+   "6515.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06515000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6515.0,
+     "bid": 17.64,
+     "ask": 17.82,
+     "mark": 17.73,
+     "delta": -0.1311,
+     "gamma": 0.0008,
+     "theta": -1.1757,
+     "vega": 3.708,
+     "volatility": 15.18,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06515000",
+     "optionRoot": "SPX",
+     "strikePrice": 6515.0,
+     "bid": 21.47,
+     "ask": 21.69,
+     "mark": 21.58,
+     "delta": -0.1459,
+     "gamma": 0.00081,
+     "theta": -1.3473,
+     "vega": 3.9865,
+     "volatility": 16.18,
+     "daysToExpiration": 24
+    }
+   ],
+   "6520.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06520000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6520.0,
+     "bid": 18.27,
+     "ask": 18.46,
+     "mark": 18.36,
+     "delta": -0.1351,
+     "gamma": 0.00082,
+     "theta": -1.1983,
+     "vega": 3.7841,
+     "volatility": 15.16,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06520000",
+     "optionRoot": "SPX",
+     "strikePrice": 6520.0,
+     "bid": 22.18,
+     "ask": 22.4,
+     "mark": 22.29,
+     "delta": -0.1498,
+     "gamma": 0.00083,
+     "theta": -1.3701,
+     "vega": 4.059,
+     "volatility": 16.16,
+     "daysToExpiration": 24
+    }
+   ],
+   "6525.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06525000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6525.0,
+     "bid": 18.92,
+     "ask": 19.11,
+     "mark": 19.02,
+     "delta": -0.1391,
+     "gamma": 0.00084,
+     "theta": -1.2209,
+     "vega": 3.8607,
+     "volatility": 15.14,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06525000",
+     "optionRoot": "SPX",
+     "strikePrice": 6525.0,
+     "bid": 22.9,
+     "ask": 23.13,
+     "mark": 23.02,
+     "delta": -0.1539,
+     "gamma": 0.00084,
+     "theta": -1.393,
+     "vega": 4.1318,
+     "volatility": 16.14,
+     "daysToExpiration": 24
+    }
+   ],
+   "6530.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06530000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6530.0,
+     "bid": 19.59,
+     "ask": 19.79,
+     "mark": 19.69,
+     "delta": -0.1432,
+     "gamma": 0.00086,
+     "theta": -1.2436,
+     "vega": 3.9376,
+     "volatility": 15.12,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06530000",
+     "optionRoot": "SPX",
+     "strikePrice": 6530.0,
+     "bid": 23.64,
+     "ask": 23.88,
+     "mark": 23.76,
+     "delta": -0.158,
+     "gamma": 0.00086,
+     "theta": -1.4158,
+     "vega": 4.2046,
+     "volatility": 16.12,
+     "daysToExpiration": 24
+    }
+   ],
+   "6535.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06535000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6535.0,
+     "bid": 20.28,
+     "ask": 20.48,
+     "mark": 20.38,
+     "delta": -0.1474,
+     "gamma": 0.00087,
+     "theta": -1.2663,
+     "vega": 4.0148,
+     "volatility": 15.1,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06535000",
+     "optionRoot": "SPX",
+     "strikePrice": 6535.0,
+     "bid": 24.41,
+     "ask": 24.65,
+     "mark": 24.53,
+     "delta": -0.1623,
+     "gamma": 0.00087,
+     "theta": -1.4386,
+     "vega": 4.2776,
+     "volatility": 16.1,
+     "daysToExpiration": 24
+    }
+   ],
+   "6540.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06540000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6540.0,
+     "bid": 20.99,
+     "ask": 21.2,
+     "mark": 21.09,
+     "delta": -0.1517,
+     "gamma": 0.00089,
+     "theta": -1.2891,
+     "vega": 4.0923,
+     "volatility": 15.08,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06540000",
+     "optionRoot": "SPX",
+     "strikePrice": 6540.0,
+     "bid": 25.19,
+     "ask": 25.44,
+     "mark": 25.32,
+     "delta": -0.1666,
+     "gamma": 0.00089,
+     "theta": -1.4613,
+     "vega": 4.3507,
+     "volatility": 16.08,
+     "daysToExpiration": 24
+    }
+   ],
+   "6545.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06545000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6545.0,
+     "bid": 21.72,
+     "ask": 21.94,
+     "mark": 21.83,
+     "delta": -0.1561,
+     "gamma": 0.00091,
+     "theta": -1.3118,
+     "vega": 4.1701,
+     "volatility": 15.06,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06545000",
+     "optionRoot": "SPX",
+     "strikePrice": 6545.0,
+     "bid": 26.0,
+     "ask": 26.26,
+     "mark": 26.13,
+     "delta": -0.1709,
+     "gamma": 0.00091,
+     "theta": -1.484,
+     "vega": 4.4238,
+     "volatility": 16.06,
+     "daysToExpiration": 24
+    }
+   ],
+   "6550.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06550000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6550.0,
+     "bid": 22.47,
+     "ask": 22.69,
+     "mark": 22.58,
+     "delta": -0.1605,
+     "gamma": 0.00093,
+     "theta": -1.3345,
+     "vega": 4.2479,
+     "volatility": 15.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06550000",
+     "optionRoot": "SPX",
+     "strikePrice": 6550.0,
+     "bid": 26.82,
+     "ask": 27.09,
+     "mark": 26.96,
+     "delta": -0.1754,
+     "gamma": 0.00092,
+     "theta": -1.5067,
+     "vega": 4.4969,
+     "volatility": 16.04,
+     "daysToExpiration": 24
+    }
+   ],
+   "6555.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06555000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6555.0,
+     "bid": 23.24,
+     "ask": 23.48,
+     "mark": 23.36,
+     "delta": -0.1651,
+     "gamma": 0.00095,
+     "theta": -1.3572,
+     "vega": 4.326,
+     "volatility": 15.02,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06555000",
+     "optionRoot": "SPX",
+     "strikePrice": 6555.0,
+     "bid": 27.67,
+     "ask": 27.95,
+     "mark": 27.81,
+     "delta": -0.1799,
+     "gamma": 0.00094,
+     "theta": -1.5292,
+     "vega": 4.5699,
+     "volatility": 16.02,
+     "daysToExpiration": 24
+    }
+   ],
+   "6560.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06560000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6560.0,
+     "bid": 24.04,
+     "ask": 24.28,
+     "mark": 24.16,
+     "delta": -0.1697,
+     "gamma": 0.00097,
+     "theta": -1.3799,
+     "vega": 4.404,
+     "volatility": 15.0,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06560000",
+     "optionRoot": "SPX",
+     "strikePrice": 6560.0,
+     "bid": 28.54,
+     "ask": 28.83,
+     "mark": 28.68,
+     "delta": -0.1846,
+     "gamma": 0.00095,
+     "theta": -1.5517,
+     "vega": 4.6429,
+     "volatility": 16.0,
+     "daysToExpiration": 24
+    }
+   ],
+   "6565.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06565000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6565.0,
+     "bid": 24.85,
+     "ask": 25.1,
+     "mark": 24.98,
+     "delta": -0.1745,
+     "gamma": 0.00098,
+     "theta": -1.4025,
+     "vega": 4.4821,
+     "volatility": 14.98,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06565000",
+     "optionRoot": "SPX",
+     "strikePrice": 6565.0,
+     "bid": 29.43,
+     "ask": 29.73,
+     "mark": 29.58,
+     "delta": -0.1893,
+     "gamma": 0.00097,
+     "theta": -1.5741,
+     "vega": 4.7156,
+     "volatility": 15.98,
+     "daysToExpiration": 24
+    }
+   ],
+   "6570.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06570000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6570.0,
+     "bid": 25.69,
+     "ask": 25.95,
+     "mark": 25.82,
+     "delta": -0.1793,
+     "gamma": 0.001,
+     "theta": -1.425,
+     "vega": 4.5601,
+     "volatility": 14.96,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06570000",
+     "optionRoot": "SPX",
+     "strikePrice": 6570.0,
+     "bid": 30.35,
+     "ask": 30.65,
+     "mark": 30.5,
+     "delta": -0.194,
+     "gamma": 0.00099,
+     "theta": -1.5963,
+     "vega": 4.7882,
+     "volatility": 15.96,
+     "daysToExpiration": 24
+    }
+   ],
+   "6575.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06575000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6575.0,
+     "bid": 26.56,
+     "ask": 26.83,
+     "mark": 26.69,
+     "delta": -0.1842,
+     "gamma": 0.00102,
+     "theta": -1.4474,
+     "vega": 4.638,
+     "volatility": 14.94,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06575000",
+     "optionRoot": "SPX",
+     "strikePrice": 6575.0,
+     "bid": 31.29,
+     "ask": 31.6,
+     "mark": 31.44,
+     "delta": -0.1989,
+     "gamma": 0.001,
+     "theta": -1.6183,
+     "vega": 4.8605,
+     "volatility": 15.94,
+     "daysToExpiration": 24
+    }
+   ],
+   "6580.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06580000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6580.0,
+     "bid": 27.45,
+     "ask": 27.72,
+     "mark": 27.58,
+     "delta": -0.1893,
+     "gamma": 0.00104,
+     "theta": -1.4697,
+     "vega": 4.7158,
+     "volatility": 14.92,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06580000",
+     "optionRoot": "SPX",
+     "strikePrice": 6580.0,
+     "bid": 32.25,
+     "ask": 32.57,
+     "mark": 32.41,
+     "delta": -0.2039,
+     "gamma": 0.00102,
+     "theta": -1.6403,
+     "vega": 4.9325,
+     "volatility": 15.92,
+     "daysToExpiration": 24
+    }
+   ],
+   "6585.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06585000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6585.0,
+     "bid": 28.36,
+     "ask": 28.64,
+     "mark": 28.5,
+     "delta": -0.1944,
+     "gamma": 0.00106,
+     "theta": -1.4918,
+     "vega": 4.7933,
+     "volatility": 14.9,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06585000",
+     "optionRoot": "SPX",
+     "strikePrice": 6585.0,
+     "bid": 33.24,
+     "ask": 33.57,
+     "mark": 33.4,
+     "delta": -0.2089,
+     "gamma": 0.00104,
+     "theta": -1.662,
+     "vega": 5.0041,
+     "volatility": 15.9,
+     "daysToExpiration": 24
+    }
+   ],
+   "6590.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06590000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6590.0,
+     "bid": 29.3,
+     "ask": 29.59,
+     "mark": 29.44,
+     "delta": -0.1996,
+     "gamma": 0.00108,
+     "theta": -1.5138,
+     "vega": 4.8705,
+     "volatility": 14.88,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06590000",
+     "optionRoot": "SPX",
+     "strikePrice": 6590.0,
+     "bid": 34.25,
+     "ask": 34.59,
+     "mark": 34.42,
+     "delta": -0.214,
+     "gamma": 0.00105,
+     "theta": -1.6835,
+     "vega": 5.0754,
+     "volatility": 15.88,
+     "daysToExpiration": 24
+    }
+   ],
+   "6595.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06595000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6595.0,
+     "bid": 30.26,
+     "ask": 30.56,
+     "mark": 30.41,
+     "delta": -0.2049,
+     "gamma": 0.0011,
+     "theta": -1.5357,
+     "vega": 4.9474,
+     "volatility": 14.86,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06595000",
+     "optionRoot": "SPX",
+     "strikePrice": 6595.0,
+     "bid": 35.28,
+     "ask": 35.64,
+     "mark": 35.46,
+     "delta": -0.2192,
+     "gamma": 0.00107,
+     "theta": -1.7048,
+     "vega": 5.1461,
+     "volatility": 15.86,
+     "daysToExpiration": 24
+    }
+   ],
+   "6600.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06600000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6600.0,
+     "bid": 31.25,
+     "ask": 31.56,
+     "mark": 31.4,
+     "delta": -0.2103,
+     "gamma": 0.00111,
+     "theta": -1.5573,
+     "vega": 5.0238,
+     "volatility": 14.84,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06600000",
+     "optionRoot": "SPX",
+     "strikePrice": 6600.0,
+     "bid": 36.34,
+     "ask": 36.71,
+     "mark": 36.53,
+     "delta": -0.2244,
+     "gamma": 0.00108,
+     "theta": -1.7259,
+     "vega": 5.2163,
+     "volatility": 15.84,
+     "daysToExpiration": 24
+    }
+   ],
+   "6605.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06605000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6605.0,
+     "bid": 32.26,
+     "ask": 32.59,
+     "mark": 32.42,
+     "delta": -0.2158,
+     "gamma": 0.00113,
+     "theta": -1.5787,
+     "vega": 5.0997,
+     "volatility": 14.82,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06605000",
+     "optionRoot": "SPX",
+     "strikePrice": 6605.0,
+     "bid": 37.43,
+     "ask": 37.81,
+     "mark": 37.62,
+     "delta": -0.2298,
+     "gamma": 0.0011,
+     "theta": -1.7467,
+     "vega": 5.2859,
+     "volatility": 15.82,
+     "daysToExpiration": 24
+    }
+   ],
+   "6610.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06610000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6610.0,
+     "bid": 33.3,
+     "ask": 33.64,
+     "mark": 33.47,
+     "delta": -0.2213,
+     "gamma": 0.00115,
+     "theta": -1.5999,
+     "vega": 5.1751,
+     "volatility": 14.8,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06610000",
+     "optionRoot": "SPX",
+     "strikePrice": 6610.0,
+     "bid": 38.54,
+     "ask": 38.93,
+     "mark": 38.74,
+     "delta": -0.2352,
+     "gamma": 0.00111,
+     "theta": -1.7673,
+     "vega": 5.3549,
+     "volatility": 15.8,
+     "daysToExpiration": 24
+    }
+   ],
+   "6615.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06615000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6615.0,
+     "bid": 34.37,
+     "ask": 34.72,
+     "mark": 34.54,
+     "delta": -0.227,
+     "gamma": 0.00117,
+     "theta": -1.6208,
+     "vega": 5.2499,
+     "volatility": 14.78,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06615000",
+     "optionRoot": "SPX",
+     "strikePrice": 6615.0,
+     "bid": 39.68,
+     "ask": 40.08,
+     "mark": 39.88,
+     "delta": -0.2407,
+     "gamma": 0.00113,
+     "theta": -1.7876,
+     "vega": 5.4232,
+     "volatility": 15.78,
+     "daysToExpiration": 24
+    }
+   ],
+   "6620.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06620000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6620.0,
+     "bid": 35.47,
+     "ask": 35.83,
+     "mark": 35.65,
+     "delta": -0.2328,
+     "gamma": 0.00119,
+     "theta": -1.6414,
+     "vega": 5.324,
+     "volatility": 14.76,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06620000",
+     "optionRoot": "SPX",
+     "strikePrice": 6620.0,
+     "bid": 40.85,
+     "ask": 41.26,
+     "mark": 41.06,
+     "delta": -0.2463,
+     "gamma": 0.00115,
+     "theta": -1.8075,
+     "vega": 5.4907,
+     "volatility": 15.76,
+     "daysToExpiration": 24
+    }
+   ],
+   "6625.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06625000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6625.0,
+     "bid": 36.59,
+     "ask": 36.96,
+     "mark": 36.78,
+     "delta": -0.2386,
+     "gamma": 0.0012,
+     "theta": -1.6618,
+     "vega": 5.3973,
+     "volatility": 14.74,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06625000",
+     "optionRoot": "SPX",
+     "strikePrice": 6625.0,
+     "bid": 42.05,
+     "ask": 42.47,
+     "mark": 42.26,
+     "delta": -0.252,
+     "gamma": 0.00116,
+     "theta": -1.8272,
+     "vega": 5.5574,
+     "volatility": 15.74,
+     "daysToExpiration": 24
+    }
+   ],
+   "6630.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06630000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6630.0,
+     "bid": 37.75,
+     "ask": 38.13,
+     "mark": 37.94,
+     "delta": -0.2446,
+     "gamma": 0.00122,
+     "theta": -1.6818,
+     "vega": 5.4697,
+     "volatility": 14.72,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06630000",
+     "optionRoot": "SPX",
+     "strikePrice": 6630.0,
+     "bid": 43.27,
+     "ask": 43.7,
+     "mark": 43.48,
+     "delta": -0.2577,
+     "gamma": 0.00118,
+     "theta": -1.8465,
+     "vega": 5.6233,
+     "volatility": 15.72,
+     "daysToExpiration": 24
+    }
+   ],
+   "6635.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06635000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6635.0,
+     "bid": 38.93,
+     "ask": 39.32,
+     "mark": 39.12,
+     "delta": -0.2506,
+     "gamma": 0.00124,
+     "theta": -1.7015,
+     "vega": 5.5413,
+     "volatility": 14.7,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06635000",
+     "optionRoot": "SPX",
+     "strikePrice": 6635.0,
+     "bid": 44.52,
+     "ask": 44.96,
+     "mark": 44.74,
+     "delta": -0.2636,
+     "gamma": 0.00119,
+     "theta": -1.8654,
+     "vega": 5.6882,
+     "volatility": 15.7,
+     "daysToExpiration": 24
+    }
+   ],
+   "6640.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06640000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6640.0,
+     "bid": 40.14,
+     "ask": 40.54,
+     "mark": 40.34,
+     "delta": -0.2567,
+     "gamma": 0.00126,
+     "theta": -1.7208,
+     "vega": 5.6119,
+     "volatility": 14.68,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06640000",
+     "optionRoot": "SPX",
+     "strikePrice": 6640.0,
+     "bid": 45.8,
+     "ask": 46.26,
+     "mark": 46.03,
+     "delta": -0.2695,
+     "gamma": 0.00121,
+     "theta": -1.884,
+     "vega": 5.7521,
+     "volatility": 15.68,
+     "daysToExpiration": 24
+    }
+   ],
+   "6645.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06645000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6645.0,
+     "bid": 41.38,
+     "ask": 41.8,
+     "mark": 41.59,
+     "delta": -0.2629,
+     "gamma": 0.00127,
+     "theta": -1.7398,
+     "vega": 5.6814,
+     "volatility": 14.66,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06645000",
+     "optionRoot": "SPX",
+     "strikePrice": 6645.0,
+     "bid": 47.1,
+     "ask": 47.58,
+     "mark": 47.34,
+     "delta": -0.2754,
+     "gamma": 0.00122,
+     "theta": -1.9021,
+     "vega": 5.8149,
+     "volatility": 15.66,
+     "daysToExpiration": 24
+    }
+   ],
+   "6650.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06650000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6650.0,
+     "bid": 42.65,
+     "ask": 43.08,
+     "mark": 42.87,
+     "delta": -0.2692,
+     "gamma": 0.00129,
+     "theta": -1.7583,
+     "vega": 5.7498,
+     "volatility": 14.64,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06650000",
+     "optionRoot": "SPX",
+     "strikePrice": 6650.0,
+     "bid": 48.44,
+     "ask": 48.93,
+     "mark": 48.68,
+     "delta": -0.2815,
+     "gamma": 0.00124,
+     "theta": -1.9199,
+     "vega": 5.8767,
+     "volatility": 15.64,
+     "daysToExpiration": 24
+    }
+   ],
+   "6655.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06655000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6655.0,
+     "bid": 43.96,
+     "ask": 44.4,
+     "mark": 44.18,
+     "delta": -0.2756,
+     "gamma": 0.00131,
+     "theta": -1.7764,
+     "vega": 5.817,
+     "volatility": 14.62,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06655000",
+     "optionRoot": "SPX",
+     "strikePrice": 6655.0,
+     "bid": 49.81,
+     "ask": 50.31,
+     "mark": 50.06,
+     "delta": -0.2876,
+     "gamma": 0.00125,
+     "theta": -1.9372,
+     "vega": 5.9372,
+     "volatility": 15.62,
+     "daysToExpiration": 24
+    }
+   ],
+   "6660.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06660000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6660.0,
+     "bid": 45.29,
+     "ask": 45.75,
+     "mark": 45.52,
+     "delta": -0.2821,
+     "gamma": 0.00133,
+     "theta": -1.7941,
+     "vega": 5.8829,
+     "volatility": 14.6,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06660000",
+     "optionRoot": "SPX",
+     "strikePrice": 6660.0,
+     "bid": 51.2,
+     "ask": 51.72,
+     "mark": 51.46,
+     "delta": -0.2938,
+     "gamma": 0.00126,
+     "theta": -1.954,
+     "vega": 5.9966,
+     "volatility": 15.6,
+     "daysToExpiration": 24
+    }
+   ],
+   "6665.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06665000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6665.0,
+     "bid": 46.66,
+     "ask": 47.13,
+     "mark": 46.89,
+     "delta": -0.2887,
+     "gamma": 0.00134,
+     "theta": -1.8113,
+     "vega": 5.9475,
+     "volatility": 14.58,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06665000",
+     "optionRoot": "SPX",
+     "strikePrice": 6665.0,
+     "bid": 52.63,
+     "ask": 53.16,
+     "mark": 52.89,
+     "delta": -0.3001,
+     "gamma": 0.00128,
+     "theta": -1.9704,
+     "vega": 6.0546,
+     "volatility": 15.58,
+     "daysToExpiration": 24
+    }
+   ],
+   "6670.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06670000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6670.0,
+     "bid": 48.05,
+     "ask": 48.54,
+     "mark": 48.3,
+     "delta": -0.2953,
+     "gamma": 0.00136,
+     "theta": -1.828,
+     "vega": 6.0107,
+     "volatility": 14.56,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06670000",
+     "optionRoot": "SPX",
+     "strikePrice": 6670.0,
+     "bid": 54.09,
+     "ask": 54.63,
+     "mark": 54.36,
+     "delta": -0.3064,
+     "gamma": 0.00129,
+     "theta": -1.9863,
+     "vega": 6.1113,
+     "volatility": 15.56,
+     "daysToExpiration": 24
+    }
+   ],
+   "6675.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06675000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6675.0,
+     "bid": 49.49,
+     "ask": 49.98,
+     "mark": 49.73,
+     "delta": -0.302,
+     "gamma": 0.00137,
+     "theta": -1.8443,
+     "vega": 6.0724,
+     "volatility": 14.54,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06675000",
+     "optionRoot": "SPX",
+     "strikePrice": 6675.0,
+     "bid": 55.58,
+     "ask": 56.13,
+     "mark": 55.85,
+     "delta": -0.3128,
+     "gamma": 0.00131,
+     "theta": -2.0017,
+     "vega": 6.1666,
+     "volatility": 15.54,
+     "daysToExpiration": 24
+    }
+   ],
+   "6680.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06680000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6680.0,
+     "bid": 50.95,
+     "ask": 51.46,
+     "mark": 51.2,
+     "delta": -0.3088,
+     "gamma": 0.00139,
+     "theta": -1.86,
+     "vega": 6.1325,
+     "volatility": 14.52,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06680000",
+     "optionRoot": "SPX",
+     "strikePrice": 6680.0,
+     "bid": 57.1,
+     "ask": 57.67,
+     "mark": 57.38,
+     "delta": -0.3193,
+     "gamma": 0.00132,
+     "theta": -2.0166,
+     "vega": 6.2204,
+     "volatility": 15.52,
+     "daysToExpiration": 24
+    }
+   ],
+   "6685.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06685000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6685.0,
+     "bid": 52.45,
+     "ask": 52.97,
+     "mark": 52.71,
+     "delta": -0.3157,
+     "gamma": 0.0014,
+     "theta": -1.8751,
+     "vega": 6.191,
+     "volatility": 14.5,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06685000",
+     "optionRoot": "SPX",
+     "strikePrice": 6685.0,
+     "bid": 58.65,
+     "ask": 59.24,
+     "mark": 58.94,
+     "delta": -0.3259,
+     "gamma": 0.00133,
+     "theta": -2.0309,
+     "vega": 6.2727,
+     "volatility": 15.5,
+     "daysToExpiration": 24
+    }
+   ],
+   "6690.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06690000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6690.0,
+     "bid": 53.98,
+     "ask": 54.52,
+     "mark": 54.25,
+     "delta": -0.3227,
+     "gamma": 0.00142,
+     "theta": -1.8897,
+     "vega": 6.2478,
+     "volatility": 14.48,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06690000",
+     "optionRoot": "SPX",
+     "strikePrice": 6690.0,
+     "bid": 60.23,
+     "ask": 60.84,
+     "mark": 60.53,
+     "delta": -0.3325,
+     "gamma": 0.00134,
+     "theta": -2.0447,
+     "vega": 6.3234,
+     "volatility": 15.48,
+     "daysToExpiration": 24
+    }
+   ],
+   "6695.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06695000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6695.0,
+     "bid": 55.54,
+     "ask": 56.1,
+     "mark": 55.82,
+     "delta": -0.3297,
+     "gamma": 0.00143,
+     "theta": -1.9037,
+     "vega": 6.3028,
+     "volatility": 14.46,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06695000",
+     "optionRoot": "SPX",
+     "strikePrice": 6695.0,
+     "bid": 61.85,
+     "ask": 62.47,
+     "mark": 62.16,
+     "delta": -0.3391,
+     "gamma": 0.00136,
+     "theta": -2.0579,
+     "vega": 6.3725,
+     "volatility": 15.46,
+     "daysToExpiration": 24
+    }
+   ],
+   "6700.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06700000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6700.0,
+     "bid": 57.14,
+     "ask": 57.72,
+     "mark": 57.43,
+     "delta": -0.3369,
+     "gamma": 0.00145,
+     "theta": -1.9171,
+     "vega": 6.356,
+     "volatility": 14.44,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06700000",
+     "optionRoot": "SPX",
+     "strikePrice": 6700.0,
+     "bid": 63.5,
+     "ask": 64.14,
+     "mark": 63.82,
+     "delta": -0.3459,
+     "gamma": 0.00137,
+     "theta": -2.0705,
+     "vega": 6.4199,
+     "volatility": 15.44,
+     "daysToExpiration": 24
+    }
+   ],
+   "6705.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06705000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6705.0,
+     "bid": 58.78,
+     "ask": 59.37,
+     "mark": 59.07,
+     "delta": -0.344,
+     "gamma": 0.00146,
+     "theta": -1.9299,
+     "vega": 6.4072,
+     "volatility": 14.42,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06705000",
+     "optionRoot": "SPX",
+     "strikePrice": 6705.0,
+     "bid": 65.18,
+     "ask": 65.84,
+     "mark": 65.51,
+     "delta": -0.3527,
+     "gamma": 0.00138,
+     "theta": -2.0825,
+     "vega": 6.4655,
+     "volatility": 15.42,
+     "daysToExpiration": 24
+    }
+   ],
+   "6710.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06710000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6710.0,
+     "bid": 60.45,
+     "ask": 61.05,
+     "mark": 60.75,
+     "delta": -0.3513,
+     "gamma": 0.00147,
+     "theta": -1.942,
+     "vega": 6.4565,
+     "volatility": 14.4,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06710000",
+     "optionRoot": "SPX",
+     "strikePrice": 6710.0,
+     "bid": 66.9,
+     "ask": 67.57,
+     "mark": 67.23,
+     "delta": -0.3595,
+     "gamma": 0.00139,
+     "theta": -2.0939,
+     "vega": 6.5094,
+     "volatility": 15.4,
+     "daysToExpiration": 24
+    }
+   ],
+   "6715.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06715000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6715.0,
+     "bid": 62.15,
+     "ask": 62.78,
+     "mark": 62.46,
+     "delta": -0.3586,
+     "gamma": 0.00149,
+     "theta": -1.9535,
+     "vega": 6.5037,
+     "volatility": 14.38,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06715000",
+     "optionRoot": "SPX",
+     "strikePrice": 6715.0,
+     "bid": 68.65,
+     "ask": 69.34,
+     "mark": 68.99,
+     "delta": -0.3665,
+     "gamma": 0.0014,
+     "theta": -2.1047,
+     "vega": 6.5513,
+     "volatility": 15.38,
+     "daysToExpiration": 24
+    }
+   ],
+   "6720.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06720000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6720.0,
+     "bid": 63.89,
+     "ask": 64.54,
+     "mark": 64.21,
+     "delta": -0.366,
+     "gamma": 0.0015,
+     "theta": -1.9643,
+     "vega": 6.5488,
+     "volatility": 14.36,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06720000",
+     "optionRoot": "SPX",
+     "strikePrice": 6720.0,
+     "bid": 70.43,
+     "ask": 71.14,
+     "mark": 70.79,
+     "delta": -0.3734,
+     "gamma": 0.00141,
+     "theta": -2.1148,
+     "vega": 6.5914,
+     "volatility": 15.36,
+     "daysToExpiration": 24
+    }
+   ],
+   "6725.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06725000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6725.0,
+     "bid": 65.67,
+     "ask": 66.33,
+     "mark": 66.0,
+     "delta": -0.3735,
+     "gamma": 0.00151,
+     "theta": -1.9745,
+     "vega": 6.5917,
+     "volatility": 14.34,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06725000",
+     "optionRoot": "SPX",
+     "strikePrice": 6725.0,
+     "bid": 72.25,
+     "ask": 72.98,
+     "mark": 72.61,
+     "delta": -0.3805,
+     "gamma": 0.00142,
+     "theta": -2.1243,
+     "vega": 6.6295,
+     "volatility": 15.34,
+     "daysToExpiration": 24
+    }
+   ],
+   "6730.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06730000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6730.0,
+     "bid": 67.49,
+     "ask": 68.16,
+     "mark": 67.83,
+     "delta": -0.381,
+     "gamma": 0.00152,
+     "theta": -1.9839,
+     "vega": 6.6324,
+     "volatility": 14.32,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06730000",
+     "optionRoot": "SPX",
+     "strikePrice": 6730.0,
+     "bid": 74.1,
+     "ask": 74.85,
+     "mark": 74.48,
+     "delta": -0.3876,
+     "gamma": 0.00143,
+     "theta": -2.133,
+     "vega": 6.6656,
+     "volatility": 15.32,
+     "daysToExpiration": 24
+    }
+   ],
+   "6735.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06735000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6735.0,
+     "bid": 69.34,
+     "ask": 70.04,
+     "mark": 69.69,
+     "delta": -0.3886,
+     "gamma": 0.00153,
+     "theta": -1.9926,
+     "vega": 6.6708,
+     "volatility": 14.3,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06735000",
+     "optionRoot": "SPX",
+     "strikePrice": 6735.0,
+     "bid": 75.99,
+     "ask": 76.75,
+     "mark": 76.37,
+     "delta": -0.3947,
+     "gamma": 0.00144,
+     "theta": -2.1411,
+     "vega": 6.6997,
+     "volatility": 15.3,
+     "daysToExpiration": 24
+    }
+   ],
+   "6740.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06740000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6740.0,
+     "bid": 71.23,
+     "ask": 71.94,
+     "mark": 71.59,
+     "delta": -0.3963,
+     "gamma": 0.00154,
+     "theta": -2.0005,
+     "vega": 6.7068,
+     "volatility": 14.28,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06740000",
+     "optionRoot": "SPX",
+     "strikePrice": 6740.0,
+     "bid": 77.91,
+     "ask": 78.7,
+     "mark": 78.31,
+     "delta": -0.4019,
+     "gamma": 0.00145,
+     "theta": -2.1485,
+     "vega": 6.7316,
+     "volatility": 15.28,
+     "daysToExpiration": 24
+    }
+   ],
+   "6745.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06745000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6745.0,
+     "bid": 73.16,
+     "ask": 73.89,
+     "mark": 73.52,
+     "delta": -0.404,
+     "gamma": 0.00155,
+     "theta": -2.0077,
+     "vega": 6.7404,
+     "volatility": 14.26,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06745000",
+     "optionRoot": "SPX",
+     "strikePrice": 6745.0,
+     "bid": 79.87,
+     "ask": 80.68,
+     "mark": 80.27,
+     "delta": -0.4091,
+     "gamma": 0.00146,
+     "theta": -2.1552,
+     "vega": 6.7614,
+     "volatility": 15.26,
+     "daysToExpiration": 24
+    }
+   ],
+   "6750.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06750000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6750.0,
+     "bid": 75.12,
+     "ask": 75.88,
+     "mark": 75.5,
+     "delta": -0.4117,
+     "gamma": 0.00156,
+     "theta": -2.0142,
+     "vega": 6.7716,
+     "volatility": 14.24,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06750000",
+     "optionRoot": "SPX",
+     "strikePrice": 6750.0,
+     "bid": 81.87,
+     "ask": 82.69,
+     "mark": 82.28,
+     "delta": -0.4164,
+     "gamma": 0.00147,
+     "theta": -2.1612,
+     "vega": 6.789,
+     "volatility": 15.24,
+     "daysToExpiration": 24
+    }
+   ],
+   "6755.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06755000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6755.0,
+     "bid": 77.12,
+     "ask": 77.9,
+     "mark": 77.51,
+     "delta": -0.4195,
+     "gamma": 0.00157,
+     "theta": -2.0199,
+     "vega": 6.8002,
+     "volatility": 14.22,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06755000",
+     "optionRoot": "SPX",
+     "strikePrice": 6755.0,
+     "bid": 83.9,
+     "ask": 84.74,
+     "mark": 84.32,
+     "delta": -0.4237,
+     "gamma": 0.00147,
+     "theta": -2.1664,
+     "vega": 6.8144,
+     "volatility": 15.22,
+     "daysToExpiration": 24
+    }
+   ],
+   "6760.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06760000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6760.0,
+     "bid": 79.17,
+     "ask": 79.96,
+     "mark": 79.56,
+     "delta": -0.4274,
+     "gamma": 0.00158,
+     "theta": -2.0248,
+     "vega": 6.8263,
+     "volatility": 14.2,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06760000",
+     "optionRoot": "SPX",
+     "strikePrice": 6760.0,
+     "bid": 85.96,
+     "ask": 86.83,
+     "mark": 86.4,
+     "delta": -0.431,
+     "gamma": 0.00148,
+     "theta": -2.1709,
+     "vega": 6.8375,
+     "volatility": 15.2,
+     "daysToExpiration": 24
+    }
+   ],
+   "6765.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06765000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6765.0,
+     "bid": 81.25,
+     "ask": 82.06,
+     "mark": 81.65,
+     "delta": -0.4353,
+     "gamma": 0.00159,
+     "theta": -2.0288,
+     "vega": 6.8497,
+     "volatility": 14.18,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06765000",
+     "optionRoot": "SPX",
+     "strikePrice": 6765.0,
+     "bid": 88.07,
+     "ask": 88.95,
+     "mark": 88.51,
+     "delta": -0.4384,
+     "gamma": 0.00149,
+     "theta": -2.1747,
+     "vega": 6.8583,
+     "volatility": 15.18,
+     "daysToExpiration": 24
+    }
+   ],
+   "6770.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06770000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6770.0,
+     "bid": 83.37,
+     "ask": 84.2,
+     "mark": 83.79,
+     "delta": -0.4432,
+     "gamma": 0.0016,
+     "theta": -2.0321,
+     "vega": 6.8704,
+     "volatility": 14.16,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06770000",
+     "optionRoot": "SPX",
+     "strikePrice": 6770.0,
+     "bid": 90.21,
+     "ask": 91.11,
+     "mark": 90.66,
+     "delta": -0.4459,
+     "gamma": 0.00149,
+     "theta": -2.1776,
+     "vega": 6.8768,
+     "volatility": 15.16,
+     "daysToExpiration": 24
+    }
+   ],
+   "6775.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06775000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6775.0,
+     "bid": 85.53,
+     "ask": 86.39,
+     "mark": 85.96,
+     "delta": -0.4512,
+     "gamma": 0.0016,
+     "theta": -2.0346,
+     "vega": 6.8885,
+     "volatility": 14.14,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06775000",
+     "optionRoot": "SPX",
+     "strikePrice": 6775.0,
+     "bid": 92.38,
+     "ask": 93.31,
+     "mark": 92.85,
+     "delta": -0.4533,
+     "gamma": 0.0015,
+     "theta": -2.1799,
+     "vega": 6.8929,
+     "volatility": 15.14,
+     "daysToExpiration": 24
+    }
+   ],
+   "6780.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06780000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6780.0,
+     "bid": 87.72,
+     "ask": 88.61,
+     "mark": 88.17,
+     "delta": -0.4592,
+     "gamma": 0.00161,
+     "theta": -2.0362,
+     "vega": 6.9038,
+     "volatility": 14.12,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06780000",
+     "optionRoot": "SPX",
+     "strikePrice": 6780.0,
+     "bid": 94.6,
+     "ask": 95.55,
+     "mark": 95.07,
+     "delta": -0.4608,
+     "gamma": 0.0015,
+     "theta": -2.1813,
+     "vega": 6.9066,
+     "volatility": 15.12,
+     "daysToExpiration": 24
+    }
+   ],
+   "6785.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 89.96,
+     "ask": 90.87,
+     "mark": 90.41,
+     "delta": -0.4672,
+     "gamma": 0.00161,
+     "theta": -2.037,
+     "vega": 6.9163,
+     "volatility": 14.1,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06785000",
+     "optionRoot": "SPX",
+     "strikePrice": 6785.0,
+     "bid": 96.85,
+     "ask": 97.82,
+     "mark": 97.33,
+     "delta": -0.4683,
+     "gamma": 0.00151,
+     "theta": -2.182,
+     "vega": 6.9178,
+     "volatility": 15.1,
+     "daysToExpiration": 24
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 92.24,
+     "ask": 93.17,
+     "mark": 92.7,
+     "delta": -0.4753,
+     "gamma": 0.00162,
+     "theta": -2.037,
+     "vega": 6.926,
+     "volatility": 14.08,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06790000",
+     "optionRoot": "SPX",
+     "strikePrice": 6790.0,
+     "bid": 99.13,
+     "ask": 100.13,
+     "mark": 99.63,
+     "delta": -0.4759,
+     "gamma": 0.00151,
+     "theta": -2.1818,
+     "vega": 6.9266,
+     "volatility": 15.08,
+     "daysToExpiration": 24
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 94.56,
+     "ask": 95.51,
+     "mark": 95.03,
+     "delta": -0.4834,
+     "gamma": 0.00162,
+     "theta": -2.0361,
+     "vega": 6.9329,
+     "volatility": 14.06,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06795000",
+     "optionRoot": "SPX",
+     "strikePrice": 6795.0,
+     "bid": 101.46,
+     "ask": 102.48,
+     "mark": 101.97,
+     "delta": -0.4834,
+     "gamma": 0.00151,
+     "theta": -2.1809,
+     "vega": 6.9329,
+     "volatility": 15.06,
+     "daysToExpiration": 24
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261218P06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 96.92,
+     "ask": 97.89,
+     "mark": 97.4,
+     "delta": -0.4915,
+     "gamma": 0.00163,
+     "theta": -2.0344,
+     "vega": 6.9369,
+     "volatility": 14.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "PUT",
+     "symbol": "SPX   261218P06800000",
+     "optionRoot": "SPX",
+     "strikePrice": 6800.0,
+     "bid": 103.82,
+     "ask": 104.86,
+     "mark": 104.34,
+     "delta": -0.491,
+     "gamma": 0.00152,
+     "theta": -2.1792,
+     "vega": 6.9367,
+     "volatility": 15.04,
+     "daysToExpiration": 24
+    }
+   ]
+  },
+  "2026-12-24:30": {
+   "6200.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06200000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6200.0,
+     "bid": 2.79,
+     "ask": 2.89,
+     "mark": 2.84,
+     "delta": -0.0233,
+     "gamma": 0.00017,
+     "theta": -0.2946,
+     "vega": 1.0741,
+     "volatility": 16.4,
+     "daysToExpiration": 30
+    }
+   ],
+   "6205.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06205000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6205.0,
+     "bid": 2.9,
+     "ask": 3.0,
+     "mark": 2.95,
+     "delta": -0.0241,
+     "gamma": 0.00018,
+     "theta": -0.303,
+     "vega": 1.1061,
+     "volatility": 16.38,
+     "daysToExpiration": 30
+    }
+   ],
+   "6210.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06210000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6210.0,
+     "bid": 3.01,
+     "ask": 3.11,
+     "mark": 3.06,
+     "delta": -0.025,
+     "gamma": 0.00018,
+     "theta": -0.3115,
+     "vega": 1.1388,
+     "volatility": 16.36,
+     "daysToExpiration": 30
+    }
+   ],
+   "6215.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06215000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6215.0,
+     "bid": 3.13,
+     "ask": 3.23,
+     "mark": 3.18,
+     "delta": -0.0259,
+     "gamma": 0.00019,
+     "theta": -0.3203,
+     "vega": 1.1722,
+     "volatility": 16.34,
+     "daysToExpiration": 30
+    }
+   ],
+   "6220.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06220000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6220.0,
+     "bid": 3.25,
+     "ask": 3.35,
+     "mark": 3.3,
+     "delta": -0.0268,
+     "gamma": 0.00019,
+     "theta": -0.3292,
+     "vega": 1.2065,
+     "volatility": 16.32,
+     "daysToExpiration": 30
+    }
+   ],
+   "6225.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06225000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6225.0,
+     "bid": 3.38,
+     "ask": 3.48,
+     "mark": 3.43,
+     "delta": -0.0277,
+     "gamma": 0.0002,
+     "theta": -0.3384,
+     "vega": 1.2415,
+     "volatility": 16.3,
+     "daysToExpiration": 30
+    }
+   ],
+   "6230.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06230000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6230.0,
+     "bid": 3.51,
+     "ask": 3.61,
+     "mark": 3.56,
+     "delta": -0.0287,
+     "gamma": 0.00021,
+     "theta": -0.3477,
+     "vega": 1.2773,
+     "volatility": 16.28,
+     "daysToExpiration": 30
+    }
+   ],
+   "6235.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06235000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6235.0,
+     "bid": 3.65,
+     "ask": 3.75,
+     "mark": 3.7,
+     "delta": -0.0297,
+     "gamma": 0.00021,
+     "theta": -0.3572,
+     "vega": 1.3138,
+     "volatility": 16.26,
+     "daysToExpiration": 30
+    }
+   ],
+   "6240.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06240000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6240.0,
+     "bid": 3.79,
+     "ask": 3.89,
+     "mark": 3.84,
+     "delta": -0.0307,
+     "gamma": 0.00022,
+     "theta": -0.3669,
+     "vega": 1.3512,
+     "volatility": 16.24,
+     "daysToExpiration": 30
+    }
+   ],
+   "6245.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06245000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6245.0,
+     "bid": 3.94,
+     "ask": 4.04,
+     "mark": 3.99,
+     "delta": -0.0318,
+     "gamma": 0.00023,
+     "theta": -0.3769,
+     "vega": 1.3894,
+     "volatility": 16.22,
+     "daysToExpiration": 30
+    }
+   ],
+   "6250.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06250000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6250.0,
+     "bid": 4.09,
+     "ask": 4.19,
+     "mark": 4.14,
+     "delta": -0.0328,
+     "gamma": 0.00023,
+     "theta": -0.387,
+     "vega": 1.4285,
+     "volatility": 16.2,
+     "daysToExpiration": 30
+    }
+   ],
+   "6255.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06255000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6255.0,
+     "bid": 4.24,
+     "ask": 4.34,
+     "mark": 4.29,
+     "delta": -0.034,
+     "gamma": 0.00024,
+     "theta": -0.3973,
+     "vega": 1.4683,
+     "volatility": 16.18,
+     "daysToExpiration": 30
+    }
+   ],
+   "6260.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06260000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6260.0,
+     "bid": 4.4,
+     "ask": 4.5,
+     "mark": 4.45,
+     "delta": -0.0351,
+     "gamma": 0.00025,
+     "theta": -0.4078,
+     "vega": 1.509,
+     "volatility": 16.16,
+     "daysToExpiration": 30
+    }
+   ],
+   "6265.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06265000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6265.0,
+     "bid": 4.57,
+     "ask": 4.67,
+     "mark": 4.62,
+     "delta": -0.0363,
+     "gamma": 0.00025,
+     "theta": -0.4185,
+     "vega": 1.5505,
+     "volatility": 16.14,
+     "daysToExpiration": 30
+    }
+   ],
+   "6270.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06270000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6270.0,
+     "bid": 4.74,
+     "ask": 4.84,
+     "mark": 4.79,
+     "delta": -0.0375,
+     "gamma": 0.00026,
+     "theta": -0.4294,
+     "vega": 1.5929,
+     "volatility": 16.12,
+     "daysToExpiration": 30
+    }
+   ],
+   "6275.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06275000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6275.0,
+     "bid": 4.92,
+     "ask": 5.02,
+     "mark": 4.97,
+     "delta": -0.0388,
+     "gamma": 0.00027,
+     "theta": -0.4405,
+     "vega": 1.6362,
+     "volatility": 16.1,
+     "daysToExpiration": 30
+    }
+   ],
+   "6280.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06280000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6280.0,
+     "bid": 5.11,
+     "ask": 5.21,
+     "mark": 5.16,
+     "delta": -0.04,
+     "gamma": 0.00027,
+     "theta": -0.4518,
+     "vega": 1.6803,
+     "volatility": 16.08,
+     "daysToExpiration": 30
+    }
+   ],
+   "6285.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06285000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6285.0,
+     "bid": 5.3,
+     "ask": 5.4,
+     "mark": 5.35,
+     "delta": -0.0414,
+     "gamma": 0.00028,
+     "theta": -0.4633,
+     "vega": 1.7252,
+     "volatility": 16.06,
+     "daysToExpiration": 30
+    }
+   ],
+   "6290.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06290000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6290.0,
+     "bid": 5.49,
+     "ask": 5.59,
+     "mark": 5.54,
+     "delta": -0.0427,
+     "gamma": 0.00029,
+     "theta": -0.475,
+     "vega": 1.771,
+     "volatility": 16.04,
+     "daysToExpiration": 30
+    }
+   ],
+   "6295.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06295000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6295.0,
+     "bid": 5.7,
+     "ask": 5.8,
+     "mark": 5.75,
+     "delta": -0.0441,
+     "gamma": 0.0003,
+     "theta": -0.4869,
+     "vega": 1.8177,
+     "volatility": 16.02,
+     "daysToExpiration": 30
+    }
+   ],
+   "6300.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06300000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6300.0,
+     "bid": 5.91,
+     "ask": 6.01,
+     "mark": 5.96,
+     "delta": -0.0456,
+     "gamma": 0.00031,
+     "theta": -0.4991,
+     "vega": 1.8653,
+     "volatility": 16.0,
+     "daysToExpiration": 30
+    }
+   ],
+   "6305.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06305000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6305.0,
+     "bid": 6.12,
+     "ask": 6.22,
+     "mark": 6.17,
+     "delta": -0.047,
+     "gamma": 0.00032,
+     "theta": -0.5114,
+     "vega": 1.9138,
+     "volatility": 15.98,
+     "daysToExpiration": 30
+    }
+   ],
+   "6310.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06310000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6310.0,
+     "bid": 6.35,
+     "ask": 6.45,
+     "mark": 6.4,
+     "delta": -0.0486,
+     "gamma": 0.00032,
+     "theta": -0.5239,
+     "vega": 1.9631,
+     "volatility": 15.96,
+     "daysToExpiration": 30
+    }
+   ],
+   "6315.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06315000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6315.0,
+     "bid": 6.58,
+     "ask": 6.68,
+     "mark": 6.63,
+     "delta": -0.0501,
+     "gamma": 0.00033,
+     "theta": -0.5366,
+     "vega": 2.0133,
+     "volatility": 15.94,
+     "daysToExpiration": 30
+    }
+   ],
+   "6320.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06320000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6320.0,
+     "bid": 6.82,
+     "ask": 6.92,
+     "mark": 6.87,
+     "delta": -0.0517,
+     "gamma": 0.00034,
+     "theta": -0.5496,
+     "vega": 2.0644,
+     "volatility": 15.92,
+     "daysToExpiration": 30
+    }
+   ],
+   "6325.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06325000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6325.0,
+     "bid": 7.06,
+     "ask": 7.16,
+     "mark": 7.11,
+     "delta": -0.0534,
+     "gamma": 0.00035,
+     "theta": -0.5627,
+     "vega": 2.1164,
+     "volatility": 15.9,
+     "daysToExpiration": 30
+    }
+   ],
+   "6330.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06330000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6330.0,
+     "bid": 7.32,
+     "ask": 7.42,
+     "mark": 7.37,
+     "delta": -0.0551,
+     "gamma": 0.00036,
+     "theta": -0.576,
+     "vega": 2.1693,
+     "volatility": 15.88,
+     "daysToExpiration": 30
+    }
+   ],
+   "6335.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06335000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6335.0,
+     "bid": 7.58,
+     "ask": 7.68,
+     "mark": 7.63,
+     "delta": -0.0568,
+     "gamma": 0.00037,
+     "theta": -0.5895,
+     "vega": 2.223,
+     "volatility": 15.86,
+     "daysToExpiration": 30
+    }
+   ],
+   "6340.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06340000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6340.0,
+     "bid": 7.85,
+     "ask": 7.95,
+     "mark": 7.9,
+     "delta": -0.0586,
+     "gamma": 0.00038,
+     "theta": -0.6033,
+     "vega": 2.2776,
+     "volatility": 15.84,
+     "daysToExpiration": 30
+    }
+   ],
+   "6345.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06345000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6345.0,
+     "bid": 8.13,
+     "ask": 8.23,
+     "mark": 8.18,
+     "delta": -0.0604,
+     "gamma": 0.00039,
+     "theta": -0.6172,
+     "vega": 2.3331,
+     "volatility": 15.82,
+     "daysToExpiration": 30
+    }
+   ],
+   "6350.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06350000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6350.0,
+     "bid": 8.42,
+     "ask": 8.52,
+     "mark": 8.47,
+     "delta": -0.0623,
+     "gamma": 0.0004,
+     "theta": -0.6313,
+     "vega": 2.3895,
+     "volatility": 15.8,
+     "daysToExpiration": 30
+    }
+   ],
+   "6355.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06355000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6355.0,
+     "bid": 8.71,
+     "ask": 8.81,
+     "mark": 8.76,
+     "delta": -0.0642,
+     "gamma": 0.00041,
+     "theta": -0.6456,
+     "vega": 2.4468,
+     "volatility": 15.78,
+     "daysToExpiration": 30
+    }
+   ],
+   "6360.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06360000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6360.0,
+     "bid": 9.02,
+     "ask": 9.12,
+     "mark": 9.07,
+     "delta": -0.0662,
+     "gamma": 0.00042,
+     "theta": -0.6601,
+     "vega": 2.5049,
+     "volatility": 15.76,
+     "daysToExpiration": 30
+    }
+   ],
+   "6365.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06365000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6365.0,
+     "bid": 9.34,
+     "ask": 9.44,
+     "mark": 9.39,
+     "delta": -0.0682,
+     "gamma": 0.00043,
+     "theta": -0.6748,
+     "vega": 2.5639,
+     "volatility": 15.74,
+     "daysToExpiration": 30
+    }
+   ],
+   "6370.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06370000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6370.0,
+     "bid": 9.66,
+     "ask": 9.76,
+     "mark": 9.71,
+     "delta": -0.0703,
+     "gamma": 0.00044,
+     "theta": -0.6897,
+     "vega": 2.6237,
+     "volatility": 15.72,
+     "daysToExpiration": 30
+    }
+   ],
+   "6375.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06375000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6375.0,
+     "bid": 10.0,
+     "ask": 10.1,
+     "mark": 10.05,
+     "delta": -0.0724,
+     "gamma": 0.00045,
+     "theta": -0.7047,
+     "vega": 2.6844,
+     "volatility": 15.7,
+     "daysToExpiration": 30
+    }
+   ],
+   "6380.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06380000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6380.0,
+     "bid": 10.34,
+     "ask": 10.44,
+     "mark": 10.39,
+     "delta": -0.0746,
+     "gamma": 0.00046,
+     "theta": -0.7199,
+     "vega": 2.7459,
+     "volatility": 15.68,
+     "daysToExpiration": 30
+    }
+   ],
+   "6385.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06385000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6385.0,
+     "bid": 10.69,
+     "ask": 10.8,
+     "mark": 10.75,
+     "delta": -0.0768,
+     "gamma": 0.00047,
+     "theta": -0.7354,
+     "vega": 2.8082,
+     "volatility": 15.66,
+     "daysToExpiration": 30
+    }
+   ],
+   "6390.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06390000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6390.0,
+     "bid": 11.06,
+     "ask": 11.17,
+     "mark": 11.11,
+     "delta": -0.0791,
+     "gamma": 0.00048,
+     "theta": -0.7509,
+     "vega": 2.8714,
+     "volatility": 15.64,
+     "daysToExpiration": 30
+    }
+   ],
+   "6395.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06395000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6395.0,
+     "bid": 11.44,
+     "ask": 11.55,
+     "mark": 11.49,
+     "delta": -0.0814,
+     "gamma": 0.00049,
+     "theta": -0.7667,
+     "vega": 2.9353,
+     "volatility": 15.62,
+     "daysToExpiration": 30
+    }
+   ],
+   "6400.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06400000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6400.0,
+     "bid": 11.82,
+     "ask": 11.94,
+     "mark": 11.88,
+     "delta": -0.0838,
+     "gamma": 0.00051,
+     "theta": -0.7826,
+     "vega": 3.0001,
+     "volatility": 15.6,
+     "daysToExpiration": 30
+    }
+   ],
+   "6405.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06405000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6405.0,
+     "bid": 12.22,
+     "ask": 12.34,
+     "mark": 12.28,
+     "delta": -0.0863,
+     "gamma": 0.00052,
+     "theta": -0.7987,
+     "vega": 3.0656,
+     "volatility": 15.58,
+     "daysToExpiration": 30
+    }
+   ],
+   "6410.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06410000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6410.0,
+     "bid": 12.63,
+     "ask": 12.76,
+     "mark": 12.69,
+     "delta": -0.0888,
+     "gamma": 0.00053,
+     "theta": -0.8149,
+     "vega": 3.1319,
+     "volatility": 15.56,
+     "daysToExpiration": 30
+    }
+   ],
+   "6415.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06415000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6415.0,
+     "bid": 13.05,
+     "ask": 13.18,
+     "mark": 13.12,
+     "delta": -0.0914,
+     "gamma": 0.00054,
+     "theta": -0.8313,
+     "vega": 3.1989,
+     "volatility": 15.54,
+     "daysToExpiration": 30
+    }
+   ],
+   "6420.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06420000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6420.0,
+     "bid": 13.49,
+     "ask": 13.62,
+     "mark": 13.56,
+     "delta": -0.094,
+     "gamma": 0.00055,
+     "theta": -0.8478,
+     "vega": 3.2667,
+     "volatility": 15.52,
+     "daysToExpiration": 30
+    }
+   ],
+   "6425.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06425000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6425.0,
+     "bid": 13.93,
+     "ask": 14.07,
+     "mark": 14.0,
+     "delta": -0.0967,
+     "gamma": 0.00057,
+     "theta": -0.8644,
+     "vega": 3.3352,
+     "volatility": 15.5,
+     "daysToExpiration": 30
+    }
+   ],
+   "6430.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06430000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6430.0,
+     "bid": 14.4,
+     "ask": 14.54,
+     "mark": 14.47,
+     "delta": -0.0994,
+     "gamma": 0.00058,
+     "theta": -0.8812,
+     "vega": 3.4044,
+     "volatility": 15.48,
+     "daysToExpiration": 30
+    }
+   ],
+   "6435.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06435000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6435.0,
+     "bid": 14.87,
+     "ask": 15.02,
+     "mark": 14.94,
+     "delta": -0.1023,
+     "gamma": 0.00059,
+     "theta": -0.8982,
+     "vega": 3.4743,
+     "volatility": 15.46,
+     "daysToExpiration": 30
+    }
+   ],
+   "6440.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06440000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6440.0,
+     "bid": 15.36,
+     "ask": 15.51,
+     "mark": 15.43,
+     "delta": -0.1051,
+     "gamma": 0.0006,
+     "theta": -0.9152,
+     "vega": 3.5448,
+     "volatility": 15.44,
+     "daysToExpiration": 30
+    }
+   ],
+   "6445.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06445000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6445.0,
+     "bid": 15.86,
+     "ask": 16.02,
+     "mark": 15.94,
+     "delta": -0.1081,
+     "gamma": 0.00062,
+     "theta": -0.9324,
+     "vega": 3.616,
+     "volatility": 15.42,
+     "daysToExpiration": 30
+    }
+   ],
+   "6450.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06450000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6450.0,
+     "bid": 16.37,
+     "ask": 16.53,
+     "mark": 16.45,
+     "delta": -0.1111,
+     "gamma": 0.00063,
+     "theta": -0.9496,
+     "vega": 3.6877,
+     "volatility": 15.4,
+     "daysToExpiration": 30
+    }
+   ],
+   "6455.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06455000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6455.0,
+     "bid": 16.9,
+     "ask": 17.07,
+     "mark": 16.98,
+     "delta": -0.1141,
+     "gamma": 0.00064,
+     "theta": -0.967,
+     "vega": 3.7601,
+     "volatility": 15.38,
+     "daysToExpiration": 30
+    }
+   ],
+   "6460.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06460000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6460.0,
+     "bid": 17.44,
+     "ask": 17.62,
+     "mark": 17.53,
+     "delta": -0.1173,
+     "gamma": 0.00066,
+     "theta": -0.9845,
+     "vega": 3.833,
+     "volatility": 15.36,
+     "daysToExpiration": 30
+    }
+   ],
+   "6465.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06465000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6465.0,
+     "bid": 18.0,
+     "ask": 18.18,
+     "mark": 18.09,
+     "delta": -0.1205,
+     "gamma": 0.00067,
+     "theta": -1.002,
+     "vega": 3.9065,
+     "volatility": 15.34,
+     "daysToExpiration": 30
+    }
+   ],
+   "6470.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06470000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6470.0,
+     "bid": 18.58,
+     "ask": 18.76,
+     "mark": 18.67,
+     "delta": -0.1237,
+     "gamma": 0.00068,
+     "theta": -1.0197,
+     "vega": 3.9804,
+     "volatility": 15.32,
+     "daysToExpiration": 30
+    }
+   ],
+   "6475.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06475000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6475.0,
+     "bid": 19.17,
+     "ask": 19.36,
+     "mark": 19.26,
+     "delta": -0.1271,
+     "gamma": 0.0007,
+     "theta": -1.0374,
+     "vega": 4.0549,
+     "volatility": 15.3,
+     "daysToExpiration": 30
+    }
+   ],
+   "6480.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06480000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6480.0,
+     "bid": 19.77,
+     "ask": 19.97,
+     "mark": 19.87,
+     "delta": -0.1304,
+     "gamma": 0.00071,
+     "theta": -1.0552,
+     "vega": 4.1297,
+     "volatility": 15.28,
+     "daysToExpiration": 30
+    }
+   ],
+   "6485.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06485000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6485.0,
+     "bid": 20.39,
+     "ask": 20.6,
+     "mark": 20.5,
+     "delta": -0.1339,
+     "gamma": 0.00073,
+     "theta": -1.073,
+     "vega": 4.205,
+     "volatility": 15.26,
+     "daysToExpiration": 30
+    }
+   ],
+   "6490.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06490000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6490.0,
+     "bid": 21.03,
+     "ask": 21.25,
+     "mark": 21.14,
+     "delta": -0.1375,
+     "gamma": 0.00074,
+     "theta": -1.0909,
+     "vega": 4.2807,
+     "volatility": 15.24,
+     "daysToExpiration": 30
+    }
+   ],
+   "6495.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06495000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6495.0,
+     "bid": 21.69,
+     "ask": 21.91,
+     "mark": 21.8,
+     "delta": -0.1411,
+     "gamma": 0.00075,
+     "theta": -1.1088,
+     "vega": 4.3567,
+     "volatility": 15.22,
+     "daysToExpiration": 30
+    }
+   ],
+   "6500.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06500000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6500.0,
+     "bid": 22.36,
+     "ask": 22.59,
+     "mark": 22.48,
+     "delta": -0.1447,
+     "gamma": 0.00077,
+     "theta": -1.1267,
+     "vega": 4.4331,
+     "volatility": 15.2,
+     "daysToExpiration": 30
+    }
+   ],
+   "6505.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06505000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6505.0,
+     "bid": 23.05,
+     "ask": 23.29,
+     "mark": 23.17,
+     "delta": -0.1485,
+     "gamma": 0.00078,
+     "theta": -1.1447,
+     "vega": 4.5097,
+     "volatility": 15.18,
+     "daysToExpiration": 30
+    }
+   ],
+   "6510.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06510000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6510.0,
+     "bid": 23.76,
+     "ask": 24.0,
+     "mark": 23.88,
+     "delta": -0.1523,
+     "gamma": 0.0008,
+     "theta": -1.1627,
+     "vega": 4.5865,
+     "volatility": 15.16,
+     "daysToExpiration": 30
+    }
+   ],
+   "6515.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06515000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6515.0,
+     "bid": 24.49,
+     "ask": 24.74,
+     "mark": 24.61,
+     "delta": -0.1562,
+     "gamma": 0.00081,
+     "theta": -1.1806,
+     "vega": 4.6636,
+     "volatility": 15.14,
+     "daysToExpiration": 30
+    }
+   ],
+   "6520.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06520000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6520.0,
+     "bid": 25.24,
+     "ask": 25.49,
+     "mark": 25.36,
+     "delta": -0.1601,
+     "gamma": 0.00082,
+     "theta": -1.1986,
+     "vega": 4.7408,
+     "volatility": 15.12,
+     "daysToExpiration": 30
+    }
+   ],
+   "6525.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06525000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6525.0,
+     "bid": 26.0,
+     "ask": 26.26,
+     "mark": 26.13,
+     "delta": -0.1642,
+     "gamma": 0.00084,
+     "theta": -1.2165,
+     "vega": 4.8181,
+     "volatility": 15.1,
+     "daysToExpiration": 30
+    }
+   ],
+   "6530.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06530000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6530.0,
+     "bid": 26.79,
+     "ask": 27.06,
+     "mark": 26.92,
+     "delta": -0.1683,
+     "gamma": 0.00085,
+     "theta": -1.2345,
+     "vega": 4.8955,
+     "volatility": 15.08,
+     "daysToExpiration": 30
+    }
+   ],
+   "6535.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06535000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6535.0,
+     "bid": 27.59,
+     "ask": 27.87,
+     "mark": 27.73,
+     "delta": -0.1725,
+     "gamma": 0.00087,
+     "theta": -1.2523,
+     "vega": 4.9729,
+     "volatility": 15.06,
+     "daysToExpiration": 30
+    }
+   ],
+   "6540.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06540000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6540.0,
+     "bid": 28.42,
+     "ask": 28.7,
+     "mark": 28.56,
+     "delta": -0.1767,
+     "gamma": 0.00088,
+     "theta": -1.2701,
+     "vega": 5.0504,
+     "volatility": 15.04,
+     "daysToExpiration": 30
+    }
+   ],
+   "6545.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06545000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6545.0,
+     "bid": 29.26,
+     "ask": 29.56,
+     "mark": 29.41,
+     "delta": -0.181,
+     "gamma": 0.0009,
+     "theta": -1.2879,
+     "vega": 5.1277,
+     "volatility": 15.02,
+     "daysToExpiration": 30
+    }
+   ],
+   "6550.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06550000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6550.0,
+     "bid": 30.13,
+     "ask": 30.43,
+     "mark": 30.28,
+     "delta": -0.1854,
+     "gamma": 0.00091,
+     "theta": -1.3055,
+     "vega": 5.205,
+     "volatility": 15.0,
+     "daysToExpiration": 30
+    }
+   ],
+   "6555.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06555000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6555.0,
+     "bid": 31.02,
+     "ask": 31.33,
+     "mark": 31.17,
+     "delta": -0.1899,
+     "gamma": 0.00093,
+     "theta": -1.3231,
+     "vega": 5.2821,
+     "volatility": 14.98,
+     "daysToExpiration": 30
+    }
+   ],
+   "6560.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06560000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6560.0,
+     "bid": 31.93,
+     "ask": 32.25,
+     "mark": 32.09,
+     "delta": -0.1945,
+     "gamma": 0.00094,
+     "theta": -1.3406,
+     "vega": 5.3591,
+     "volatility": 14.96,
+     "daysToExpiration": 30
+    }
+   ],
+   "6565.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06565000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6565.0,
+     "bid": 32.86,
+     "ask": 33.19,
+     "mark": 33.03,
+     "delta": -0.1991,
+     "gamma": 0.00096,
+     "theta": -1.358,
+     "vega": 5.4357,
+     "volatility": 14.94,
+     "daysToExpiration": 30
+    }
+   ],
+   "6570.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06570000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6570.0,
+     "bid": 33.81,
+     "ask": 34.15,
+     "mark": 33.98,
+     "delta": -0.2038,
+     "gamma": 0.00097,
+     "theta": -1.3752,
+     "vega": 5.5121,
+     "volatility": 14.92,
+     "daysToExpiration": 30
+    }
+   ],
+   "6575.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06575000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6575.0,
+     "bid": 34.79,
+     "ask": 35.14,
+     "mark": 34.97,
+     "delta": -0.2086,
+     "gamma": 0.00099,
+     "theta": -1.3923,
+     "vega": 5.5881,
+     "volatility": 14.9,
+     "daysToExpiration": 30
+    }
+   ],
+   "6580.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06580000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6580.0,
+     "bid": 35.79,
+     "ask": 36.15,
+     "mark": 35.97,
+     "delta": -0.2134,
+     "gamma": 0.001,
+     "theta": -1.4092,
+     "vega": 5.6638,
+     "volatility": 14.88,
+     "daysToExpiration": 30
+    }
+   ],
+   "6585.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06585000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6585.0,
+     "bid": 36.81,
+     "ask": 37.18,
+     "mark": 37.0,
+     "delta": -0.2183,
+     "gamma": 0.00102,
+     "theta": -1.426,
+     "vega": 5.7389,
+     "volatility": 14.86,
+     "daysToExpiration": 30
+    }
+   ],
+   "6590.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06590000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6590.0,
+     "bid": 37.86,
+     "ask": 38.24,
+     "mark": 38.05,
+     "delta": -0.2233,
+     "gamma": 0.00103,
+     "theta": -1.4426,
+     "vega": 5.8136,
+     "volatility": 14.84,
+     "daysToExpiration": 30
+    }
+   ],
+   "6595.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06595000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6595.0,
+     "bid": 38.93,
+     "ask": 39.32,
+     "mark": 39.13,
+     "delta": -0.2284,
+     "gamma": 0.00105,
+     "theta": -1.4591,
+     "vega": 5.8877,
+     "volatility": 14.82,
+     "daysToExpiration": 30
+    }
+   ],
+   "6600.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06600000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6600.0,
+     "bid": 40.03,
+     "ask": 40.43,
+     "mark": 40.23,
+     "delta": "NaN",
+     "gamma": 0.00106,
+     "theta": -1.4753,
+     "vega": 5.9612,
+     "volatility": 14.8,
+     "daysToExpiration": 30
+    }
+   ],
+   "6605.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06605000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6605.0,
+     "bid": 41.15,
+     "ask": 41.56,
+     "mark": 41.36,
+     "delta": -0.2387,
+     "gamma": 0.00107,
+     "theta": -1.4913,
+     "vega": 6.034,
+     "volatility": 14.78,
+     "daysToExpiration": 30
+    }
+   ],
+   "6610.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06610000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6610.0,
+     "bid": 42.3,
+     "ask": 42.72,
+     "mark": 42.51,
+     "delta": -0.244,
+     "gamma": 0.00109,
+     "theta": -1.507,
+     "vega": 6.1061,
+     "volatility": 14.76,
+     "daysToExpiration": 30
+    }
+   ],
+   "6615.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06615000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6615.0,
+     "bid": 43.47,
+     "ask": 43.91,
+     "mark": 43.69,
+     "delta": -0.2494,
+     "gamma": 0.0011,
+     "theta": -1.5226,
+     "vega": 6.1774,
+     "volatility": 14.74,
+     "daysToExpiration": 30
+    }
+   ],
+   "6620.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06620000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6620.0,
+     "bid": 44.67,
+     "ask": 45.12,
+     "mark": 44.89,
+     "delta": -0.2548,
+     "gamma": 0.00112,
+     "theta": -1.5379,
+     "vega": 6.2478,
+     "volatility": 14.72,
+     "daysToExpiration": 30
+    }
+   ],
+   "6625.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06625000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6625.0,
+     "bid": 45.89,
+     "ask": 46.35,
+     "mark": 46.12,
+     "delta": -0.2603,
+     "gamma": 0.00113,
+     "theta": -1.5529,
+     "vega": 6.3174,
+     "volatility": 14.7,
+     "daysToExpiration": 30
+    }
+   ],
+   "6630.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06630000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6630.0,
+     "bid": 47.14,
+     "ask": 47.62,
+     "mark": 47.38,
+     "delta": -0.2659,
+     "gamma": 0.00114,
+     "theta": -1.5676,
+     "vega": 6.386,
+     "volatility": 14.68,
+     "daysToExpiration": 30
+    }
+   ],
+   "6635.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06635000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6635.0,
+     "bid": 48.42,
+     "ask": 48.91,
+     "mark": 48.67,
+     "delta": -0.2715,
+     "gamma": 0.00116,
+     "theta": -1.582,
+     "vega": 6.4536,
+     "volatility": 14.66,
+     "daysToExpiration": 30
+    }
+   ],
+   "6640.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06640000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6640.0,
+     "bid": 49.73,
+     "ask": 50.23,
+     "mark": 49.98,
+     "delta": -0.2773,
+     "gamma": 0.00117,
+     "theta": -1.5961,
+     "vega": 6.5201,
+     "volatility": 14.64,
+     "daysToExpiration": 30
+    }
+   ],
+   "6645.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06645000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6645.0,
+     "bid": 51.06,
+     "ask": 51.58,
+     "mark": 51.32,
+     "delta": -0.283,
+     "gamma": 0.00119,
+     "theta": -1.6099,
+     "vega": 6.5855,
+     "volatility": 14.62,
+     "daysToExpiration": 30
+    }
+   ],
+   "6650.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06650000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6650.0,
+     "bid": 52.43,
+     "ask": 52.95,
+     "mark": 52.69,
+     "delta": -0.2889,
+     "gamma": 0.0012,
+     "theta": -1.6234,
+     "vega": 6.6497,
+     "volatility": 14.6,
+     "daysToExpiration": 30
+    }
+   ],
+   "6655.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06655000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6655.0,
+     "bid": 53.82,
+     "ask": 54.36,
+     "mark": 54.09,
+     "delta": -0.2948,
+     "gamma": 0.00121,
+     "theta": -1.6365,
+     "vega": 6.7126,
+     "volatility": 14.58,
+     "daysToExpiration": 30
+    }
+   ],
+   "6660.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06660000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6660.0,
+     "bid": 55.24,
+     "ask": 55.79,
+     "mark": 55.52,
+     "delta": -0.3008,
+     "gamma": 0.00122,
+     "theta": -1.6493,
+     "vega": 6.7742,
+     "volatility": 14.56,
+     "daysToExpiration": 30
+    }
+   ],
+   "6665.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06665000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6665.0,
+     "bid": 56.69,
+     "ask": 57.26,
+     "mark": 56.97,
+     "delta": -0.3069,
+     "gamma": 0.00124,
+     "theta": -1.6617,
+     "vega": 6.8345,
+     "volatility": 14.54,
+     "daysToExpiration": 30
+    }
+   ],
+   "6670.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06670000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6670.0,
+     "bid": 58.17,
+     "ask": 58.75,
+     "mark": 58.46,
+     "delta": -0.313,
+     "gamma": 0.00125,
+     "theta": -1.6737,
+     "vega": 6.8933,
+     "volatility": 14.52,
+     "daysToExpiration": 30
+    }
+   ],
+   "6675.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06675000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6675.0,
+     "bid": 59.67,
+     "ask": 60.27,
+     "mark": 59.97,
+     "delta": -0.3192,
+     "gamma": 0.00126,
+     "theta": -1.6853,
+     "vega": 6.9507,
+     "volatility": 14.5,
+     "daysToExpiration": 30
+    }
+   ],
+   "6680.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06680000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6680.0,
+     "bid": 61.21,
+     "ask": 61.83,
+     "mark": 61.52,
+     "delta": -0.3254,
+     "gamma": 0.00127,
+     "theta": -1.6965,
+     "vega": 7.0065,
+     "volatility": 14.48,
+     "daysToExpiration": 30
+    }
+   ],
+   "6685.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06685000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6685.0,
+     "bid": 62.78,
+     "ask": 63.41,
+     "mark": 63.1,
+     "delta": -0.3317,
+     "gamma": 0.00128,
+     "theta": -1.7072,
+     "vega": 7.0607,
+     "volatility": 14.46,
+     "daysToExpiration": 30
+    }
+   ],
+   "6690.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06690000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6690.0,
+     "bid": 64.38,
+     "ask": 65.03,
+     "mark": 64.71,
+     "delta": -0.3381,
+     "gamma": 0.0013,
+     "theta": -1.7176,
+     "vega": 7.1133,
+     "volatility": 14.44,
+     "daysToExpiration": 30
+    }
+   ],
+   "6695.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06695000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6695.0,
+     "bid": 66.02,
+     "ask": 66.68,
+     "mark": 66.35,
+     "delta": -0.3445,
+     "gamma": 0.00131,
+     "theta": -1.7275,
+     "vega": 7.1642,
+     "volatility": 14.42,
+     "daysToExpiration": 30
+    }
+   ],
+   "6700.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06700000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6700.0,
+     "bid": 67.68,
+     "ask": 68.36,
+     "mark": 68.02,
+     "delta": -0.351,
+     "gamma": 0.00132,
+     "theta": -1.7369,
+     "vega": 7.2133,
+     "volatility": 14.4,
+     "daysToExpiration": 30
+    }
+   ],
+   "6705.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06705000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6705.0,
+     "bid": 69.37,
+     "ask": 70.07,
+     "mark": 69.72,
+     "delta": -0.3575,
+     "gamma": 0.00133,
+     "theta": -1.7458,
+     "vega": 7.2605,
+     "volatility": 14.38,
+     "daysToExpiration": 30
+    }
+   ],
+   "6710.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06710000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6710.0,
+     "bid": 71.1,
+     "ask": 71.82,
+     "mark": 71.46,
+     "delta": -0.3641,
+     "gamma": 0.00134,
+     "theta": -1.7543,
+     "vega": 7.3059,
+     "volatility": 14.36,
+     "daysToExpiration": 30
+    }
+   ],
+   "6715.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06715000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6715.0,
+     "bid": 72.86,
+     "ask": 73.59,
+     "mark": 73.23,
+     "delta": -0.3708,
+     "gamma": 0.00135,
+     "theta": -1.7623,
+     "vega": 7.3494,
+     "volatility": 14.34,
+     "daysToExpiration": 30
+    }
+   ],
+   "6720.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06720000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6720.0,
+     "bid": 74.65,
+     "ask": 75.4,
+     "mark": 75.03,
+     "delta": -0.3775,
+     "gamma": 0.00136,
+     "theta": -1.7698,
+     "vega": 7.3909,
+     "volatility": 14.32,
+     "daysToExpiration": 30
+    }
+   ],
+   "6725.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06725000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6725.0,
+     "bid": 76.48,
+     "ask": 77.25,
+     "mark": 76.86,
+     "delta": -0.3843,
+     "gamma": 0.00137,
+     "theta": -1.7768,
+     "vega": 7.4304,
+     "volatility": 14.3,
+     "daysToExpiration": 30
+    }
+   ],
+   "6730.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06730000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6730.0,
+     "bid": 78.34,
+     "ask": 79.13,
+     "mark": 78.73,
+     "delta": -0.3911,
+     "gamma": 0.00138,
+     "theta": -1.7832,
+     "vega": 7.4678,
+     "volatility": 14.28,
+     "daysToExpiration": 30
+    }
+   ],
+   "6735.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06735000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6735.0,
+     "bid": 80.23,
+     "ask": 81.04,
+     "mark": 80.63,
+     "delta": -0.3979,
+     "gamma": 0.00138,
+     "theta": -1.7891,
+     "vega": 7.5031,
+     "volatility": 14.26,
+     "daysToExpiration": 30
+    }
+   ],
+   "6740.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06740000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6740.0,
+     "bid": 82.16,
+     "ask": 82.98,
+     "mark": 82.57,
+     "delta": -0.4048,
+     "gamma": 0.00139,
+     "theta": -1.7945,
+     "vega": 7.5363,
+     "volatility": 14.24,
+     "daysToExpiration": 30
+    }
+   ],
+   "6745.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06745000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6745.0,
+     "bid": 84.12,
+     "ask": 84.96,
+     "mark": 84.54,
+     "delta": -0.4117,
+     "gamma": 0.0014,
+     "theta": -1.7993,
+     "vega": 7.5672,
+     "volatility": 14.22,
+     "daysToExpiration": 30
+    }
+   ],
+   "6750.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06750000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6750.0,
+     "bid": 86.11,
+     "ask": 86.98,
+     "mark": 86.54,
+     "delta": -0.4187,
+     "gamma": 0.00141,
+     "theta": -1.8036,
+     "vega": 7.5959,
+     "volatility": 14.2,
+     "daysToExpiration": 30
+    }
+   ],
+   "6755.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06755000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6755.0,
+     "bid": 88.14,
+     "ask": 89.02,
+     "mark": 88.58,
+     "delta": -0.4257,
+     "gamma": 0.00141,
+     "theta": -1.8073,
+     "vega": 7.6222,
+     "volatility": 14.18,
+     "daysToExpiration": 30
+    }
+   ],
+   "6760.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06760000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6760.0,
+     "bid": 90.2,
+     "ask": 91.11,
+     "mark": 90.65,
+     "delta": -0.4328,
+     "gamma": 0.00142,
+     "theta": -1.8105,
+     "vega": 7.6462,
+     "volatility": 14.16,
+     "daysToExpiration": 30
+    }
+   ],
+   "6765.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06765000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6765.0,
+     "bid": 92.3,
+     "ask": 93.23,
+     "mark": 92.76,
+     "delta": -0.4399,
+     "gamma": 0.00143,
+     "theta": -1.813,
+     "vega": 7.6679,
+     "volatility": 14.14,
+     "daysToExpiration": 30
+    }
+   ],
+   "6770.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06770000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6770.0,
+     "bid": 94.43,
+     "ask": 95.38,
+     "mark": 94.91,
+     "delta": -0.447,
+     "gamma": 0.00143,
+     "theta": -1.815,
+     "vega": 7.6872,
+     "volatility": 14.12,
+     "daysToExpiration": 30
+    }
+   ],
+   "6775.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06775000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6775.0,
+     "bid": 96.6,
+     "ask": 97.57,
+     "mark": 97.09,
+     "delta": -0.4542,
+     "gamma": 0.00144,
+     "theta": -1.8164,
+     "vega": 7.704,
+     "volatility": 14.1,
+     "daysToExpiration": 30
+    }
+   ],
+   "6780.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06780000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6780.0,
+     "bid": 98.8,
+     "ask": 99.8,
+     "mark": 99.3,
+     "delta": -0.4614,
+     "gamma": 0.00144,
+     "theta": -1.8172,
+     "vega": 7.7183,
+     "volatility": 14.08,
+     "daysToExpiration": 30
+    }
+   ],
+   "6785.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 101.04,
+     "ask": 102.06,
+     "mark": 101.55,
+     "delta": -0.4686,
+     "gamma": 0.00145,
+     "theta": -1.8174,
+     "vega": 7.7301,
+     "volatility": 14.06,
+     "daysToExpiration": 30
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 103.32,
+     "ask": 104.36,
+     "mark": 103.84,
+     "delta": -0.4758,
+     "gamma": 0.00145,
+     "theta": -1.817,
+     "vega": 7.7394,
+     "volatility": 14.04,
+     "daysToExpiration": 30
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 105.63,
+     "ask": 106.69,
+     "mark": 106.16,
+     "delta": -0.4831,
+     "gamma": 0.00145,
+     "theta": -1.816,
+     "vega": 7.7461,
+     "volatility": 14.02,
+     "daysToExpiration": 30
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261224P06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 107.98,
+     "ask": 109.06,
+     "mark": 108.52,
+     "delta": -0.4904,
+     "gamma": 0.00146,
+     "theta": -1.8144,
+     "vega": 7.7503,
+     "volatility": 14.0,
+     "daysToExpiration": 30
+    }
+   ]
+  },
+  "2026-12-31:37": {
+   "6200.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06200000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6200.0,
+     "bid": 5.08,
+     "ask": 5.18,
+     "mark": 5.13,
+     "delta": -0.0358,
+     "gamma": 0.00022,
+     "theta": -0.3776,
+     "vega": 1.7019,
+     "volatility": 16.353,
+     "daysToExpiration": 37
+    }
+   ],
+   "6205.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06205000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6205.0,
+     "bid": 5.25,
+     "ask": 5.35,
+     "mark": 5.3,
+     "delta": -0.0368,
+     "gamma": 0.00023,
+     "theta": -0.3863,
+     "vega": 1.7431,
+     "volatility": 16.333,
+     "daysToExpiration": 37
+    }
+   ],
+   "6210.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06210000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6210.0,
+     "bid": 5.42,
+     "ask": 5.52,
+     "mark": 5.47,
+     "delta": -0.0379,
+     "gamma": 0.00023,
+     "theta": -0.3951,
+     "vega": 1.7852,
+     "volatility": 16.313,
+     "daysToExpiration": 37
+    }
+   ],
+   "6215.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06215000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6215.0,
+     "bid": 5.6,
+     "ask": 5.7,
+     "mark": 5.65,
+     "delta": -0.039,
+     "gamma": 0.00024,
+     "theta": -0.4041,
+     "vega": 1.8279,
+     "volatility": 16.293,
+     "daysToExpiration": 37
+    }
+   ],
+   "6220.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06220000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6220.0,
+     "bid": 5.78,
+     "ask": 5.88,
+     "mark": 5.83,
+     "delta": -0.0402,
+     "gamma": 0.00025,
+     "theta": -0.4132,
+     "vega": 1.8715,
+     "volatility": 16.273,
+     "daysToExpiration": 37
+    }
+   ],
+   "6225.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06225000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6225.0,
+     "bid": 5.97,
+     "ask": 6.07,
+     "mark": 6.02,
+     "delta": -0.0414,
+     "gamma": 0.00025,
+     "theta": -0.4225,
+     "vega": 1.9157,
+     "volatility": 16.253,
+     "daysToExpiration": 37
+    }
+   ],
+   "6230.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06230000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6230.0,
+     "bid": 6.17,
+     "ask": 6.27,
+     "mark": 6.22,
+     "delta": -0.0426,
+     "gamma": 0.00026,
+     "theta": -0.4319,
+     "vega": 1.9608,
+     "volatility": 16.233,
+     "daysToExpiration": 37
+    }
+   ],
+   "6235.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06235000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6235.0,
+     "bid": 6.37,
+     "ask": 6.47,
+     "mark": 6.42,
+     "delta": -0.0438,
+     "gamma": 0.00026,
+     "theta": -0.4414,
+     "vega": 2.0066,
+     "volatility": 16.213,
+     "daysToExpiration": 37
+    }
+   ],
+   "6240.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06240000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6240.0,
+     "bid": 6.58,
+     "ask": 6.68,
+     "mark": 6.63,
+     "delta": -0.0451,
+     "gamma": 0.00027,
+     "theta": -0.4511,
+     "vega": 2.0532,
+     "volatility": 16.193,
+     "daysToExpiration": 37
+    }
+   ],
+   "6245.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06245000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6245.0,
+     "bid": 6.79,
+     "ask": 6.89,
+     "mark": 6.84,
+     "delta": -0.0464,
+     "gamma": 0.00028,
+     "theta": -0.461,
+     "vega": 2.1005,
+     "volatility": 16.173,
+     "daysToExpiration": 37
+    }
+   ],
+   "6250.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06250000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6250.0,
+     "bid": 7.01,
+     "ask": 7.11,
+     "mark": 7.06,
+     "delta": -0.0477,
+     "gamma": 0.00028,
+     "theta": -0.4709,
+     "vega": 2.1487,
+     "volatility": 16.153,
+     "daysToExpiration": 37
+    }
+   ],
+   "6255.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06255000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6255.0,
+     "bid": 7.23,
+     "ask": 7.33,
+     "mark": 7.28,
+     "delta": -0.0491,
+     "gamma": 0.00029,
+     "theta": -0.4811,
+     "vega": 2.1976,
+     "volatility": 16.133,
+     "daysToExpiration": 37
+    }
+   ],
+   "6260.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06260000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6260.0,
+     "bid": 7.46,
+     "ask": 7.56,
+     "mark": 7.51,
+     "delta": -0.0505,
+     "gamma": 0.0003,
+     "theta": -0.4913,
+     "vega": 2.2473,
+     "volatility": 16.113,
+     "daysToExpiration": 37
+    }
+   ],
+   "6265.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06265000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6265.0,
+     "bid": 7.7,
+     "ask": 7.8,
+     "mark": 7.75,
+     "delta": -0.0519,
+     "gamma": 0.0003,
+     "theta": -0.5017,
+     "vega": 2.2977,
+     "volatility": 16.093,
+     "daysToExpiration": 37
+    }
+   ],
+   "6270.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06270000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6270.0,
+     "bid": 7.95,
+     "ask": 8.05,
+     "mark": 8.0,
+     "delta": -0.0533,
+     "gamma": 0.00031,
+     "theta": -0.5123,
+     "vega": 2.349,
+     "volatility": 16.073,
+     "daysToExpiration": 37
+    }
+   ],
+   "6275.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06275000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6275.0,
+     "bid": 8.2,
+     "ask": 8.3,
+     "mark": 8.25,
+     "delta": -0.0548,
+     "gamma": 0.00032,
+     "theta": -0.523,
+     "vega": 2.401,
+     "volatility": 16.053,
+     "daysToExpiration": 37
+    }
+   ],
+   "6280.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06280000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6280.0,
+     "bid": 8.46,
+     "ask": 8.56,
+     "mark": 8.51,
+     "delta": -0.0564,
+     "gamma": 0.00033,
+     "theta": -0.5338,
+     "vega": 2.4538,
+     "volatility": 16.033,
+     "daysToExpiration": 37
+    }
+   ],
+   "6285.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06285000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6285.0,
+     "bid": 8.73,
+     "ask": 8.83,
+     "mark": 8.78,
+     "delta": -0.0579,
+     "gamma": 0.00033,
+     "theta": -0.5448,
+     "vega": 2.5074,
+     "volatility": 16.013,
+     "daysToExpiration": 37
+    }
+   ],
+   "6290.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06290000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6290.0,
+     "bid": 9.0,
+     "ask": 9.1,
+     "mark": 9.05,
+     "delta": -0.0596,
+     "gamma": 0.00034,
+     "theta": -0.5559,
+     "vega": 2.5617,
+     "volatility": 15.993,
+     "daysToExpiration": 37
+    }
+   ],
+   "6295.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06295000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6295.0,
+     "bid": 9.28,
+     "ask": 9.38,
+     "mark": 9.33,
+     "delta": -0.0612,
+     "gamma": 0.00035,
+     "theta": -0.5672,
+     "vega": 2.6168,
+     "volatility": 15.973,
+     "daysToExpiration": 37
+    }
+   ],
+   "6300.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06300000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6300.0,
+     "bid": 9.57,
+     "ask": 9.67,
+     "mark": 9.62,
+     "delta": -0.0629,
+     "gamma": 0.00036,
+     "theta": -0.5785,
+     "vega": 2.6727,
+     "volatility": 15.953,
+     "daysToExpiration": 37
+    }
+   ],
+   "6305.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06305000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6305.0,
+     "bid": 9.87,
+     "ask": 9.97,
+     "mark": 9.92,
+     "delta": -0.0646,
+     "gamma": 0.00037,
+     "theta": -0.5901,
+     "vega": 2.7294,
+     "volatility": 15.933,
+     "daysToExpiration": 37
+    }
+   ],
+   "6310.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06310000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6310.0,
+     "bid": 10.17,
+     "ask": 10.28,
+     "mark": 10.23,
+     "delta": -0.0664,
+     "gamma": 0.00037,
+     "theta": -0.6017,
+     "vega": 2.7868,
+     "volatility": 15.913,
+     "daysToExpiration": 37
+    }
+   ],
+   "6315.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06315000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6315.0,
+     "bid": 10.49,
+     "ask": 10.59,
+     "mark": 10.54,
+     "delta": -0.0682,
+     "gamma": 0.00038,
+     "theta": -0.6135,
+     "vega": 2.845,
+     "volatility": 15.893,
+     "daysToExpiration": 37
+    }
+   ],
+   "6320.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06320000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6320.0,
+     "bid": 10.81,
+     "ask": 10.92,
+     "mark": 10.86,
+     "delta": -0.07,
+     "gamma": 0.00039,
+     "theta": -0.6254,
+     "vega": 2.904,
+     "volatility": 15.873,
+     "daysToExpiration": 37
+    }
+   ],
+   "6325.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06325000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6325.0,
+     "bid": 11.14,
+     "ask": 11.25,
+     "mark": 11.19,
+     "delta": -0.0719,
+     "gamma": 0.0004,
+     "theta": -0.6375,
+     "vega": 2.9637,
+     "volatility": 15.853,
+     "daysToExpiration": 37
+    }
+   ],
+   "6330.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06330000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6330.0,
+     "bid": 11.48,
+     "ask": 11.59,
+     "mark": 11.53,
+     "delta": -0.0738,
+     "gamma": 0.00041,
+     "theta": -0.6497,
+     "vega": 3.0241,
+     "volatility": 15.833,
+     "daysToExpiration": 37
+    }
+   ],
+   "6335.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06335000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6335.0,
+     "bid": 11.82,
+     "ask": 11.94,
+     "mark": 11.88,
+     "delta": -0.0758,
+     "gamma": 0.00042,
+     "theta": -0.662,
+     "vega": 3.0853,
+     "volatility": 15.813,
+     "daysToExpiration": 37
+    }
+   ],
+   "6340.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06340000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6340.0,
+     "bid": 12.18,
+     "ask": 12.3,
+     "mark": 12.24,
+     "delta": -0.0778,
+     "gamma": 0.00043,
+     "theta": -0.6744,
+     "vega": 3.1472,
+     "volatility": 15.793,
+     "daysToExpiration": 37
+    }
+   ],
+   "6345.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06345000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6345.0,
+     "bid": 12.55,
+     "ask": 12.67,
+     "mark": 12.61,
+     "delta": -0.0798,
+     "gamma": 0.00043,
+     "theta": -0.687,
+     "vega": 3.2098,
+     "volatility": 15.773,
+     "daysToExpiration": 37
+    }
+   ],
+   "6350.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06350000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6350.0,
+     "bid": 12.92,
+     "ask": 13.05,
+     "mark": 12.99,
+     "delta": -0.0819,
+     "gamma": 0.00044,
+     "theta": -0.6996,
+     "vega": 3.2731,
+     "volatility": 15.753,
+     "daysToExpiration": 37
+    }
+   ],
+   "6355.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06355000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6355.0,
+     "bid": 13.31,
+     "ask": 13.44,
+     "mark": 13.38,
+     "delta": -0.084,
+     "gamma": 0.00045,
+     "theta": -0.7124,
+     "vega": 3.3372,
+     "volatility": 15.733,
+     "daysToExpiration": 37
+    }
+   ],
+   "6360.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06360000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6360.0,
+     "bid": 13.71,
+     "ask": 13.85,
+     "mark": 13.78,
+     "delta": -0.0862,
+     "gamma": 0.00046,
+     "theta": -0.7253,
+     "vega": 3.4019,
+     "volatility": 15.713,
+     "daysToExpiration": 37
+    }
+   ],
+   "6365.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06365000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6365.0,
+     "bid": 14.11,
+     "ask": 14.26,
+     "mark": 14.19,
+     "delta": -0.0885,
+     "gamma": 0.00047,
+     "theta": -0.7383,
+     "vega": 3.4673,
+     "volatility": 15.693,
+     "daysToExpiration": 37
+    }
+   ],
+   "6370.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06370000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6370.0,
+     "bid": 14.53,
+     "ask": 14.68,
+     "mark": 14.61,
+     "delta": -0.0907,
+     "gamma": 0.00048,
+     "theta": -0.7514,
+     "vega": 3.5334,
+     "volatility": 15.673,
+     "daysToExpiration": 37
+    }
+   ],
+   "6375.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06375000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6375.0,
+     "bid": 14.96,
+     "ask": 15.11,
+     "mark": 15.04,
+     "delta": -0.0931,
+     "gamma": 0.00049,
+     "theta": -0.7646,
+     "vega": 3.6002,
+     "volatility": 15.653,
+     "daysToExpiration": 37
+    }
+   ],
+   "6380.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06380000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6380.0,
+     "bid": 15.4,
+     "ask": 15.55,
+     "mark": 15.48,
+     "delta": -0.0954,
+     "gamma": 0.0005,
+     "theta": -0.778,
+     "vega": 3.6676,
+     "volatility": 15.633,
+     "daysToExpiration": 37
+    }
+   ],
+   "6385.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06385000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6385.0,
+     "bid": 15.85,
+     "ask": 16.01,
+     "mark": 15.93,
+     "delta": -0.0978,
+     "gamma": 0.00051,
+     "theta": -0.7914,
+     "vega": 3.7356,
+     "volatility": 15.613,
+     "daysToExpiration": 37
+    }
+   ],
+   "6390.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06390000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6390.0,
+     "bid": 16.31,
+     "ask": 16.48,
+     "mark": 16.4,
+     "delta": -0.1003,
+     "gamma": 0.00052,
+     "theta": -0.8049,
+     "vega": 3.8042,
+     "volatility": 15.593,
+     "daysToExpiration": 37
+    }
+   ],
+   "6395.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06395000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6395.0,
+     "bid": 16.79,
+     "ask": 16.96,
+     "mark": 16.87,
+     "delta": -0.1028,
+     "gamma": 0.00053,
+     "theta": -0.8185,
+     "vega": 3.8734,
+     "volatility": 15.573,
+     "daysToExpiration": 37
+    }
+   ],
+   "6400.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06400000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6400.0,
+     "bid": 17.27,
+     "ask": 17.45,
+     "mark": 17.36,
+     "delta": -0.1054,
+     "gamma": 0.00054,
+     "theta": -0.8322,
+     "vega": 3.9433,
+     "volatility": 15.553,
+     "daysToExpiration": 37
+    }
+   ],
+   "6405.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06405000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6405.0,
+     "bid": 17.77,
+     "ask": 17.95,
+     "mark": 17.86,
+     "delta": -0.108,
+     "gamma": 0.00055,
+     "theta": -0.8459,
+     "vega": 4.0136,
+     "volatility": 15.533,
+     "daysToExpiration": 37
+    }
+   ],
+   "6410.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06410000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6410.0,
+     "bid": 18.28,
+     "ask": 18.47,
+     "mark": 18.37,
+     "delta": -0.1107,
+     "gamma": 0.00056,
+     "theta": -0.8598,
+     "vega": 4.0846,
+     "volatility": 15.513,
+     "daysToExpiration": 37
+    }
+   ],
+   "6415.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06415000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6415.0,
+     "bid": 18.81,
+     "ask": 19.0,
+     "mark": 18.9,
+     "delta": -0.1134,
+     "gamma": 0.00057,
+     "theta": -0.8737,
+     "vega": 4.156,
+     "volatility": 15.493,
+     "daysToExpiration": 37
+    }
+   ],
+   "6420.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06420000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6420.0,
+     "bid": 19.34,
+     "ask": 19.54,
+     "mark": 19.44,
+     "delta": -0.1162,
+     "gamma": 0.00058,
+     "theta": -0.8877,
+     "vega": 4.228,
+     "volatility": 15.473,
+     "daysToExpiration": 37
+    }
+   ],
+   "6425.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06425000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6425.0,
+     "bid": 19.89,
+     "ask": 20.09,
+     "mark": 19.99,
+     "delta": -0.119,
+     "gamma": 0.00059,
+     "theta": -0.9017,
+     "vega": 4.3005,
+     "volatility": 15.453,
+     "daysToExpiration": 37
+    }
+   ],
+   "6430.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06430000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6430.0,
+     "bid": 20.46,
+     "ask": 20.66,
+     "mark": 20.56,
+     "delta": -0.1219,
+     "gamma": 0.0006,
+     "theta": -0.9158,
+     "vega": 4.3734,
+     "volatility": 15.433,
+     "daysToExpiration": 37
+    }
+   ],
+   "6435.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06435000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6435.0,
+     "bid": 21.03,
+     "ask": 21.24,
+     "mark": 21.14,
+     "delta": -0.1248,
+     "gamma": 0.00062,
+     "theta": -0.93,
+     "vega": 4.4468,
+     "volatility": 15.413,
+     "daysToExpiration": 37
+    }
+   ],
+   "6440.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06440000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6440.0,
+     "bid": 21.62,
+     "ask": 21.84,
+     "mark": 21.73,
+     "delta": -0.1278,
+     "gamma": 0.00063,
+     "theta": -0.9442,
+     "vega": 4.5206,
+     "volatility": 15.393,
+     "daysToExpiration": 37
+    }
+   ],
+   "6445.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06445000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6445.0,
+     "bid": 22.23,
+     "ask": 22.45,
+     "mark": 22.34,
+     "delta": -0.1308,
+     "gamma": 0.00064,
+     "theta": -0.9584,
+     "vega": 4.5948,
+     "volatility": 15.373,
+     "daysToExpiration": 37
+    }
+   ],
+   "6450.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06450000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6450.0,
+     "bid": 22.85,
+     "ask": 23.08,
+     "mark": 22.96,
+     "delta": -0.1339,
+     "gamma": 0.00065,
+     "theta": -0.9727,
+     "vega": 4.6694,
+     "volatility": 15.353,
+     "daysToExpiration": 37
+    }
+   ],
+   "6455.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06455000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6455.0,
+     "bid": 23.48,
+     "ask": 23.72,
+     "mark": 23.6,
+     "delta": -0.1371,
+     "gamma": 0.00066,
+     "theta": -0.987,
+     "vega": 4.7443,
+     "volatility": 15.333,
+     "daysToExpiration": 37
+    }
+   ],
+   "6460.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06460000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6460.0,
+     "bid": 24.13,
+     "ask": 24.38,
+     "mark": 24.26,
+     "delta": -0.1403,
+     "gamma": 0.00067,
+     "theta": -1.0014,
+     "vega": 4.8195,
+     "volatility": 15.313,
+     "daysToExpiration": 37
+    }
+   ],
+   "6465.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06465000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6465.0,
+     "bid": 24.8,
+     "ask": 25.05,
+     "mark": 24.92,
+     "delta": -0.1436,
+     "gamma": 0.00068,
+     "theta": -1.0158,
+     "vega": 4.8951,
+     "volatility": 15.293,
+     "daysToExpiration": 37
+    }
+   ],
+   "6470.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06470000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6470.0,
+     "bid": 25.48,
+     "ask": 25.74,
+     "mark": 25.61,
+     "delta": -0.1469,
+     "gamma": 0.00069,
+     "theta": -1.0301,
+     "vega": 4.9709,
+     "volatility": 15.273,
+     "daysToExpiration": 37
+    }
+   ],
+   "6475.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06475000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6475.0,
+     "bid": 26.18,
+     "ask": 26.44,
+     "mark": 26.31,
+     "delta": -0.1503,
+     "gamma": 0.00071,
+     "theta": -1.0445,
+     "vega": 5.0469,
+     "volatility": 15.253,
+     "daysToExpiration": 37
+    }
+   ],
+   "6480.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06480000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6480.0,
+     "bid": 26.89,
+     "ask": 27.16,
+     "mark": 27.02,
+     "delta": -0.1537,
+     "gamma": 0.00072,
+     "theta": -1.0589,
+     "vega": 5.1232,
+     "volatility": 15.233,
+     "daysToExpiration": 37
+    }
+   ],
+   "6485.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06485000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6485.0,
+     "bid": 27.62,
+     "ask": 27.9,
+     "mark": 27.76,
+     "delta": -0.1572,
+     "gamma": 0.00073,
+     "theta": -1.0733,
+     "vega": 5.1996,
+     "volatility": 15.213,
+     "daysToExpiration": 37
+    }
+   ],
+   "6490.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06490000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6490.0,
+     "bid": 28.37,
+     "ask": 28.65,
+     "mark": 28.51,
+     "delta": -0.1607,
+     "gamma": 0.00074,
+     "theta": -1.0877,
+     "vega": 5.2761,
+     "volatility": 15.193,
+     "daysToExpiration": 37
+    }
+   ],
+   "6495.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06495000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6495.0,
+     "bid": 29.13,
+     "ask": 29.42,
+     "mark": 29.28,
+     "delta": -0.1643,
+     "gamma": 0.00075,
+     "theta": -1.102,
+     "vega": 5.3528,
+     "volatility": 15.173,
+     "daysToExpiration": 37
+    }
+   ],
+   "6500.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06500000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6500.0,
+     "bid": 29.91,
+     "ask": 30.21,
+     "mark": 30.06,
+     "delta": -0.168,
+     "gamma": 0.00076,
+     "theta": -1.1164,
+     "vega": 5.4296,
+     "volatility": 15.153,
+     "daysToExpiration": 37
+    }
+   ],
+   "6505.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06505000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6505.0,
+     "bid": 30.71,
+     "ask": 31.02,
+     "mark": 30.86,
+     "delta": -0.1717,
+     "gamma": 0.00078,
+     "theta": -1.1307,
+     "vega": 5.5064,
+     "volatility": 15.133,
+     "daysToExpiration": 37
+    }
+   ],
+   "6510.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06510000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6510.0,
+     "bid": 31.52,
+     "ask": 31.84,
+     "mark": 31.68,
+     "delta": -0.1755,
+     "gamma": 0.00079,
+     "theta": -1.1449,
+     "vega": 5.5832,
+     "volatility": 15.113,
+     "daysToExpiration": 37
+    }
+   ],
+   "6515.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06515000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6515.0,
+     "bid": 32.36,
+     "ask": 32.68,
+     "mark": 32.52,
+     "delta": -0.1794,
+     "gamma": 0.0008,
+     "theta": -1.1591,
+     "vega": 5.66,
+     "volatility": 15.093,
+     "daysToExpiration": 37
+    }
+   ],
+   "6520.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06520000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6520.0,
+     "bid": 33.21,
+     "ask": 33.54,
+     "mark": 33.38,
+     "delta": -0.1833,
+     "gamma": 0.00081,
+     "theta": -1.1733,
+     "vega": 5.7367,
+     "volatility": 15.073,
+     "daysToExpiration": 37
+    }
+   ],
+   "6525.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06525000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6525.0,
+     "bid": 34.08,
+     "ask": 34.43,
+     "mark": 34.25,
+     "delta": -0.1872,
+     "gamma": 0.00082,
+     "theta": -1.1874,
+     "vega": 5.8133,
+     "volatility": 15.053,
+     "daysToExpiration": 37
+    }
+   ],
+   "6530.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06530000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6530.0,
+     "bid": 34.97,
+     "ask": 35.33,
+     "mark": 35.15,
+     "delta": -0.1913,
+     "gamma": 0.00084,
+     "theta": -1.2014,
+     "vega": 5.8898,
+     "volatility": 15.033,
+     "daysToExpiration": 37
+    }
+   ],
+   "6535.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06535000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6535.0,
+     "bid": 35.88,
+     "ask": 36.24,
+     "mark": 36.06,
+     "delta": -0.1953,
+     "gamma": 0.00085,
+     "theta": -1.2153,
+     "vega": 5.9661,
+     "volatility": 15.013,
+     "daysToExpiration": 37
+    }
+   ],
+   "6540.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06540000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6540.0,
+     "bid": 36.81,
+     "ask": 37.18,
+     "mark": 37.0,
+     "delta": -0.1995,
+     "gamma": 0.00086,
+     "theta": -1.2292,
+     "vega": 6.0422,
+     "volatility": 14.993,
+     "daysToExpiration": 37
+    }
+   ],
+   "6545.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06545000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6545.0,
+     "bid": 37.76,
+     "ask": 38.14,
+     "mark": 37.95,
+     "delta": -0.2037,
+     "gamma": 0.00087,
+     "theta": -1.243,
+     "vega": 6.118,
+     "volatility": 14.973,
+     "daysToExpiration": 37
+    }
+   ],
+   "6550.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06550000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6550.0,
+     "bid": 38.73,
+     "ask": 39.12,
+     "mark": 38.93,
+     "delta": -0.208,
+     "gamma": 0.00088,
+     "theta": -1.2566,
+     "vega": 6.1936,
+     "volatility": 14.953,
+     "daysToExpiration": 37
+    }
+   ],
+   "6555.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06555000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6555.0,
+     "bid": 39.72,
+     "ask": 40.12,
+     "mark": 39.92,
+     "delta": -0.2123,
+     "gamma": 0.0009,
+     "theta": -1.2702,
+     "vega": 6.2688,
+     "volatility": 14.933,
+     "daysToExpiration": 37
+    }
+   ],
+   "6560.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06560000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6560.0,
+     "bid": 40.74,
+     "ask": 41.15,
+     "mark": 40.94,
+     "delta": -0.2167,
+     "gamma": 0.00091,
+     "theta": -1.2836,
+     "vega": 6.3436,
+     "volatility": 14.913,
+     "daysToExpiration": 37
+    }
+   ],
+   "6565.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06565000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6565.0,
+     "bid": 41.77,
+     "ask": 42.19,
+     "mark": 41.98,
+     "delta": -0.2211,
+     "gamma": 0.00092,
+     "theta": -1.2969,
+     "vega": 6.418,
+     "volatility": 14.893,
+     "daysToExpiration": 37
+    }
+   ],
+   "6570.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06570000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6570.0,
+     "bid": 42.82,
+     "ask": 43.25,
+     "mark": 43.04,
+     "delta": -0.2256,
+     "gamma": 0.00093,
+     "theta": -1.3101,
+     "vega": 6.4919,
+     "volatility": 14.873,
+     "daysToExpiration": 37
+    }
+   ],
+   "6575.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06575000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6575.0,
+     "bid": 43.9,
+     "ask": 44.34,
+     "mark": 44.12,
+     "delta": -0.2302,
+     "gamma": 0.00094,
+     "theta": -1.3231,
+     "vega": 6.5653,
+     "volatility": 14.853,
+     "daysToExpiration": 37
+    }
+   ],
+   "6580.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06580000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6580.0,
+     "bid": 45.0,
+     "ask": 45.45,
+     "mark": 45.22,
+     "delta": -0.2348,
+     "gamma": 0.00095,
+     "theta": -1.336,
+     "vega": 6.6382,
+     "volatility": 14.833,
+     "daysToExpiration": 37
+    }
+   ],
+   "6585.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06585000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6585.0,
+     "bid": 46.12,
+     "ask": 46.58,
+     "mark": 46.35,
+     "delta": -0.2395,
+     "gamma": 0.00097,
+     "theta": -1.3487,
+     "vega": 6.7104,
+     "volatility": 14.813,
+     "daysToExpiration": 37
+    }
+   ],
+   "6590.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06590000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6590.0,
+     "bid": 47.26,
+     "ask": 47.74,
+     "mark": 47.5,
+     "delta": -0.2442,
+     "gamma": 0.00098,
+     "theta": -1.3613,
+     "vega": 6.782,
+     "volatility": 14.793,
+     "daysToExpiration": 37
+    }
+   ],
+   "6595.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06595000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6595.0,
+     "bid": 48.43,
+     "ask": 48.91,
+     "mark": 48.67,
+     "delta": -0.249,
+     "gamma": 0.00099,
+     "theta": -1.3737,
+     "vega": 6.8529,
+     "volatility": 14.773,
+     "daysToExpiration": 37
+    }
+   ],
+   "6600.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06600000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6600.0,
+     "bid": null,
+     "ask": 50.12,
+     "mark": 49.87,
+     "delta": -0.2539,
+     "gamma": 0.001,
+     "theta": -1.3859,
+     "vega": 6.9231,
+     "volatility": 14.753,
+     "daysToExpiration": 37
+    }
+   ],
+   "6605.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06605000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6605.0,
+     "bid": 50.83,
+     "ask": 51.34,
+     "mark": 51.09,
+     "delta": -0.2588,
+     "gamma": 0.00101,
+     "theta": -1.3979,
+     "vega": 6.9925,
+     "volatility": 14.733,
+     "daysToExpiration": 37
+    }
+   ],
+   "6610.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06610000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6610.0,
+     "bid": 52.07,
+     "ask": 52.59,
+     "mark": 52.33,
+     "delta": -0.2638,
+     "gamma": 0.00102,
+     "theta": -1.4097,
+     "vega": 7.0611,
+     "volatility": 14.713,
+     "daysToExpiration": 37
+    }
+   ],
+   "6615.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06615000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6615.0,
+     "bid": 53.33,
+     "ask": 53.86,
+     "mark": 53.6,
+     "delta": -0.2688,
+     "gamma": 0.00104,
+     "theta": -1.4212,
+     "vega": 7.1288,
+     "volatility": 14.693,
+     "daysToExpiration": 37
+    }
+   ],
+   "6620.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06620000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6620.0,
+     "bid": 54.61,
+     "ask": 55.16,
+     "mark": 54.89,
+     "delta": -0.2739,
+     "gamma": 0.00105,
+     "theta": -1.4326,
+     "vega": 7.1956,
+     "volatility": 14.673,
+     "daysToExpiration": 37
+    }
+   ],
+   "6625.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06625000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6625.0,
+     "bid": 55.92,
+     "ask": 56.49,
+     "mark": 56.21,
+     "delta": -0.2791,
+     "gamma": 0.00106,
+     "theta": -1.4437,
+     "vega": 7.2613,
+     "volatility": 14.653,
+     "daysToExpiration": 37
+    }
+   ],
+   "6630.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06630000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6630.0,
+     "bid": 57.26,
+     "ask": 57.84,
+     "mark": 57.55,
+     "delta": -0.2843,
+     "gamma": 0.00107,
+     "theta": -1.4546,
+     "vega": 7.3261,
+     "volatility": 14.633,
+     "daysToExpiration": 37
+    }
+   ],
+   "6635.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06635000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6635.0,
+     "bid": 58.62,
+     "ask": 59.21,
+     "mark": 58.92,
+     "delta": -0.2896,
+     "gamma": 0.00108,
+     "theta": -1.4653,
+     "vega": 7.3898,
+     "volatility": 14.613,
+     "daysToExpiration": 37
+    }
+   ],
+   "6640.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06640000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6640.0,
+     "bid": 60.01,
+     "ask": 60.61,
+     "mark": 60.31,
+     "delta": -0.2949,
+     "gamma": 0.00109,
+     "theta": -1.4756,
+     "vega": 7.4524,
+     "volatility": 14.593,
+     "daysToExpiration": 37
+    }
+   ],
+   "6645.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06645000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6645.0,
+     "bid": 61.42,
+     "ask": 62.04,
+     "mark": 61.73,
+     "delta": -0.3003,
+     "gamma": 0.0011,
+     "theta": -1.4858,
+     "vega": 7.5139,
+     "volatility": 14.573,
+     "daysToExpiration": 37
+    }
+   ],
+   "6650.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06650000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6650.0,
+     "bid": 62.86,
+     "ask": 63.49,
+     "mark": 63.17,
+     "delta": -0.3057,
+     "gamma": 0.00111,
+     "theta": -1.4956,
+     "vega": 7.5741,
+     "volatility": 14.553,
+     "daysToExpiration": 37
+    }
+   ],
+   "6655.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06655000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6655.0,
+     "bid": 64.32,
+     "ask": 64.97,
+     "mark": 64.65,
+     "delta": -0.3112,
+     "gamma": 0.00112,
+     "theta": -1.5052,
+     "vega": 7.6331,
+     "volatility": 14.533,
+     "daysToExpiration": 37
+    }
+   ],
+   "6660.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06660000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6660.0,
+     "bid": 65.81,
+     "ask": 66.48,
+     "mark": 66.15,
+     "delta": -0.3167,
+     "gamma": 0.00113,
+     "theta": -1.5145,
+     "vega": 7.6907,
+     "volatility": 14.513,
+     "daysToExpiration": 37
+    }
+   ],
+   "6665.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06665000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6665.0,
+     "bid": 67.33,
+     "ask": 68.01,
+     "mark": 67.67,
+     "delta": -0.3223,
+     "gamma": 0.00114,
+     "theta": -1.5235,
+     "vega": 7.747,
+     "volatility": 14.493,
+     "daysToExpiration": 37
+    }
+   ],
+   "6670.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06670000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6670.0,
+     "bid": 68.88,
+     "ask": 69.57,
+     "mark": 69.23,
+     "delta": -0.3279,
+     "gamma": 0.00115,
+     "theta": -1.5322,
+     "vega": 7.802,
+     "volatility": 14.473,
+     "daysToExpiration": 37
+    }
+   ],
+   "6675.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06675000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6675.0,
+     "bid": 70.45,
+     "ask": 71.16,
+     "mark": 70.81,
+     "delta": -0.3336,
+     "gamma": 0.00116,
+     "theta": -1.5405,
+     "vega": 7.8554,
+     "volatility": 14.453,
+     "daysToExpiration": 37
+    }
+   ],
+   "6680.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06680000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6680.0,
+     "bid": 72.05,
+     "ask": 72.78,
+     "mark": 72.42,
+     "delta": -0.3394,
+     "gamma": 0.00117,
+     "theta": -1.5486,
+     "vega": 7.9074,
+     "volatility": 14.433,
+     "daysToExpiration": 37
+    }
+   ],
+   "6685.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06685000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6685.0,
+     "bid": 73.68,
+     "ask": 74.42,
+     "mark": 74.05,
+     "delta": -0.3452,
+     "gamma": 0.00118,
+     "theta": -1.5563,
+     "vega": 7.9579,
+     "volatility": 14.413,
+     "daysToExpiration": 37
+    }
+   ],
+   "6690.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06690000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6690.0,
+     "bid": 75.34,
+     "ask": 76.1,
+     "mark": 75.72,
+     "delta": -0.351,
+     "gamma": 0.00119,
+     "theta": -1.5637,
+     "vega": 8.0067,
+     "volatility": 14.393,
+     "daysToExpiration": 37
+    }
+   ],
+   "6695.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06695000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6695.0,
+     "bid": 77.03,
+     "ask": 77.8,
+     "mark": 77.41,
+     "delta": -0.3569,
+     "gamma": 0.0012,
+     "theta": -1.5707,
+     "vega": 8.054,
+     "volatility": 14.373,
+     "daysToExpiration": 37
+    }
+   ],
+   "6700.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06700000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6700.0,
+     "bid": 78.74,
+     "ask": 79.53,
+     "mark": 79.14,
+     "delta": -0.3628,
+     "gamma": 0.0012,
+     "theta": -1.5774,
+     "vega": 8.0995,
+     "volatility": 14.353,
+     "daysToExpiration": 37
+    }
+   ],
+   "6705.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06705000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6705.0,
+     "bid": 80.49,
+     "ask": 81.3,
+     "mark": 80.89,
+     "delta": -0.3688,
+     "gamma": 0.00121,
+     "theta": -1.5837,
+     "vega": 8.1434,
+     "volatility": 14.333,
+     "daysToExpiration": 37
+    }
+   ],
+   "6710.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06710000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6710.0,
+     "bid": 82.26,
+     "ask": 83.09,
+     "mark": 82.67,
+     "delta": -0.3748,
+     "gamma": 0.00122,
+     "theta": -1.5897,
+     "vega": 8.1855,
+     "volatility": 14.313,
+     "daysToExpiration": 37
+    }
+   ],
+   "6715.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06715000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6715.0,
+     "bid": 84.06,
+     "ask": 84.91,
+     "mark": 84.48,
+     "delta": -0.3809,
+     "gamma": 0.00123,
+     "theta": -1.5953,
+     "vega": 8.2258,
+     "volatility": 14.293,
+     "daysToExpiration": 37
+    }
+   ],
+   "6720.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06720000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6720.0,
+     "bid": 85.89,
+     "ask": 86.76,
+     "mark": 86.33,
+     "delta": -0.387,
+     "gamma": 0.00124,
+     "theta": -1.6005,
+     "vega": 8.2643,
+     "volatility": 14.273,
+     "daysToExpiration": 37
+    }
+   ],
+   "6725.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06725000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6725.0,
+     "bid": 87.76,
+     "ask": 88.64,
+     "mark": 88.2,
+     "delta": -0.3931,
+     "gamma": 0.00124,
+     "theta": -1.6053,
+     "vega": 8.3009,
+     "volatility": 14.253,
+     "daysToExpiration": 37
+    }
+   ],
+   "6730.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06730000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6730.0,
+     "bid": 89.65,
+     "ask": 90.55,
+     "mark": 90.1,
+     "delta": -0.3993,
+     "gamma": 0.00125,
+     "theta": -1.6098,
+     "vega": 8.3355,
+     "volatility": 14.233,
+     "daysToExpiration": 37
+    }
+   ],
+   "6735.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06735000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6735.0,
+     "bid": 91.57,
+     "ask": 92.49,
+     "mark": 92.03,
+     "delta": -0.4055,
+     "gamma": 0.00126,
+     "theta": -1.6138,
+     "vega": 8.3682,
+     "volatility": 14.213,
+     "daysToExpiration": 37
+    }
+   ],
+   "6740.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06740000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6740.0,
+     "bid": 93.53,
+     "ask": 94.47,
+     "mark": 94.0,
+     "delta": -0.4118,
+     "gamma": 0.00126,
+     "theta": -1.6175,
+     "vega": 8.3989,
+     "volatility": 14.193,
+     "daysToExpiration": 37
+    }
+   ],
+   "6745.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06745000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6745.0,
+     "bid": 95.51,
+     "ask": 96.47,
+     "mark": 95.99,
+     "delta": -0.4181,
+     "gamma": 0.00127,
+     "theta": -1.6207,
+     "vega": 8.4276,
+     "volatility": 14.173,
+     "daysToExpiration": 37
+    }
+   ],
+   "6750.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06750000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6750.0,
+     "bid": 97.53,
+     "ask": 98.51,
+     "mark": 98.02,
+     "delta": -0.4244,
+     "gamma": 0.00127,
+     "theta": -1.6235,
+     "vega": 8.4543,
+     "volatility": 14.153,
+     "daysToExpiration": 37
+    }
+   ],
+   "6755.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06755000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6755.0,
+     "bid": 99.57,
+     "ask": 100.57,
+     "mark": 100.07,
+     "delta": -0.4307,
+     "gamma": 0.00128,
+     "theta": -1.6259,
+     "vega": 8.4788,
+     "volatility": 14.133,
+     "daysToExpiration": 37
+    }
+   ],
+   "6760.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06760000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6760.0,
+     "bid": 101.65,
+     "ask": 102.67,
+     "mark": 102.16,
+     "delta": -0.4371,
+     "gamma": 0.00129,
+     "theta": -1.6279,
+     "vega": 8.5012,
+     "volatility": 14.113,
+     "daysToExpiration": 37
+    }
+   ],
+   "6765.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06765000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6765.0,
+     "bid": 103.76,
+     "ask": 104.8,
+     "mark": 104.28,
+     "delta": -0.4435,
+     "gamma": 0.00129,
+     "theta": -1.6295,
+     "vega": 8.5214,
+     "volatility": 14.093,
+     "daysToExpiration": 37
+    }
+   ],
+   "6770.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06770000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6770.0,
+     "bid": 105.9,
+     "ask": 106.97,
+     "mark": 106.43,
+     "delta": -0.45,
+     "gamma": 0.00129,
+     "theta": -1.6306,
+     "vega": 8.5394,
+     "volatility": 14.073,
+     "daysToExpiration": 37
+    }
+   ],
+   "6775.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06775000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6775.0,
+     "bid": 108.07,
+     "ask": 109.16,
+     "mark": 108.62,
+     "delta": -0.4565,
+     "gamma": 0.0013,
+     "theta": -1.6313,
+     "vega": 8.5552,
+     "volatility": 14.053,
+     "daysToExpiration": 37
+    }
+   ],
+   "6780.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06780000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6780.0,
+     "bid": 110.28,
+     "ask": 111.39,
+     "mark": 110.83,
+     "delta": -0.463,
+     "gamma": 0.0013,
+     "theta": -1.6316,
+     "vega": 8.5688,
+     "volatility": 14.033,
+     "daysToExpiration": 37
+    }
+   ],
+   "6785.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 112.52,
+     "ask": 113.65,
+     "mark": 113.08,
+     "delta": -0.4695,
+     "gamma": 0.00131,
+     "theta": -1.6314,
+     "vega": 8.5801,
+     "volatility": 14.013,
+     "daysToExpiration": 37
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 114.78,
+     "ask": 115.94,
+     "mark": 115.36,
+     "delta": -0.476,
+     "gamma": 0.00131,
+     "theta": -1.6308,
+     "vega": 8.5891,
+     "volatility": 13.993,
+     "daysToExpiration": 37
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 117.09,
+     "ask": 118.26,
+     "mark": 117.67,
+     "delta": -0.4826,
+     "gamma": 0.00131,
+     "theta": -1.6297,
+     "vega": 8.5958,
+     "volatility": 13.973,
+     "daysToExpiration": 37
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "PUT",
+     "symbol": "SPXW  261231P06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 119.42,
+     "ask": 120.62,
+     "mark": 120.02,
+     "delta": -0.4892,
+     "gamma": 0.00131,
+     "theta": -1.6282,
+     "vega": 8.6001,
+     "volatility": 13.953,
+     "daysToExpiration": 37
+    }
+   ]
+  }
+ },
+ "callExpDateMap": {
+  "2026-12-18:24": {
+   "6785.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 104.85,
+     "ask": 105.9,
+     "mark": 105.38,
+     "delta": 0.5301,
+     "gamma": 0.00161,
+     "theta": -2.037,
+     "vega": 6.9163,
+     "volatility": 14.1,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06785000",
+     "optionRoot": "SPX",
+     "strikePrice": 6785.0,
+     "bid": 111.73,
+     "ask": 112.85,
+     "mark": 112.29,
+     "delta": 0.5291,
+     "gamma": 0.00151,
+     "theta": -2.182,
+     "vega": 6.9178,
+     "volatility": 15.1,
+     "daysToExpiration": 24
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 102.16,
+     "ask": 103.19,
+     "mark": 102.68,
+     "delta": 0.5221,
+     "gamma": 0.00162,
+     "theta": -2.037,
+     "vega": 6.926,
+     "volatility": 14.08,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06790000",
+     "optionRoot": "SPX",
+     "strikePrice": 6790.0,
+     "bid": 109.06,
+     "ask": 110.15,
+     "mark": 109.6,
+     "delta": 0.5215,
+     "gamma": 0.00151,
+     "theta": -2.1818,
+     "vega": 6.9266,
+     "volatility": 15.08,
+     "daysToExpiration": 24
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 99.52,
+     "ask": 100.52,
+     "mark": 100.02,
+     "delta": 0.514,
+     "gamma": 0.00162,
+     "theta": -2.0361,
+     "vega": 6.9329,
+     "volatility": 14.06,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06795000",
+     "optionRoot": "SPX",
+     "strikePrice": 6795.0,
+     "bid": 106.42,
+     "ask": 107.49,
+     "mark": 106.95,
+     "delta": 0.5139,
+     "gamma": 0.00151,
+     "theta": -2.1809,
+     "vega": 6.9329,
+     "volatility": 15.06,
+     "daysToExpiration": 24
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 96.92,
+     "ask": 97.89,
+     "mark": 97.4,
+     "delta": 0.5058,
+     "gamma": 0.00163,
+     "theta": -2.0344,
+     "vega": 6.9369,
+     "volatility": 14.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06800000",
+     "optionRoot": "SPX",
+     "strikePrice": 6800.0,
+     "bid": 103.82,
+     "ask": 104.86,
+     "mark": 104.34,
+     "delta": 0.5064,
+     "gamma": 0.00152,
+     "theta": -2.1792,
+     "vega": 6.9367,
+     "volatility": 15.04,
+     "daysToExpiration": 24
+    }
+   ],
+   "6805.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06805000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6805.0,
+     "bid": 94.49,
+     "ask": 95.44,
+     "mark": 94.97,
+     "delta": 0.4977,
+     "gamma": 0.00163,
+     "theta": -2.0347,
+     "vega": 6.938,
+     "volatility": 14.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06805000",
+     "optionRoot": "SPX",
+     "strikePrice": 6805.0,
+     "bid": 101.4,
+     "ask": 102.41,
+     "mark": 101.91,
+     "delta": 0.4988,
+     "gamma": 0.00152,
+     "theta": -2.1796,
+     "vega": 6.938,
+     "volatility": 15.04,
+     "daysToExpiration": 24
+    }
+   ],
+   "6810.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261218C06810000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6810.0,
+     "bid": 92.11,
+     "ask": 93.03,
+     "mark": 92.57,
+     "delta": 0.4896,
+     "gamma": 0.00162,
+     "theta": -2.0342,
+     "vega": 6.9362,
+     "volatility": 14.04,
+     "daysToExpiration": 24
+    },
+    {
+     "putCall": "CALL",
+     "symbol": "SPX   261218C06810000",
+     "optionRoot": "SPX",
+     "strikePrice": 6810.0,
+     "bid": 99.01,
+     "ask": 100.0,
+     "mark": 99.51,
+     "delta": 0.4912,
+     "gamma": 0.00152,
+     "theta": -2.1793,
+     "vega": 6.9368,
+     "volatility": 15.04,
+     "daysToExpiration": 24
+    }
+   ]
+  },
+  "2026-12-24:30": {
+   "6785.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 115.92,
+     "ask": 117.08,
+     "mark": 116.5,
+     "delta": 0.5281,
+     "gamma": 0.00145,
+     "theta": -1.8174,
+     "vega": 7.7301,
+     "volatility": 14.06,
+     "daysToExpiration": 30
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 113.24,
+     "ask": 114.37,
+     "mark": 113.8,
+     "delta": 0.5209,
+     "gamma": 0.00145,
+     "theta": -1.817,
+     "vega": 7.7394,
+     "volatility": 14.04,
+     "daysToExpiration": 30
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 110.59,
+     "ask": 111.7,
+     "mark": 111.14,
+     "delta": 0.5136,
+     "gamma": 0.00145,
+     "theta": -1.816,
+     "vega": 7.7461,
+     "volatility": 14.02,
+     "daysToExpiration": 30
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 107.98,
+     "ask": 109.06,
+     "mark": 108.52,
+     "delta": 0.5063,
+     "gamma": 0.00146,
+     "theta": -1.8144,
+     "vega": 7.7503,
+     "volatility": 14.0,
+     "daysToExpiration": 30
+    }
+   ],
+   "6805.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06805000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6805.0,
+     "bid": 105.55,
+     "ask": 106.62,
+     "mark": 106.08,
+     "delta": 0.4991,
+     "gamma": 0.00146,
+     "theta": -1.8147,
+     "vega": 7.7518,
+     "volatility": 14.0,
+     "daysToExpiration": 30
+    }
+   ],
+   "6810.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261224C06810000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6810.0,
+     "bid": 103.17,
+     "ask": 104.21,
+     "mark": 103.69,
+     "delta": 0.4918,
+     "gamma": 0.00146,
+     "theta": -1.8145,
+     "vega": 7.7508,
+     "volatility": 14.0,
+     "daysToExpiration": 30
+    }
+   ]
+  },
+  "2026-12-31:37": {
+   "6785.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06785000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6785.0,
+     "bid": 127.38,
+     "ask": 128.66,
+     "mark": 128.02,
+     "delta": 0.5265,
+     "gamma": 0.00131,
+     "theta": -1.6314,
+     "vega": 8.5801,
+     "volatility": 14.013,
+     "daysToExpiration": 37
+    }
+   ],
+   "6790.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06790000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6790.0,
+     "bid": 124.69,
+     "ask": 125.95,
+     "mark": 125.32,
+     "delta": 0.5199,
+     "gamma": 0.00131,
+     "theta": -1.6308,
+     "vega": 8.5891,
+     "volatility": 13.993,
+     "daysToExpiration": 37
+    }
+   ],
+   "6795.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06795000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6795.0,
+     "bid": 122.04,
+     "ask": 123.27,
+     "mark": 122.65,
+     "delta": 0.5134,
+     "gamma": 0.00131,
+     "theta": -1.6297,
+     "vega": 8.5958,
+     "volatility": 13.973,
+     "daysToExpiration": 37
+    }
+   ],
+   "6800.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06800000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6800.0,
+     "bid": 119.42,
+     "ask": 120.62,
+     "mark": 120.02,
+     "delta": 0.5068,
+     "gamma": 0.00131,
+     "theta": -1.6282,
+     "vega": 8.6001,
+     "volatility": 13.953,
+     "daysToExpiration": 37
+    }
+   ],
+   "6805.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06805000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6805.0,
+     "bid": 117.0,
+     "ask": 118.18,
+     "mark": 117.59,
+     "delta": 0.5002,
+     "gamma": 0.00132,
+     "theta": -1.6286,
+     "vega": 8.6021,
+     "volatility": 13.953,
+     "daysToExpiration": 37
+    }
+   ],
+   "6810.0": [
+    {
+     "putCall": "CALL",
+     "symbol": "SPXW  261231C06810000",
+     "optionRoot": "SPXW",
+     "strikePrice": 6810.0,
+     "bid": 114.62,
+     "ask": 115.77,
+     "mark": 115.19,
+     "delta": 0.4937,
+     "gamma": 0.00132,
+     "theta": -1.6285,
+     "vega": 8.6017,
+     "volatility": 13.953,
+     "daysToExpiration": 37
+    }
+   ]
+  }
+ }
+}

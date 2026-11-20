@@ -3,12 +3,15 @@
 Numbers are plain float/int (never numpy), dates are ISO strings, so every model
 round-trips through JSON unchanged.
 """
+from typing import Literal
+
 from pydantic import BaseModel
 
 
 class OptionQuote(BaseModel):
     expiry: str                      # ISO date
     strike: float
+    right: Literal["P", "C"] = "P"   # puts for the calendar, a few calls for the forward
     bid: float | None = None         # a missing quote is None, never 0
     ask: float | None = None
     mark: float | None = None

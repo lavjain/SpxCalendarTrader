@@ -43,6 +43,7 @@ from datetime import date, datetime, timedelta, timezone
 AUTH_URL = "https://api.schwabapi.com/v1/oauth/authorize"
 TOKEN_URL = "https://api.schwabapi.com/v1/oauth/token"
 CHAINS_URL = "https://api.schwabapi.com/marketdata/v1/chains"
+QUOTES_URL = "https://api.schwabapi.com/marketdata/v1/quotes"
 # The token is a secret and must NOT land in the repo. Keep it in the home directory
 # (~/.schwab/), outside the working tree.
 TOKEN_PATH = os.path.expanduser(
@@ -182,21 +183,11 @@ def access_token():
 
 
 # ----------------------------------------------------------------- chain
+from app.core import config
+from app.core.models import ExpiryPair, OptionQuote
 
-def get_chain(symbol, dte_max):
-    """fromDate/toDate cap the expiration window and range=OTM caps the strike
-    window. Without both, Schwab's gateway returns the entire chain and 502s
-    with a "Body buffer overflow" once it exceeds the gateway's body limit.
 
-    range=OTM was chosen empirically: range=NTM is too narrow and drops the
-    50-delta (ATM) row; range=SBK/ALL return it but with a
-    ~30% larger payload for no extra coverage. See README.md."""
-    today = date.today()
-    url = CHAINS_URL + "?" + urllib.parse.urlencode({
-        "symbol": symbol, "contractType": "PUT", "strategy": "SINGLE",
-        "includeUnderlyingQuote": "true", "range": "OTM",
-        "fromDate": today.isoformat(),
-        "toDate": (today + timedelta(days=dte_max)).isoformat()})
+def _get_json(url):
     req = urllib.request.Request(
         url, headers={"Authorization": f"Bearer {access_token()}",
                       "Accept": "application/json"})
@@ -205,13 +196,154 @@ def get_chain(symbol, dte_max):
             return json.load(r)
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
-        print(f"chain request failed: {e.code} {e.reason}", file=sys.stderr)
+        print(f"request failed: {e.code} {e.reason}", file=sys.stderr)
         print(f"response body: {body}", file=sys.stderr)
         sys.exit(1)
 
 
-def parse(chain, dte_max=60):
-    """putExpDateMap: {'2026-08-21:8': {'775.0': [contract, ...]}}"""
+def _window(pairs):
+    """fromDate/toDate covering every short expiry through the last long expiry."""
+    return (min(p.short for p in pairs), max(p.long for p in pairs))
+
+
+def get_chain(symbol, pairs, dte_max=config.MAX_DTE, today=None):
+    """Puts (range=OTM) for the window spanned by `pairs`.
+
+    fromDate/toDate cap the expiration window and range=OTM caps the strike window; without
+    both, Schwab's gateway returns the whole chain and 502s ("Body buffer overflow"). range=NTM is
+    too narrow and drops the 50-delta row. See README.md. Nothing past `dte_max` (63 = 56 + 7)."""
+    today = today or date.today()
+    last = today + timedelta(days=dte_max)
+    if not pairs:
+        raise ValueError("no expiry pairs to pull")
+    lo, hi = _window(pairs)
+    if date.fromisoformat(hi) > last:
+        raise ValueError(f"expiry {hi} is more than {dte_max} days out")
+    return _get_json(CHAINS_URL + "?" + urllib.parse.urlencode({
+        "symbol": symbol, "contractType": "PUT", "strategy": "SINGLE",
+        "includeUnderlyingQuote": "true", "range": "OTM",
+        "fromDate": lo, "toDate": hi}))
+
+
+def get_call_chain(symbol, pairs, strike_count=config.CALL_STRIKE_COUNT):
+    """A few calls around the money on each expiry, for the put-call-parity forward.
+    contractType=CALL with strikeCount keeps the payload small (unverified live: check once)."""
+    lo, hi = _window(pairs)
+    return _get_json(CHAINS_URL + "?" + urllib.parse.urlencode({
+        "symbol": symbol, "contractType": "CALL", "strategy": "SINGLE",
+        "strikeCount": strike_count, "fromDate": lo, "toDate": hi}))
+
+
+def _num(x):
+    """Schwab uses None, "NaN" and -999 for "no value"."""
+    if x is None or x == "NaN" or x == -999 or x == -999.0:
+        return None
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return None
+    return None if v != v else v
+
+
+def _is_spxw(c):
+    root = c.get("optionRoot")
+    if root is not None:
+        return root == "SPXW"
+    return str(c.get("symbol", "")).startswith("SPXW")   # fallback if the field is absent
+
+
+def _quote(expiry, c, right):
+    return OptionQuote(
+        expiry=expiry, strike=float(c["strikePrice"]), right=right,
+        bid=_num(c.get("bid")), ask=_num(c.get("ask")), mark=_num(c.get("mark")),
+        delta=_num(c.get("delta")), gamma=_num(c.get("gamma")), theta=_num(c.get("theta")),
+        vega=_num(c.get("vega")), iv=_num(c.get("volatility")))
+
+
+def _contracts(chain, key, right):
+    """(expiry_iso, OptionQuote) for each SPXW contract; SPX (AM-settled) rows are dropped."""
+    for exp, strikes in (chain.get(key) or {}).items():
+        expiry = exp.split(":")[0]
+        for contracts in strikes.values():
+            for c in contracts:
+                if _is_spxw(c):
+                    yield expiry, _quote(expiry, c, right)
+
+
+def strike_ok(strike, strike_sets=config.STRIKE_SETS):
+    return any(strike % int(s) == 0 for s in strike_sets)
+
+
+def parse(chain, pairs, strike_sets=config.STRIKE_SETS, delta_band=config.DELTA_BAND,
+          dte_max=config.MAX_DTE):
+    """Puts for the chosen expiry pairs only.
+
+    Short expiry: |delta| inside `delta_band`, on a strike in `strike_sets`.
+    Long expiry:  the put at each of those strikes, whatever its delta.
+    Rows missing a mark, delta or IV are skipped. Returns a list of OptionQuote."""
+    short_exp = {p.short for p in pairs if p.short_dte <= dte_max}
+    long_exp = {p.long for p in pairs if p.long_dte <= dte_max}
+    puts = [q for e, q in _contracts(chain, "putExpDateMap", "P") if e in short_exp | long_exp]
+    puts = [q for q in puts if None not in (q.mark, q.delta, q.iv)]
+    lo, hi = delta_band
+    short_strikes = {}
+    for q in puts:
+        if q.expiry in short_exp and strike_ok(q.strike, strike_sets) and lo <= abs(q.delta) <= hi:
+            short_strikes.setdefault(q.expiry, set()).add(q.strike)
+    out = []
+    for q in puts:
+        for p in pairs:
+            if (q.expiry == p.short and q.strike in short_strikes.get(p.short, ())) or \
+               (q.expiry == p.long and q.strike in short_strikes.get(p.short, ())):
+                out.append(q)
+                break
+    return sorted(set_unique(out), key=lambda q: (q.expiry, q.strike))
+
+
+def set_unique(quotes):
+    seen, out = set(), []
+    for q in quotes:
+        k = (q.expiry, q.strike, q.right)
+        if k not in seen:
+            seen.add(k)
+            out.append(q)
+    return out
+
+
+def parse_calls(chain, pairs):
+    """The calls the chain pull returned on the Finder's expiries (a few nearest the money)."""
+    exps = {p.short for p in pairs} | {p.long for p in pairs}
+    calls = [q for e, q in _contracts(chain, "callExpDateMap", "C") if e in exps]
+    return sorted((q for q in calls if None not in (q.mark, q.iv)),
+                  key=lambda q: (q.expiry, q.strike))
+
+
+def calendar_legs(rows, short_exp, long_exp, strike):
+    """The short and long put at the SAME strike, or None if either is missing."""
+    def pick(exp):
+        return next((q for q in rows if q.right == "P" and q.expiry == exp and q.strike == strike),
+                    None)
+    s, l = pick(short_exp), pick(long_exp)
+    return (s, l) if s and l else None
+
+
+def get_quotes(symbols):
+    """Many symbols in one call ($SPX, $VIX, $VIX9D, option legs).
+    Returns {symbol: {"bid","ask","mark","last"}} with None for anything missing."""
+    syms = list(dict.fromkeys(symbols))
+    data = _get_json(QUOTES_URL + "?" + urllib.parse.urlencode(
+        {"symbols": ",".join(syms), "fields": "quote"}))
+    out = {}
+    for sym, v in data.items():
+        q = (v or {}).get("quote") or {}
+        out[sym] = {"bid": _num(q.get("bidPrice")), "ask": _num(q.get("askPrice")),
+                    "mark": _num(q.get("mark")), "last": _num(q.get("lastPrice"))}
+    return out
+
+
+def parse_atm_rows(chain, dte_max=60):
+    """Old flat parse: one dict per put (dte, strike, mark, greeks, iv). Feeds write_atm/write_smile
+    for the --demo CSV path only; the app uses parse() below."""
     rows = []
     for exp, strikes in (chain.get("putExpDateMap") or {}).items():
         try:
@@ -299,7 +431,9 @@ def main():
     c.add_argument("--out", default="chain.csv")
     c.add_argument("--smile", default="smile.csv")
     c.add_argument("--dte-max", type=int, default=60)
-    c.add_argument("--demo", action="store_true", help="parse a fixture, no network")
+    c.add_argument("--demo", action="store_true",
+                   help="parse a fixture, no network (writes the --out/--smile CSVs); "
+                        "without it: a live pull with the default Finder filters")
     args = p.parse_args()
 
     if args.cmd == "auth":
@@ -309,9 +443,8 @@ def main():
         if tok:
             print(f"\ntoken written to {TOKEN_PATH} (mode 600). "
                   f"Re-run within 7 days.")
-    else:
-        chain = DEMO if args.demo else get_chain(args.symbol, args.dte_max)
-        rows = parse(chain, args.dte_max)
+    elif args.demo:
+        rows = parse_atm_rows(DEMO, args.dte_max)
         if not rows:
             sys.exit("no contracts parsed - check the symbol and field names")
         n1 = write_atm(rows, args.out)
@@ -319,7 +452,19 @@ def main():
         print(f"{len(rows)} contracts -> {args.out} ({n1} expirations), "
               f"{args.smile} ({n2} rows)")
         print(f"  next: calendar_math.py screen {args.out} --capital 10000")
-
+    else:
+        from app.core.expiries import pick_expiries
+        today = date.today()
+        pairs = pick_expiries(today)
+        if not pairs:
+            sys.exit("no expiry pairs for today's default filters")
+        chain = get_chain(args.symbol, pairs, today=today)
+        puts = parse(chain, pairs)
+        calls = parse_calls(get_call_chain(args.symbol, pairs), pairs)
+        print(f"{len(puts)} puts, {len(calls)} calls for "
+              f"{', '.join(f'{p.short}->{p.long}' for p in pairs)}")
+        for q in puts:
+            print(f"  {q.expiry} P {q.strike:>7.0f}  mark {q.mark:>7.2f}  delta {q.delta:>7.3f}  iv {q.iv:>6.2f}")
 
 if __name__ == "__main__":
     main()
