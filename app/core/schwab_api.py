@@ -36,9 +36,16 @@ volatility can blow up on worthless contracts) that parse() does not yet
 guard against beyond the existing None/NaN/-999 filter.
 """
 
-import argparse, base64, csv, http.server, json, os, ssl, subprocess, sys, tempfile
+import argparse, base64, collections, csv, http.server, json, logging, os, ssl, subprocess
+import sys, tempfile, threading, time
 import urllib.error, urllib.parse, urllib.request
 from datetime import date, datetime, timedelta, timezone
+
+from app.core import config
+from app.core.expiries import market_today
+from app.core.models import ExpiryPair, OptionQuote
+
+log = logging.getLogger(__name__)
 
 AUTH_URL = "https://api.schwabapi.com/v1/oauth/authorize"
 TOKEN_URL = "https://api.schwabapi.com/v1/oauth/token"
@@ -48,19 +55,71 @@ QUOTES_URL = "https://api.schwabapi.com/marketdata/v1/quotes"
 # (~/.schwab/), outside the working tree.
 TOKEN_PATH = os.path.expanduser(
     os.environ.get("SCHWAB_TOKEN_PATH", "~/.schwab/calendar_skew_token.json"))
+# schwab-py writes a different token format; keep it away from the file access_token() reads.
+SCHWABPY_TOKEN_PATH = TOKEN_PATH + ".schwabpy"
 DEFAULT_CB = "https://127.0.0.1:8182"
 BUCKETS = (0.30, 0.35, 0.40, 0.50)
+REFRESH_TOKEN_LIFE_DAYS = 7.0
+LOGIN_WARN_DAYS = 6.5
+ACCESS_TOKEN_LIFE_S = 25 * 60
 
+
+# ----------------------------------------------------------------- errors
+
+class SchwabError(Exception):
+    """Base class. The command line prints the message and exits 1; the web app maps it to 502/503."""
+
+
+class SchwabAuthError(SchwabError):
+    """Missing keys, no token, expired login, or a bad pasted URL."""
+
+
+class SchwabHTTPError(SchwabError):
+    def __init__(self, message, status=None, body=""):
+        super().__init__(message)
+        self.status, self.body = status, body
+
+
+# ----------------------------------------------------------------- config + token
 
 def cfg():
     k, s = os.environ.get("SCHWAB_APP_KEY"), os.environ.get("SCHWAB_APP_SECRET")
     cb = os.environ.get("SCHWAB_CALLBACK_URL", DEFAULT_CB)
     if not k or not s:
-        sys.exit("set SCHWAB_APP_KEY and SCHWAB_APP_SECRET")
+        raise SchwabAuthError("set SCHWAB_APP_KEY and SCHWAB_APP_SECRET")
     return k, s, cb
 
 
-def post_token(key, secret, data):
+_token_lock = threading.Lock()   # one refresh at a time, so requests don't rewrite the file together
+
+
+def _now():
+    return datetime.now(timezone.utc)
+
+
+def _read_token():
+    with open(TOKEN_PATH) as f:
+        tok = json.load(f)
+    # tokens written before login_at/access_at existed carry one timestamp, obtained_at
+    tok.setdefault("login_at", tok.get("obtained_at"))
+    tok.setdefault("access_at", tok.get("obtained_at"))
+    return tok
+
+
+def _write_token(tok):
+    os.makedirs(os.path.dirname(TOKEN_PATH), exist_ok=True)
+    tmp = TOKEN_PATH + ".tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        json.dump(tok, f, indent=2)
+    os.replace(tmp, TOKEN_PATH)          # atomic: readers never see half a file
+
+
+def post_token(key, secret, data, login=False):
+    """Exchange a code (login=True starts a new 7-day clock) or a refresh token.
+
+    login_at is set by the login only; access_at changes on every refresh, so the 7-day check
+    keeps counting from the login."""
     basic = base64.b64encode(f"{key}:{secret}".encode()).decode()
     req = urllib.request.Request(
         TOKEN_URL, data=urllib.parse.urlencode(data).encode(),
@@ -71,17 +130,27 @@ def post_token(key, secret, data):
             tok = json.load(r)
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
-        print(f"token request failed: {e.code} {e.reason}", file=sys.stderr)
-        print(f"response body: {body}", file=sys.stderr)
-        print(f"redirect_uri sent: {data.get('redirect_uri')}", file=sys.stderr)
-        print(f"app key length: {len(key)}", file=sys.stderr)
-        print(f"app secret length: {len(secret)}", file=sys.stderr)
-        sys.exit(1)
-    tok["obtained_at"] = datetime.now(timezone.utc).isoformat()
-    os.makedirs(os.path.dirname(TOKEN_PATH), exist_ok=True)
-    with open(TOKEN_PATH, "w") as f:
-        json.dump(tok, f, indent=2)
-    os.chmod(TOKEN_PATH, 0o600)
+        raise SchwabHTTPError(
+            f"token request failed: {e.code} {e.reason}\n"
+            f"response body: {body}\n"
+            f"redirect_uri sent: {data.get('redirect_uri')}\n"
+            f"app key length: {len(key)}\n"
+            f"app secret length: {len(secret)}", status=e.code, body=body) from None
+    except urllib.error.URLError as e:
+        raise SchwabHTTPError(f"token request failed: {e.reason}") from None
+    now = _now().isoformat()
+    if login:
+        tok["login_at"] = now
+    else:
+        try:
+            old = _read_token()
+        except (OSError, ValueError):
+            old = {}
+        tok["login_at"] = old.get("login_at") or now
+        if not tok.get("refresh_token"):
+            tok["refresh_token"] = old.get("refresh_token")
+    tok["access_at"] = now
+    _write_token(tok)
     return tok
 
 
@@ -99,7 +168,7 @@ def extract_code(pasted):
     for part in q.split("&"):
         if part.startswith("code="):
             return urllib.parse.unquote(part[5:])
-    sys.exit("no ?code= found in that URL")
+    raise SchwabAuthError("no ?code= found in that URL")
 
 
 def flow_manual(key, secret, cb):
@@ -112,15 +181,16 @@ def flow_manual(key, secret, cb):
     pasted = input("3. Paste it here: ").strip()
     return post_token(key, secret,
                       {"grant_type": "authorization_code",
-                       "code": extract_code(pasted), "redirect_uri": cb})
+                       "code": extract_code(pasted), "redirect_uri": cb},
+                      login=True)
 
 
 def flow_listen(key, secret, cb):
     parts = urllib.parse.urlparse(cb)
     port = parts.port or 443
     if port < 1024:
-        sys.exit(f"port {port} needs root. Register a callback with a port "
-                 f">1024, e.g. {DEFAULT_CB}")
+        raise SchwabAuthError(f"port {port} needs root. Register a callback with a port "
+                              f">1024, e.g. {DEFAULT_CB}")
     box = {}
 
     class H(http.server.BaseHTTPRequestHandler):
@@ -152,55 +222,115 @@ def flow_listen(key, secret, cb):
     srv.server_close()
     return post_token(key, secret,
                       {"grant_type": "authorization_code",
-                       "code": extract_code(box["url"]), "redirect_uri": cb})
+                       "code": extract_code(box["url"]), "redirect_uri": cb},
+                      login=True)
 
 
 def flow_schwabpy(key, secret, cb):
     try:
         from schwab import auth as sauth
     except ImportError:
-        sys.exit("pip install schwab-py")
-    sauth.easy_client(key, secret, cb, TOKEN_PATH)
-    print(f"schwab-py wrote its token to {TOKEN_PATH}. Use schwab-py's client "
-          f"to read chains; this script's token format differs.")
+        raise SchwabAuthError("pip install schwab-py")
+    sauth.easy_client(key, secret, cb, SCHWABPY_TOKEN_PATH)
+    print(f"schwab-py wrote its token to {SCHWABPY_TOKEN_PATH}. Use schwab-py's client "
+          f"to read chains; this script's token format differs, so the app does not use it.")
     return None
 
 
+def login_age_days(tok=None):
+    tok = tok or _read_token()
+    return (_now() - datetime.fromisoformat(tok["login_at"])).total_seconds() / 86400
+
+
 def access_token():
-    if not os.path.exists(TOKEN_PATH):
-        sys.exit("no token. run: schwab_api.py auth")
-    tok = json.load(open(TOKEN_PATH))
-    key, secret, _ = cfg()
-    age = (datetime.now(timezone.utc)
-           - datetime.fromisoformat(tok["obtained_at"])).total_seconds()
-    if age > 6.5 * 86400:
-        sys.exit(f"refresh token is {age/86400:.1f} days old. Schwab kills it at "
-                 f"7 days - run: schwab_api.py auth")
-    if age < 25 * 60:
-        return tok["access_token"]
-    return post_token(key, secret, {"grant_type": "refresh_token",
-                                    "refresh_token": tok["refresh_token"]})["access_token"]
+    """A valid access token, refreshing if needed. Raises SchwabAuthError when the weekly login is
+    missing or has run out (Schwab kills the refresh token 7 days after login)."""
+    with _token_lock:
+        if not os.path.exists(TOKEN_PATH):
+            raise SchwabAuthError("no token. run: python -m app.core.schwab_api auth")
+        tok = _read_token()
+        age = login_age_days(tok)
+        if age >= REFRESH_TOKEN_LIFE_DAYS:
+            raise SchwabAuthError(f"refresh token is {age:.1f} days old. Schwab kills it at "
+                                  f"7 days - run: python -m app.core.schwab_api auth")
+        if age > LOGIN_WARN_DAYS:
+            log.warning("Schwab login is %.1f days old; it expires at 7 - run the weekly auth", age)
+        access_age = (_now() - datetime.fromisoformat(tok["access_at"])).total_seconds()
+        if access_age < ACCESS_TOKEN_LIFE_S:
+            return tok["access_token"]
+        key, secret, _ = cfg()
+        return post_token(key, secret, {"grant_type": "refresh_token",
+                                        "refresh_token": tok["refresh_token"]})["access_token"]
+
+
+# ----------------------------------------------------------------- request layer
+# TTL cache, at most SCHWAB_MAX_CONCURRENT requests in flight, a per-minute limiter, backoff on 429.
+
+_cache, _cache_lock = {}, threading.Lock()
+_inflight = threading.BoundedSemaphore(config.SCHWAB_MAX_CONCURRENT)
+_calls, _calls_lock = collections.deque(), threading.Lock()
+_sleep = time.sleep           # tests replace these
+_clock = time.monotonic
+
+
+def clear_cache():
+    with _cache_lock:
+        _cache.clear()
+
+
+def _rate_limit():
+    """Block until fewer than SCHWAB_REQUESTS_PER_MIN requests started in the last 60 s."""
+    while True:
+        with _calls_lock:
+            now = _clock()
+            while _calls and now - _calls[0] >= 60:
+                _calls.popleft()
+            if len(_calls) < config.SCHWAB_REQUESTS_PER_MIN:
+                _calls.append(now)
+                return
+            wait = 60 - (now - _calls[0])
+        _sleep(max(wait, 0.01))
+
+
+def _get_json(url, use_cache=True, retries=4):
+    if use_cache:
+        with _cache_lock:
+            hit = _cache.get(url)
+            if hit and _clock() - hit[0] < config.CACHE_TTL_S:
+                return hit[1]
+    delay = 1.0
+    for attempt in range(retries + 1):
+        _rate_limit()
+        req = urllib.request.Request(
+            url, headers={"Authorization": f"Bearer {access_token()}",
+                          "Accept": "application/json"})
+        try:
+            with _inflight:
+                with urllib.request.urlopen(req, timeout=60) as r:
+                    data = json.load(r)
+            break
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")
+            if e.code == 429 and attempt < retries:
+                try:
+                    delay = float(e.headers.get("Retry-After") or delay)
+                except (TypeError, ValueError):
+                    pass
+                log.warning("Schwab 429; backing off %.1f s", delay)
+                _sleep(delay)
+                delay *= 2
+                continue
+            raise SchwabHTTPError(f"request failed: {e.code} {e.reason}\nresponse body: {body}",
+                                  status=e.code, body=body) from None
+        except urllib.error.URLError as e:
+            raise SchwabHTTPError(f"request failed: {e.reason}") from None
+    if use_cache:
+        with _cache_lock:
+            _cache[url] = (_clock(), data)
+    return data
 
 
 # ----------------------------------------------------------------- chain
-from app.core import config
-from app.core.models import ExpiryPair, OptionQuote
-
-
-def _get_json(url):
-    req = urllib.request.Request(
-        url, headers={"Authorization": f"Bearer {access_token()}",
-                      "Accept": "application/json"})
-    try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        body = e.read().decode(errors="replace")
-        print(f"request failed: {e.code} {e.reason}", file=sys.stderr)
-        print(f"response body: {body}", file=sys.stderr)
-        sys.exit(1)
-
-
 def _window(pairs):
     """fromDate/toDate covering every short expiry through the last long expiry."""
     return (min(p.short for p in pairs), max(p.long for p in pairs))
@@ -212,7 +342,7 @@ def get_chain(symbol, pairs, dte_max=config.MAX_DTE, today=None):
     fromDate/toDate cap the expiration window and range=OTM caps the strike window; without
     both, Schwab's gateway returns the whole chain and 502s ("Body buffer overflow"). range=NTM is
     too narrow and drops the 50-delta row. See README.md. Nothing past `dte_max` (63 = 56 + 7)."""
-    today = today or date.today()
+    today = today or market_today()
     last = today + timedelta(days=dte_max)
     if not pairs:
         raise ValueError("no expiry pairs to pull")
@@ -327,12 +457,12 @@ def calendar_legs(rows, short_exp, long_exp, strike):
     return (s, l) if s and l else None
 
 
-def get_quotes(symbols):
+def get_quotes(symbols, use_cache=True):
     """Many symbols in one call ($SPX, $VIX, $VIX9D, option legs).
     Returns {symbol: {"bid","ask","mark","last"}} with None for anything missing."""
     syms = list(dict.fromkeys(symbols))
     data = _get_json(QUOTES_URL + "?" + urllib.parse.urlencode(
-        {"symbols": ",".join(syms), "fields": "quote"}))
+        {"symbols": ",".join(syms), "fields": "quote"}), use_cache=use_cache)
     out = {}
     for sym, v in data.items():
         q = (v or {}).get("quote") or {}
@@ -420,6 +550,14 @@ DEMO = {"putExpDateMap": {
 
 
 def main():
+    try:
+        _main()
+    except SchwabError as e:
+        print(str(e), file=sys.stderr)
+        sys.exit(1)
+
+
+def _main():
     p = argparse.ArgumentParser(description=__doc__,
             formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -446,7 +584,7 @@ def main():
     elif args.demo:
         rows = parse_atm_rows(DEMO, args.dte_max)
         if not rows:
-            sys.exit("no contracts parsed - check the symbol and field names")
+            raise SchwabError("no contracts parsed - check the symbol and field names")
         n1 = write_atm(rows, args.out)
         n2 = write_smile(rows, args.smile)
         print(f"{len(rows)} contracts -> {args.out} ({n1} expirations), "
@@ -454,10 +592,10 @@ def main():
         print(f"  next: calendar_math.py screen {args.out} --capital 10000")
     else:
         from app.core.expiries import pick_expiries
-        today = date.today()
+        today = market_today()
         pairs = pick_expiries(today)
         if not pairs:
-            sys.exit("no expiry pairs for today's default filters")
+            raise SchwabError("no expiry pairs for today's default filters")
         chain = get_chain(args.symbol, pairs, today=today)
         puts = parse(chain, pairs)
         calls = parse_calls(get_call_chain(args.symbol, pairs), pairs)

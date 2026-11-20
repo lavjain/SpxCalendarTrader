@@ -104,3 +104,181 @@ def test_get_chain_requests_only_the_window(monkeypatch):
     assert "fromDate=2026-12-24" in seen[0] and "toDate=2026-12-31" in seen[0]
     assert "contractType=PUT" in seen[0]
     assert "contractType=CALL" in seen[1] and f"strikeCount={config.CALL_STRIKE_COUNT}" in seen[1]
+
+
+# ------------------------------------------------------------- item 6: safe for a web server
+import io
+import threading
+import urllib.error
+from datetime import datetime, timedelta, timezone
+
+
+@pytest.fixture
+def token_file(tmp_path, monkeypatch):
+    path = tmp_path / "tok.json"
+    monkeypatch.setattr(schwab_api, "TOKEN_PATH", str(path))
+    monkeypatch.setenv("SCHWAB_APP_KEY", "k")
+    monkeypatch.setenv("SCHWAB_APP_SECRET", "s")
+    schwab_api.clear_cache()
+    return path
+
+
+def write_tok(path, login_days_ago, access_minutes_ago):
+    now = datetime.now(timezone.utc)
+    path.write_text(json.dumps({
+        "access_token": "AT", "refresh_token": "RT",
+        "login_at": (now - timedelta(days=login_days_ago)).isoformat(),
+        "access_at": (now - timedelta(minutes=access_minutes_ago)).isoformat()}))
+
+
+class FakeResp(io.BytesIO):
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+
+
+def test_no_sys_exit_outside_main():
+    src = Path(schwab_api.__file__).read_text().splitlines()
+    lines = [i for i, l in enumerate(src, 1) if "sys.exit" in l]
+    main_start = next(i for i, l in enumerate(src, 1) if l.startswith("def main("))
+    main_end = next(i for i, l in enumerate(src, 1) if l.startswith("def _main("))
+    assert lines and all(main_start <= i < main_end for i in lines)
+
+
+def test_missing_keys_raise_not_exit(monkeypatch):
+    monkeypatch.delenv("SCHWAB_APP_KEY", raising=False)
+    with pytest.raises(schwab_api.SchwabAuthError):
+        schwab_api.cfg()
+    with pytest.raises(schwab_api.SchwabAuthError):
+        schwab_api.extract_code("https://127.0.0.1/?nothing=here")
+
+
+def test_no_token_and_expired_login_raise(token_file):
+    with pytest.raises(schwab_api.SchwabAuthError, match="no token"):
+        schwab_api.access_token()
+    write_tok(token_file, login_days_ago=7.2, access_minutes_ago=1)
+    with pytest.raises(schwab_api.SchwabAuthError, match="7 days"):
+        schwab_api.access_token()
+
+
+def test_login_age_survives_a_refresh(token_file, monkeypatch):
+    write_tok(token_file, login_days_ago=5, access_minutes_ago=60)     # access token is stale
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen", lambda req, timeout=0: FakeResp(
+        json.dumps({"access_token": "NEW", "refresh_token": "RT2"}).encode()))
+    assert schwab_api.access_token() == "NEW"
+    tok = json.loads(token_file.read_text())
+    assert 4.9 < schwab_api.login_age_days(tok) < 5.1                 # still ~5 days, not reset to 0
+    assert datetime.now(timezone.utc) - datetime.fromisoformat(tok["access_at"]) < timedelta(seconds=5)
+    assert oct(token_file.stat().st_mode & 0o777) == "0o600"
+
+
+def test_login_sets_a_fresh_login_time(token_file, monkeypatch):
+    write_tok(token_file, login_days_ago=6, access_minutes_ago=1)
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen", lambda req, timeout=0: FakeResp(
+        json.dumps({"access_token": "A", "refresh_token": "R"}).encode()))
+    tok = schwab_api.post_token("k", "s", {"grant_type": "authorization_code"}, login=True)
+    assert schwab_api.login_age_days(tok) < 0.01
+
+
+def test_old_token_format_still_readable(token_file):
+    token_file.write_text(json.dumps({"access_token": "AT", "refresh_token": "RT",
+        "obtained_at": (datetime.now(timezone.utc) - timedelta(minutes=2)).isoformat()}))
+    assert schwab_api.access_token() == "AT"
+
+
+def test_schwabpy_flow_uses_its_own_token_path():
+    assert schwab_api.SCHWABPY_TOKEN_PATH != schwab_api.TOKEN_PATH
+
+
+def test_concurrent_refresh_happens_once(token_file, monkeypatch):
+    write_tok(token_file, login_days_ago=1, access_minutes_ago=60)
+    calls = []
+
+    def fake(req, timeout=0):
+        calls.append(1)
+        return FakeResp(json.dumps({"access_token": "NEW", "refresh_token": "RT"}).encode())
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen", fake)
+    out = []
+    threads = [threading.Thread(target=lambda: out.append(schwab_api.access_token())) for _ in range(6)]
+    [t.start() for t in threads]; [t.join() for t in threads]
+    assert out == ["NEW"] * 6 and len(calls) == 1
+
+
+def test_market_date_not_machine_date(monkeypatch):
+    import app.core.expiries as ex
+    seen = {}
+    monkeypatch.setattr(schwab_api, "market_today", lambda: seen.setdefault("d", __import__("datetime").date(2026, 11, 24)))
+    urls = []
+    monkeypatch.setattr(schwab_api, "_get_json", lambda url, **kw: urls.append(url) or {})
+    schwab_api.get_chain("$SPX", [PAIR_A])          # no `today` given -> market_today()
+    assert seen and "fromDate=2026-12-24" in urls[0]
+    assert ex.market_today().__class__.__name__ == "date"
+
+
+def test_cache_serves_second_call_within_ttl(token_file, monkeypatch):
+    write_tok(token_file, 1, 1)
+    n = []
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen",
+                        lambda req, timeout=0: n.append(1) or FakeResp(b'{"a": 1}'))
+    t = [100.0]
+    monkeypatch.setattr(schwab_api, "_clock", lambda: t[0])
+    assert schwab_api._get_json("http://x/1") == {"a": 1}
+    assert schwab_api._get_json("http://x/1") == {"a": 1}
+    assert len(n) == 1
+    t[0] += config.CACHE_TTL_S + 1
+    schwab_api._get_json("http://x/1")
+    assert len(n) == 2
+    schwab_api._get_json("http://x/1", use_cache=False)       # quote_spread() bypasses the cache
+    assert len(n) == 3
+
+
+def http_error(code, headers=None):
+    return urllib.error.HTTPError("http://x", code, "err", headers or {}, io.BytesIO(b"body"))
+
+
+def test_429_backs_off_then_succeeds(token_file, monkeypatch):
+    write_tok(token_file, 1, 1)
+    answers = [http_error(429, {"Retry-After": "2"}), http_error(429), FakeResp(b'{"ok": true}')]
+
+    def fake(req, timeout=0):
+        a = answers.pop(0)
+        if isinstance(a, Exception):
+            raise a
+        return a
+    sleeps = []
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen", fake)
+    monkeypatch.setattr(schwab_api, "_sleep", sleeps.append)
+    assert schwab_api._get_json("http://x/429", use_cache=False) == {"ok": True}
+    assert sleeps == [2.0, 4.0]                                # exponential: Retry-After, then doubled
+
+
+def test_other_http_errors_raise(token_file, monkeypatch):
+    write_tok(token_file, 1, 1)
+    monkeypatch.setattr(schwab_api.urllib.request, "urlopen",
+                        lambda req, timeout=0: (_ for _ in ()).throw(http_error(502)))
+    with pytest.raises(schwab_api.SchwabHTTPError) as e:
+        schwab_api._get_json("http://x/502", use_cache=False)
+    assert e.value.status == 502
+
+
+def test_rate_limiter_waits_when_full(monkeypatch):
+    schwab_api._calls.clear()
+    t = [0.0]
+    sleeps = []
+    monkeypatch.setattr(schwab_api, "_clock", lambda: t[0])
+    monkeypatch.setattr(schwab_api, "_sleep", lambda s: (sleeps.append(s), t.__setitem__(0, t[0] + s)))
+    for _ in range(config.SCHWAB_REQUESTS_PER_MIN):
+        schwab_api._rate_limit()
+    assert sleeps == []
+    schwab_api._rate_limit()                                   # the 101st must wait for the window
+    assert sleeps and sum(sleeps) >= 60 - 0.01
+    schwab_api._calls.clear()
+
+
+def test_get_quotes_one_call_none_for_missing(monkeypatch):
+    urls = []
+    monkeypatch.setattr(schwab_api, "_get_json", lambda url, **kw: urls.append(url) or {
+        "$SPX": {"quote": {"bidPrice": 1.0, "askPrice": 2.0, "mark": 1.5, "lastPrice": 1.4}},
+        "$VIX": {"quote": {"lastPrice": 17.0}}})
+    out = schwab_api.get_quotes(["$SPX", "$VIX", "$SPX"])
+    assert len(urls) == 1 and urls[0].count("%24SPX") == 1
+    assert out["$SPX"]["mark"] == 1.5 and out["$VIX"]["bid"] is None and out["$VIX"]["last"] == 17.0
