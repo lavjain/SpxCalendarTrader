@@ -15,6 +15,7 @@ WIDTHS = (3, 4, 5, 6, 7)             # days between short and long expiry
 WIDTHS_DEFAULT = (7,)
 STRIKE_SETS = ("10", "25")           # multiples of 10 and/or 25; default both
 MAX_DTE = 63                         # 56 + 7
+CALL_STRIKE_COUNT = 6                # calls requested around the money, per expiry (for the forward)
 
 # --- stability check before a fill
 STABLE_RANGE = 0.10
@@ -44,3 +45,13 @@ RATE = 0.04
 
 # --- storage
 DB_PATH = "data/paper_trades.db"
+
+# --- NYSE full-day closures (2026-2027). Verify against the NYSE holiday calendar each year.
+MARKET_HOLIDAYS = frozenset({
+    # 2026
+    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03", "2026-05-25", "2026-06-19",
+    "2026-07-03", "2026-09-07", "2026-11-26", "2026-12-25",
+    # 2027
+    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31", "2027-06-18",
+    "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24",
+})
