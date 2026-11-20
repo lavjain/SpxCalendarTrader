@@ -8,7 +8,7 @@ from scipy.stats import norm
 from scipy.optimize import brentq
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
-from calendar_math import Leg, Calendar  # the repo's own sizing/greeks/skew math
+from app.core.calendar_math import Leg, Calendar  # the repo's own sizing/greeks/skew math
 
 R, Q = 0.040, 0.013
 MARGIN, FILL = 10_000, 0.10

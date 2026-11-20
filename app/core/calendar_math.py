@@ -28,7 +28,7 @@ import argparse, csv, math, os, sys
 from datetime import date, datetime
 
 # Logs go in data/ (gitignored). Override with CALENDAR_DATA_DIR.
-_REPO = os.path.dirname(os.path.abspath(__file__))
+_REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repo root (file lives in app/core/)
 LOG_DIR = os.environ.get("CALENDAR_DATA_DIR", os.path.join(_REPO, "data"))
 SKEW_LOG = os.path.join(LOG_DIR, "skew_log.csv")
 FILL_LOG = os.path.join(LOG_DIR, "fill_log.csv")

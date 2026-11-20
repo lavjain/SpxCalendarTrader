@@ -13,7 +13,7 @@
       "name": "Self-test (calendar_math)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/calendar_math.py",
+      "module": "app.core.calendar_math",
       "args": ["selftest"],
       "console": "integratedTerminal"
     },
@@ -21,7 +21,7 @@
       "name": "Schwab demo pull (no network)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/schwab_api.py",
+      "module": "app.core.schwab_api",
       "args": ["chain", "--demo", "--out", "data/demo_chain.csv", "--smile", "data/demo_smile.csv"],
       "console": "integratedTerminal"
     }
