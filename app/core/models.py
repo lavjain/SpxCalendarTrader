@@ -68,6 +68,7 @@ class PairSummary(BaseModel):
     near_40_delta: CalendarRow | None = None
     best_skew: float | None = None
     best_skew_strike: float | None = None
+    break_evens: BreakEvens | None = None   # of the ~40-delta row, None if no forward could be built
     strike_count: int = 0
     rows: list[CalendarRow] = []
 

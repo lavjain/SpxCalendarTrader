@@ -25,7 +25,8 @@ def all_models():
     r = row()
     summary = PairSummary(short_expiry="2026-12-24", long_expiry="2026-12-31", short_dte=30,
                           long_dte=37, width=7, near_40_delta=r, best_skew=0.8,
-                          best_skew_strike=5000.0, strike_count=1, rows=[r])
+                          best_skew_strike=5000.0, strike_count=1, rows=[r],
+                          break_evens=BreakEvens(lower=4900.5, upper=5100.25, at_date="2026-12-24"))
     return [
         quote("2026-12-24"),
         ExpiryPair(short="2026-12-24", long="2026-12-31", short_dte=30, long_dte=37, width=7),
