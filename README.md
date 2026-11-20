@@ -1,10 +1,10 @@
 # SPX Calendar Trader
 
-A Streamlit app for finding and paper-trading ~40Δ SPX put calendars, using live option chains from the Schwab API. **No real orders are sent.**
+A web app for finding and paper-trading ~40Δ SPX put calendars, using live option chains from the Schwab API. **No real orders are sent.** Built with FastAPI, Jinja templates, HTMX and a little vanilla JavaScript: no frontend framework and no build step; it runs on your own computer.
 
 > **Disclaimer.** This is a research and paper-trading tool, not financial advice. Options trading carries substantial risk. The app never places orders: the Copy to TOS buttons only copy an order line to your clipboard, and anything you do with it in thinkorswim is your own decision.
 
-**Status:** under construction. Release 1, the core (find, open, track, close, results), is a 6-week build, Nov 24, 2026 – Jan 4, 2027; Release 2 adds the extras by Jan 18, 2027 (see the [build plan](docs/PLAN.md#6-week-build-plan)). The screens below are mockups of both releases; the Streamlit app arrives in week 2.
+**Status:** under construction. Release 1, the core (find, open, track, close, results), is a 6-week build, Nov 24, 2026 – Jan 4, 2027; Release 2 adds the extras by Jan 18, 2027 (see the [build plan](docs/PLAN.md#6-week-build-plan)). The screens below are mockups of both releases; the app itself arrives in week 2. An interactive Analyzer (a thinkorswim-style position modeler) and optional hosting on Railway come later, in Application Phase 2 ([plan](docs/PLAN.md#application-phase-2-after-release-2)).
 
 **Contents:** [What it does](#what-it-does) · [Screenshots](#screenshots) · [Installation](#installation) · [Using VS Code](#using-vs-code) · [Project layout](#project-layout) · [Schwab API setup](#schwab-api-setup) · [Acknowledgments](#acknowledgments) · [License](#license)
 
@@ -20,19 +20,21 @@ Docs: [`docs/PLAN.md`](docs/PLAN.md) (scope and design) · [`docs/WEEK1.md`](doc
 
 Mockups of the planned screens, built from a simulated SPX chain priced with Black-Scholes. They are not real quotes, trades or results.
 
-**Finder:** settings in a collapsible sidebar, one per line; a daily SPX chart (3 months by default) with the selected calendar's strike, break-evens and expiries drawn on; an Overview with one row per short/long pair at its ~40Δ strike, split by width and sortable (here by best skew); and a Detail table with every strike of the selected pair, the highest-skew row highlighted and the strike nearest 40Δ starred.
+Every screen has a header with the Finder / Holdings / Performance tabs, the account and a light/dark theme toggle (dark by default), and every tile, heading and control has a small ⓘ that explains it.
+
+**Finder:** filters on one line across the top, then two columns. On the left, one row per short/long pair at its ~40Δ strike, split by width and sortable (here by best skew); clicking a pair opens all its strikes underneath, with the highest skew marked in amber and the strike nearest 40Δ starred. On the right, a panel for the selected strike stays in view: a thinkorswim-style risk profile (P/L today and at the short expiry, profit and loss shading, the ±1 SD move and break-evens), tiles for cost, max profit and loss, break-evens and greeks, and both legs with their IVs, skew and IV ratio.
 
 ![Finder screen](docs/images/finder.png)
 
-With the settings sidebar collapsed, a one-line bar shows the applied settings and keeps Refresh at hand:
+The panel's second tab shows a daily SPX chart (3 months by default) with the selected calendar's strike, break-evens and expiries drawn on:
 
-![Finder with settings collapsed](docs/images/finder-collapsed.png)
+![Finder with the SPX chart tab](docs/images/finder-spx.png)
 
 **Opening a trade:** the fill waits for a stable mid, then suggests mid + $0.10, which you can edit before confirming. **Copy to TOS** copies the order line to paste into thinkorswim.
 
 ![Open trade dialog](docs/images/open-trade.png)
 
-**Holdings:** the SPX chart on top, SPX now in the summary row, then open trades with P/L, break-evens, Vol P&L, skew, flags and a ✎ View button for each trade's notes (also shown in the open and close dialogs). A toolbar has **＋ Open trade** (for a trade placed in thinkorswim), **Close selected**, and **▦ Columns** to choose which columns show; the table scrolls sideways with the trade pinned on the left. Below the table, the selected trade's **risk profile**: a thinkorswim-style P/L chart (today and at the short expiry) with break-evens and P/L now. The Finder shows the same chart for the selected strike.
+**Holdings:** summary cards (SPX now, open trades, capital, open P/L, Vol P&L today), then the open trades with P/L, break-evens, Vol P&L, skew and flags. A toolbar has **＋ Open trade** (for a trade placed in thinkorswim) and **▦ Columns** to choose which columns show; the table scrolls sideways with the trade pinned on the left, and the Closed list sits under it. The selected trade gets its own panel on the right: **Close trade…**, **✎ Notes** and **⧉ Copy closing order**, its risk profile with P/L now, tiles, and its notes.
 
 ![Holdings screen](docs/images/holdings.png)
 
@@ -55,6 +57,7 @@ The images are generated by code in [`docs/mockups/`](docs/mockups/README.md). T
 | Tool | Why | Install |
 | --- | --- | --- |
 | Git | version control | macOS: `xcode-select --install` · Windows: <https://git-scm.com> |
+| Node.js 18+ | optional: only to run the JavaScript tests (`node --test`); the app doesn't need it | <https://nodejs.org> or `brew install node` |
 | uv | installs Python 3.12 and all packages | macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh \| sh` (or `brew install uv`) · Windows: `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
 | VS Code | editor (recommended) | <https://code.visualstudio.com> |
 | Schwab developer app | live option chains | see [Schwab API setup](#schwab-api-setup); not needed for tests |
@@ -71,22 +74,25 @@ uv sync                 # creates .venv/ with Python 3.12 and all dependencies
 
 ### Check it works
 
+Week 1 moves the starting files into `app/core/`. Until then, run them from the repo root instead: `uv run python calendar_math.py selftest`, `uv run python schwab_api.py …`.
+
 ```bash
-uv run python calendar_math.py selftest                    # expect "16/16 rows reproduce exactly."
-mkdir -p data && uv run python schwab_api.py chain --demo \
+uv run python -m app.core.calendar_math selftest          # expect "16/16 rows reproduce exactly."
+mkdir -p data && uv run python -m app.core.schwab_api chain --demo \
     --out data/demo_chain.csv --smile data/demo_smile.csv  # parses a built-in sample chain, no network
 uv run pytest                                              # "no tests ran" until week 1 adds the first tests
+node --test tests/js/                                      # optional; JavaScript tests, from week 2
 ```
 
 ### Run
 
 ```bash
 cp .env.example .env                              # once; then add your Schwab keys (see Schwab API setup)
-uv run --env-file .env python schwab_api.py auth  # once a week
-uv run --env-file .env app.py                     # from week 2; opens http://localhost:8501
+uv run --env-file .env python -m app.core.schwab_api auth  # once a week
+uv run serve                                               # from week 2; open http://localhost:8000
 ```
 
-`--env-file .env` loads your Schwab keys for that command. To skip typing it, run `export UV_ENV_FILE=.env` in your shell (or add it to your shell profile).
+`uv run serve` starts the web server with auto-reload and reads your Schwab keys from `.env` itself. The API is documented at http://localhost:8000/docs. For other commands, `--env-file .env` loads the keys; to skip typing it, run `export UV_ENV_FILE=.env` in your shell (or add it to your shell profile).
 
 Paper trades are stored in `data/paper_trades.db`, which never leaves your machine (gitignored).
 
@@ -111,7 +117,7 @@ Then, in VS Code's terminal (`` Ctrl+` ``), run `uv sync`.
 | Task | In VS Code |
 | --- | --- |
 | Run tests | **Testing** panel (flask icon) → Run All; or `uv run pytest` in the terminal |
-| Run or debug the app | **Run and Debug** panel → **Streamlit app** → F5 |
+| Run or debug the app | `uv run serve` in the terminal; or **Run and Debug** panel → **App** → F5 (from week 2) |
 | Run the self-test / demo pull | **Run and Debug** → **Self-test (calendar_math)** or **Schwab demo pull** |
 | Create a branch | click the branch name (bottom left) → **Create new branch…** |
 | Commit and push | **Source Control** panel → stage → message → **Commit** → **Sync Changes** |
@@ -123,17 +129,26 @@ Add packages with `uv add <package>` (never `pip install`), then commit both `py
 ## Project layout
 
 ```
-app.py              # Streamlit UI (week 2): the only file that imports streamlit
-services.py         # one function per future API endpoint
-models.py           # Pydantic inputs/outputs
-settings.py         # every tunable number (margin, offsets, thresholds)
-schwab_api.py       # Schwab OAuth, weekly token, chain pull
-calendar_math.py    # calendar sizing, greeks, skew (+ self-test)
+app/
+  main.py           # FastAPI app (uv run serve)
+  settings.py       # keys, paths and feature flags from environment variables
+  pages.py          # the Finder, Holdings and Performance pages
+  partials.py       # HTMX fragments: tables, cards, dialogs
+  schemas.py        # API request/response models
+  api/              # JSON endpoints under /api (documented at /docs)
+  core/             # all trading logic, plain Python
+    config.py       # every tunable number (margin, offsets, thresholds, polling, rate limits)
+    models.py       # Pydantic inputs/outputs
+    services.py     # one function per endpoint
+    schwab_api.py   # Schwab OAuth, weekly token, chain and quote pulls
+    calendar_math.py# calendar sizing, greeks, skew (+ self-test)
+    expiries.py     # short Fridays, long dates, holidays
+    pricing.py      # Black-Scholes, P/L curves, break-evens
+    store.py        # SQLite: trades, marks, finder_log, spx_daily, settings
+  templates/        # Jinja: base.html, header, footer, one page per screen, partials/
+  static/           # js/ (one controller per page, charts), css/
 cli.py              # week 1: prints today's candidates from the terminal
-pricing.py          # Black-Scholes, P/L curves, break-evens
-charts.py           # Plotly figures (risk profile)
-store.py            # SQLite: trades, marks, finder_log
-tests/              # pytest
+tests/              # pytest; tests/js/ for node --test
 docs/               # PLAN.md, WEEK1.md, images/ (screenshots), mockups/ (code that draws them)
 data/               # local database and logs (gitignored)
 ```
@@ -169,10 +184,10 @@ The OAuth token is written to `~/.schwab/calendar_skew_token.json` (mode 600), *
 Schwab expires refresh tokens after 7 days with no way to extend. Access tokens last 30 minutes and refresh automatically.
 
 ```bash
-uv run --env-file .env python schwab_api.py auth    # every Sunday before the open
+uv run --env-file .env python -m app.core.schwab_api auth    # every Sunday before the open
 ```
 
-`schwab_api.py` checks token age before every pull and exits with a clear message rather than silently returning nothing.
+`schwab_api.py` checks the login's age before every pull and raises a clear error rather than silently returning nothing; the app shows it at the top of the page.
 
 Auth flows: `--flow manual` (default, no server: paste the URL from the browser's address bar), `--flow listen` (temporary HTTPS listener on 8182; the browser will warn about the self-signed certificate, proceed anyway), `--flow schwabpy` (needs `uv add schwab-py`, and writes a token format this script doesn't read, so it's only useful with schwab-py's own client). Log in with **brokerage** credentials, not developer-portal ones.
 
@@ -194,10 +209,10 @@ Confirmed against a real `$SPX` pull (2026-08-17):
 | `invalid_grant` at auth | authorization code not URL-decoded, or callback string doesn't match the portal exactly |
 | "We are unable to complete your request" | whitespace in key/secret, or two callback URLs comma-separated in one field |
 | 401 on a chain call | app status still "Approved - Pending" |
-| refresh fails after a week | expected; re-run `schwab_api.py auth` |
+| refresh fails after a week | expected; re-run the weekly `auth` command |
 | `--flow listen` permission error | callback has no port, so it defaults to 443; register a port above 1024 |
 | browser certificate warning | expected with `--flow listen`; self-signed cert |
-| 429 | rate limit; back off 60 seconds |
+| 429 | rate limit; the app backs off and retries on its own (it stays under about 100 requests a minute) |
 
 ## Acknowledgments
 

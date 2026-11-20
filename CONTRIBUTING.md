@@ -5,7 +5,7 @@ Thanks for helping build SPX Calendar Trader. Setup is in the [README](README.md
 ## Ground rules
 
 - **Scope lives in [`docs/PLAN.md`](docs/PLAN.md).** If a change isn't in the plan, open an issue first. Items under "Later" wait until the paper trades show the setup works.
-- **Read [`CLAUDE.md`](CLAUDE.md).** It holds the architecture rules (only `app.py` imports Streamlit, services return Pydantic models, settings in `settings.py`, etc.), and Claude Code follows it automatically.
+- **Read [`CLAUDE.md`](CLAUDE.md).** It holds the stack (FastAPI, Jinja templates, HTMX, vanilla JavaScript) and the architecture rules (trading logic only in `app/core/` with no web imports, services return Pydantic models, every API endpoint has a response model, trading numbers in `app/core/config.py`, etc.), and Claude Code follows it automatically.
 - **Never commit secrets or data:** no `.env`, Schwab keys, tokens, account numbers or `data/`. `.gitignore` covers these; check `git status` anyway.
 - **Numbers come from code.** Don't hand-type prices, P/L or break-evens into the UI, docs or test expectations. Test expectations must cite their source (the reference sheet, thinkorswim Analyze).
 
@@ -16,8 +16,9 @@ Thanks for helping build SPX Calendar Trader. Setup is in the [README](README.md
 3. Make small, focused commits. Message: imperative mood, what and why (`Add expiry picker with holiday shift`).
 4. Before pushing:
    - `uv run pytest` passes
-   - `uv run python calendar_math.py selftest` is still 16/16
-   - `grep -rn "import streamlit" --include=*.py . | grep -v app.py` prints nothing
+   - `node --test tests/js/` passes (if you touched JavaScript)
+   - `uv run python -m app.core.calendar_math selftest` is still 16/16
+   - `grep -rn "fastapi\|starlette\|jinja2" app/core` prints nothing
    - no `data/`, `.env`, keys or tokens in `git diff --staged`
 5. Push and open a pull request into `main`, with the step-4 checks passing. One review before merging.
 6. At the end of a work session, add a short entry at the top of [`HANDOVER.md`](HANDOVER.md): what changed, what's next, anything broken or undecided.
