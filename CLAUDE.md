@@ -105,5 +105,5 @@ Run: `uv run serve` → http://localhost:8000 (API docs at `/docs`). `serve` is 
 - Every trade row has an `account` (default "Paper") and services accept an optional `account` argument, so multiple accounts (e.g. IRA vs regular) can be added later without a data migration. No account switcher until the plan says so.
 - Code computes every price, P/L, break-even and size. Never hand-type or estimate a number into the UI, a test expectation (except a cited external source such as the Lane sheet or thinkorswim), or a doc.
 - Never commit `data/`, `*.db`, `.env`, or the Schwab token (`~/.schwab/`, set via `SCHWAB_TOKEN_PATH`). Keys come from `SCHWAB_APP_KEY` / `SCHWAB_APP_SECRET`.
-- `uv run python -m app.core.calendar_math selftest` must stay 16/16 (`uv run python calendar_math.py selftest` until week 1 moves it into `app/core/`). Never edit its expected numbers.
+- `uv run python -m app.core.calendar_math selftest` and `uv run pytest tests/test_calendar_math.py` must stay 16/16. Never edit its expected numbers.
 - At the end of each session, update `HANDOVER.md` (≤ 20 lines): what changed, what's next, anything broken or undecided.
