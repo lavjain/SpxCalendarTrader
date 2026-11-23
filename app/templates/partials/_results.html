@@ -11,7 +11,7 @@
   </section>
   <aside id="panel" class="lg:sticky lg:top-3 self-start min-w-0">
     {% set pair = r.pair %}{% set row = r.row %}{% set snapshot_id = r.snapshot_id %}
-    {% set cost = (row.contracts * (row.price + r.fill_offset) * 100) if row else none %}{% set fill_offset = r.fill_offset %}
+    {% set cost = (row.contracts * (row.price + r.fill_offset) * 100) if row else none %}{% set fill_offset = r.fill_offset %}{% set size_mode = r.size_mode %}{% set size_value = r.size_value %}
     {% include "partials/_calendar_panel.html" %}
   </aside>
 </div>

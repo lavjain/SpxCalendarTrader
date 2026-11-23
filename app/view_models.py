@@ -100,7 +100,14 @@ def results_context(snap: FinderSnapshot, sort: str | None = None, open_key: str
             "sort": sort or "date", "sort_name": sort_name, "sort_desc": sort_desc, "best_key": best_skew_key(snap),
             "open_pair": pair, "open_key": pair_key(pair) if pair else None, "row": row,
             "selected_strike": row.strike if row else None, "pair": pair, "fill_offset": config.FILL_OFFSET,
+            **_size(snap),
             "has_pairs": bool(snap.result.pairs)}
+
+
+def _size(snap: FinderSnapshot) -> dict:
+    """The Size By setting this snapshot was made with: the dialog sizes the trade the same way."""
+    f = snap.result.filters or {}
+    return {"size_mode": f.get("size_mode", "margin"), "size_value": f.get("size_value", config.MARGIN)}
 
 
 def panel_context(snap: FinderSnapshot, short: str, long: str, strike: float | None) -> dict:
@@ -108,4 +115,4 @@ def panel_context(snap: FinderSnapshot, short: str, long: str, strike: float | N
     row = find_row(pair, strike)
     cost = row.contracts * (row.price + config.FILL_OFFSET) * 100 if row else None
     return {"snapshot_id": snap.snapshot_id, "pair": pair, "row": row, "cost": cost,
-            "fill_offset": config.FILL_OFFSET}
+            "fill_offset": config.FILL_OFFSET, **_size(snap)}
