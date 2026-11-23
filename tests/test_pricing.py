@@ -196,6 +196,6 @@ def test_calendar_delta_and_td_come_from_the_model(monkeypatch):
     for r in rows:
         assert abs(r.delta * 1000 - round(r.delta * 1000)) > 1e-9 or r.delta == 0   # not on Schwab's coarse grid
         if r.td is not None:
-            assert r.td == pytest.approx(r.theta / r.delta)
+            assert r.td == pytest.approx(r.theta / abs(r.delta))
         else:
             assert abs(r.delta) < config.TD_MIN_DELTA

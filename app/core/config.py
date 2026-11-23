@@ -9,8 +9,10 @@ SIZE_MODES = ("margin", "contracts")
 FILL_OFFSET = 0.10                   # open at mid + 0.10, close at mid - 0.10
 
 # --- what the Finder looks for
-DELTA_TARGET = 0.40
-DELTA_BAND = (0.35, 0.45)
+DELTA_TARGET = 0.45                  # the strike the Finder stars and the Open Trade dialog starts from
+DELTA_BAND = (0.40, 0.50)            # short-put deltas the Finder lists
+DELTA_LABEL = "45Δ"                  # shown in headings (keep in step with DELTA_TARGET)
+DELTA_BAND_LABEL = "40–50Δ"
 SHORT_DTE_TARGET = 30
 SHORT_DTE_DEFAULT = (25, 35)
 SHORT_DTE_LIMITS = (7, 56)

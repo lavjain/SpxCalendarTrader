@@ -4,7 +4,7 @@
 
 ## What this is
 
-One program, three screens: the core built in 6 weeks, extras in a 2-week second release. Start it with one command (`uv run serve`), open http://localhost:8000, and it shows a calendar finder for ~40Δ SPX put calendars. You pick one, commit it as a paper trade, and then a holdings screen shows its days in trade, current profit and break-evens. Any trade down more than 10% is flagged. Every trade is logged with the market conditions at entry and exit, and a performance screen shows which conditions made money.
+One program, three screens: the core built in 6 weeks, extras in a 2-week second release. Start it with one command (`uv run serve`), open http://localhost:8000, and it shows a calendar finder for ~45Δ SPX put calendars. You pick one, commit it as a paper trade, and then a holdings screen shows its days in trade, current profit and break-evens. Any trade down more than 10% is flagged. Every trade is logged with the market conditions at entry and exit, and a performance screen shows which conditions made money.
 
 No real orders are sent; prices come from your Schwab API pull. Everything from earlier versions that isn't needed for this (quality lights, the eight-rule exit engine, journal statistics, notifications) has moved to Later.
 
@@ -54,7 +54,7 @@ The app is a small web server. FastAPI renders each screen from Jinja templates;
 1. **All trading logic lives in `app/core/`,** with no web imports. Routes, templates and JavaScript only display what it returns.
 2. **One service per endpoint.** `services.py` holds `get_finder()`, `get_holdings()`, `get_performance()`, `get_risk_profile()`, `get_spx_history()`, `quote_spread()`, `parse_tos_order()`, `open_trade()`, `close_trade()`. A JSON route under `/api` and an HTML fragment under `/partials` can wrap the same service; neither adds logic.
 3. **Typed, JSON-ready inputs and outputs.** Services take and return Pydantic models (numbers, strings, ISO dates, lists), never DataFrames or NumPy types. Every `/api` endpoint declares its response model, so `/docs` documents the API.
-4. **The UI only displays.** Decisions are made in services and returned as fields: `is_best_skew`, `is_near_40_delta`, `flag: "loss" | "target" | "delta" | null`, `suggested_price`, `is_stable`, `waiting_reason`, `tos_order`.
+4. **The UI only displays.** Decisions are made in services and returned as fields: `is_best_skew`, `is_near_target_delta`, `flag: "loss" | "target" | "delta" | null`, `suggested_price`, `is_stable`, `waiting_reason`, `tos_order`.
 5. **Raw numbers out, formatting at the edge.** Services return 12.85, not "$12.85"; Jinja filters and `format.js` format them the same way.
 6. **The database is the source of truth.** Trades, marks, the Finder log and every saved setting (per account, in the `settings` table) live in SQLite. The browser keeps only the theme (light or dark) and screen state such as the selected row.
 7. **Polling is a service call.** Holdings refreshes every 30 seconds; the stability check calls `quote_spread()` every 2 seconds while a dialog is open. Polls don't write on every tick: each open trade's `marks` row is saved at most every 5 minutes, on every Refresh, and at the close snapshot after 4:15 PM ET; `finder_log` rows on a Finder Refresh and at the close snapshot.
@@ -71,10 +71,10 @@ Schwab setup is in `README.md`. The token lives in `~/.schwab/`, outside the rep
 
 | Leg | Expiry | Strike |
 | --- | --- | --- |
-| Short | A Friday whose DTE is inside the **short-leg DTE filter** (7–56 days, i.e. 1–8 weeks out; default 25–35, the Friday nearest 30 DTE). **If that Friday is a market holiday, the Thursday before** (Good Friday, Christmas or New Year's Day on a Friday) | Put, ~40Δ (35–45Δ band), on the strikes switched on: **10s** (multiples of 10) and/or **25s** (multiples of 25); both by default, which gives the 10s plus the 25s and 75s |
+| Short | A Friday whose DTE is inside the **short-leg DTE filter** (7–56 days, i.e. 1–8 weeks out; default 25–35, the Friday nearest 30 DTE). **If that Friday is a market holiday, the Thursday before** (Good Friday, Christmas or New Year's Day on a Friday) | Put, ~45Δ (40–50Δ band), on the strikes switched on: **10s** (multiples of 10) and/or **25s** (multiples of 25); both by default, which gives the 10s plus the 25s and 75s |
 | Long | **3, 4, 5, 6 or 7 days after the short's Friday** (SPXW expires every weekday: Mon, Tue, Wed, Thu, next Fri), for each width switched on (default 7). Widths are counted from the nominal Friday, not from the adjusted Thursday. **If the long's day is a market holiday, it moves to the day before too** (a 7-day long on a Friday holiday becomes that Thursday); if that lands on or before the short, the width isn't offered that week. Both legs follow the same rule, so a holiday Friday never leaves a leg with no expiry | Same strike as the short |
 
-The default trade is unchanged: short the Friday nearest 30 DTE, long 7 days later, ~40Δ. The filters widen what the Finder shows. Each saved trade records its short DTE and width, so Performance can compare them.
+The default trade is unchanged: short the Friday nearest 30 DTE, long 7 days later, ~45Δ. The filters widen what the Finder shows. Each saved trade records its short DTE and width, so Performance can compare them.
 
 **Sizing.** By default each trade is sized to **$10,000 of margin**: contracts = margin ÷ (debit × 100), rounded up, the same way `calendar_math.py` sizes the Excel sheet's rows. A calendar's margin is its debit. A **Size by** control lets you change this: **Margin** with any amount you type (default $10,000), or **Contracts** with a fixed number (margin then = debit × 100 × contracts). It applies to the Finder's Contracts and Margin columns and can be overridden per trade in the open dialog. Trades store the sizing mode and value used.
 
@@ -96,7 +96,7 @@ The filters:
 - **Size by:** Margin (amount, default $10,000) or Contracts (a fixed number).
 
 **Calendars table (left).** Press Refresh and it pulls the chain and fills it:
-- **One row per short/long pair**, at that pair's ~40Δ strike. The first cell shows both expiries ("Fri Feb 12 → Fri Feb 19") with the DTEs and the number of strikes under them; then the ~40Δ strike, Contracts, Price, Theta, Vega, Skew, Θ/Mgn and **Best skew** (the highest skew among the pair's strikes, and at which strike). Margin is in the strike rows and the panel (it is about the same for every row when sizing by margin).
+- **One row per short/long pair**, at that pair's ~45Δ strike. The first cell shows both expiries ("Fri Feb 12 → Fri Feb 19") with the DTEs and the number of strikes under them; then the ~45Δ strike, Contracts, Price, Theta, Vega, Skew, Θ/Mgn and **Best skew** (the highest skew among the pair's strikes, and at which strike). Margin is in the strike rows and the panel (it is about the same for every row when sizing by margin).
 - **Split into one segment per width** (a header row such as "7-day width · 2 pairs"), narrowest first. Click a column header to sort within each segment, for example by Best skew.
 - **Click a pair and its strikes open underneath it** (▸ / ▾), indented with a blue edge: every strike from 35Δ to 45Δ with the sheet's columns (Strike, Short Δ, Contracts, Price, Margin, Delta, Gamma, Theta, Vega, Skew, T/D, Θ/Mgn). The strike nearest 40Δ is starred. T/D shows "—" when position delta is near zero, where it means nothing. One pair is open at a time.
 - **Markers instead of filled rows:** an amber left edge on the highest-skew pair and on the highest-skew strike in the open pair; a blue tint and blue left edge on the selected pair and strike. Rows have thin separators and no vertical gridlines; numbers are right-aligned with tabular digits; the header row stays in place while the table scrolls.
@@ -107,7 +107,7 @@ The filters:
 - **SPX chart:** the daily chart described below, with its range and overlay chips and four tiles: distance from the 3-month high, 5-day change, 20-day realized vol and the short leg's IV.
 - **Legs** under both tabs: the short and long puts with expiry and DTE, mark, bid / ask, delta, vega and IV, then **Skew** (short IV − long IV, in vol points) and the **IV ratio** (short IV ÷ long IV), the two numbers that say whether the term structure favours the calendar.
 
-When the Finder first loads, the pair holding the default trade (Friday nearest 30 DTE, 7 days wide) is open, with its ~40Δ strike selected. Which pair and strike are selected is screen state only (held in the page's JavaScript), never stored. The table is an HTML fragment rendered on the server (`partials/_calendars_table.html`, with the strike rows from `partials/_strike_rows.html`); clicking a header re-sorts within the segments, clicking a pair loads its strike rows with HTMX, and clicking a strike loads the panel (`partials/_calendar_panel.html`) and the chart data.
+When the Finder first loads, the pair holding the default trade (Friday nearest 30 DTE, 7 days wide) is open, with its ~45Δ strike selected. Which pair and strike are selected is screen state only (held in the page's JavaScript), never stored. The table is an HTML fragment rendered on the server (`partials/_calendars_table.html`, with the strike rows from `partials/_strike_rows.html`); clicking a header re-sorts within the segments, clicking a pair loads its strike rows with HTMX, and clicking a strike loads the panel (`partials/_calendar_panel.html`) and the chart data.
 
 **SPX chart.** Daily candles for SPX, **3 months by default**, with range chips 1M, 3M, 6M, 1Y and 2Y to zoom out.
 - **Overlays** (on/off chips): the 20- and 50-day averages; the selected calendar's strike (red dashed) with its break-evens at the short expiry as a shaded band; and the short and long expiries as dashed lines to the right of today, so the tent is drawn against recent price swings.
@@ -233,7 +233,7 @@ SELL -13 CALENDAR SPX 100 (Weeklys) 12 FEB 27/5 FEB 27 6735 PUT @8.70 LMT
 
 **Paste from TOS.** The Open trade and Close trade dialogs have a **⇩ Paste from TOS** button directly below Copy to TOS. Paste an order line copied from thinkorswim, in the same format Copy to TOS writes (for example `BUY +10 CALENDAR SPX 100 (Weeklys) 12 FEB 27/5 FEB 27 6780 PUT @9.20 LMT`), and the dialog takes its trade, price and contracts from it. Two uses: recording the price you actually got in TOS, and entering a trade placed straight in thinkorswim from any row, without building it in the Finder.
 - **What it reads:** BUY or SELL, contracts, the two expiries (in either order; the earlier one is the short), strike, PUT, and the limit price. The service `parse_tos_order(text)` returns these fields or says which part it couldn't read; the parsing has its own tests.
-- **Open trade dialog (BUY line):** the pasted order replaces what the dialog showed. Checks: both expiries are SPXW dates, the width is 3–7 days, it is a put calendar (calls are refused for now), and the trade isn't already in Holdings; the short leg's delta is shown, with a warning (not a block) outside 35–45Δ. The fill price comes from the line and the fill time defaults to now; both are editable, for a trade filled earlier. Contracts come from the line, not from Size by. The entry snapshot (SPX, VIX, IVs, skew, break-evens) is taken from the nearest saved Finder refresh to the fill time, or from a fresh quote if there is none, and the dialog says which. Saved with `price_source = "pasted"`.
+- **Open trade dialog (BUY line):** the pasted order replaces what the dialog showed. Checks: both expiries are SPXW dates, the width is 3–7 days, it is a put calendar (calls are refused for now), and the trade isn't already in Holdings; the short leg's delta is shown, with a warning (not a block) outside 40–50Δ. The fill price comes from the line and the fill time defaults to now; both are editable, for a trade filled earlier. Contracts come from the line, not from Size by. The entry snapshot (SPX, VIX, IVs, skew, break-evens) is taken from the nearest saved Finder refresh to the fill time, or from a fresh quote if there is none, and the dialog says which. Saved with `price_source = "pasted"`.
 - **Close trade dialog (SELL line):** the line must match the trade being closed (strike, expiries, contracts); it sets the exit price and, if edited, the exit time. A partial close (fewer contracts) is refused for now.
 - A SELL line in the open dialog, or a BUY line in the close dialog, is refused with a message saying which dialog it belongs in.
 
@@ -344,7 +344,7 @@ Six weeks at about 6–8 hours a week, Nov 24, 2026 to Jan 4, 2027, with Claude 
 Step-by-step version: [WEEK1.md](WEEK1.md).
 
 - [x] Starting files in place; `calendar_math.py` self-test passes 16/16
-- [x] Fix the pull: use one strike for both legs, return the 35–45Δ puts for the chosen expiries on the strikes switched on (10s and/or 25s), keep SPXW contracts on the third-Friday expiry, and limit the pull to 63 DTE
+- [x] Fix the pull: use one strike for both legs, return the 40–50Δ puts for the chosen expiries on the strikes switched on (10s and/or 25s), keep SPXW contracts on the third-Friday expiry, and limit the pull to 63 DTE
 - [x] Expiry picker: every Friday in the short-leg DTE range (default 25–35), each paired with longs 3–7 days later for the widths switched on (default 7); holidays handled
 - [x] Calendar pricer in `pricing.py`: Black-Scholes put (forward form), forward per expiry from put-call parity (the chain pull adds the calls nearest the money, which parity needs), value at mid now, P/L across SPX levels on the short expiry and on any date before it, break-evens with `brentq`; `tests/test_pricing.py` (see How the risk profile is computed)
 - [x] Move `schwab_api.py` and `calendar_math.py` into `app/core/` and make the Schwab code safe to call from a web server: exceptions instead of `sys.exit`, the 7-day login age kept separately from the 30-minute access-token refresh, market dates in New York time, a lock around token refresh, a short cache and a rate limiter (see WEEK1.md, step 4)
@@ -358,7 +358,7 @@ Step-by-step version: [WEEK2.md](WEEK2.md).
 
 - [x] `uv add fastapi "uvicorn[standard]" jinja2 pydantic-settings` and `uv remove streamlit`; `[project.scripts] serve = "app.main:serve"` in `pyproject.toml` (with `[tool.uv] package = true` so uv installs the script); FastAPI app (`app/main.py`, with a `serve()` function behind the `uv run serve` script) with `base.html`, the header (tabs, account, theme toggle) and footer partials, `page_context()`, `/static`, `GET /api/health`, and `GET /api/spot` + `GET /api/expirations`; `/docs` lists them; `.vscode/launch.json` gets an **App** configuration (uvicorn with reload) in place of the old Streamlit one
 - [x] Finder filter bar: short-leg DTE range (7–56, default 25–35), width chips (3–7 days, default 7), Size by (Margin, default $10,000, or Contracts), strike chips (10s and/or 25s, default both); saved in the `settings` table
-- [x] Finder page: Calendars table (one row per short/long pair at ~40Δ, one segment per width, sortable within segments; click a pair to open its strike rows underneath, click a strike to select it) and the selected calendar panel, as HTMX partials over `get_finder()`
+- [x] Finder page: Calendars table (one row per short/long pair at ~45Δ, one segment per width, sortable within segments; click a pair to open its strike rows underneath, click a strike to select it) and the selected calendar panel, as HTMX partials over `get_finder()`
 - [x] Save every Finder row (the whole strike ladder) to `finder_log` on each refresh, so daily closes start collecting for Vol P&L
 - [x] Selected calendar panel: Open trade… button, tiles (cost, break-evens, delta, theta, vega from `get_finder()`), and Legs with skew and IV ratio; its Risk profile tab is added in week 3
 - [x] Status strip (time, SPX, short expiries, sizing) under the filter bar
@@ -381,7 +381,7 @@ Step-by-step version: [WEEK3.md](WEEK3.md).
 - [ ] Risk profile tab in the Finder panel (moved from week 2, which was the fullest week):  `get_risk_profile()` (Today and At-short-expiry lines, profit/loss shading, ±1 SD band, break-evens, tiles) at `GET /api/risk-profile`, painted on canvas by `charts/riskgraph.js` (read-only: hover crosshair, zoom, pan)
 - [ ] ⓘ popovers on the Finder's tiles and controls (moved from week 2)
 
-Done when you can refresh, pick a 40Δ calendar and commit it in under a minute.
+Done when you can refresh, pick a 45Δ calendar and commit it in under a minute.
 
 ### Week 4 — Holdings screen (Dec 15–21)
 
@@ -475,4 +475,4 @@ Open questions:
 - [ ] Is the −10% flag an exit for paper trading, or only a warning?
 - [ ] Stability test: is a $0.10 range over 10 seconds right, or should it loosen on fast days?
 - [x] Break-evens at the short expiry (the thinkorswim default), or at your 7-day exit date? **Decided: short expiry.**
-- [ ] Delta band: keep 35–45Δ around the 40Δ target, or tighten to 38–42Δ?
+- [x] Delta band: decided Nov 23, 2026: list 40–50Δ with 45Δ as the target (35–40Δ strikes had too wide a bid-ask to trade). `config.DELTA_BAND` and `DELTA_TARGET`.

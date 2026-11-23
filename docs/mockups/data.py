@@ -106,7 +106,7 @@ def finder(S, now, atm_s, atm_l, band=(0.35, 0.45), width=7, friday=None, sets=S
     near = min(rows, key=lambda r: abs(abs(r["s"]["delta"]) - 0.40))
     for r in rows:
         r["is_best_skew"] = r is best
-        r["is_near_40_delta"] = r is near
+        r["is_near_target_delta"] = r is near
     return dict(now=now, spx=S, width=width, short_exp=se, long_exp=le, rows=rows, best=best, near=near)
 
 

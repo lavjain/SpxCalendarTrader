@@ -61,7 +61,7 @@ class CalendarRow(BaseModel):
     iv_ratio: float | None = None    # short IV / long IV
     break_evens: BreakEvens | None = None   # at the short expiry, for this strike
     is_best_skew: bool = False
-    is_near_40_delta: bool = False
+    is_near_target_delta: bool = False
 
 
 class PairSummary(BaseModel):
@@ -70,7 +70,7 @@ class PairSummary(BaseModel):
     short_dte: int
     long_dte: int
     width: int
-    near_40_delta: CalendarRow | None = None
+    near_target_delta: CalendarRow | None = None
     best_skew: float | None = None
     best_skew_strike: float | None = None
     break_evens: BreakEvens | None = None   # of the ~40-delta row, None if no forward could be built

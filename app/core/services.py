@@ -71,7 +71,7 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
                strike_sets=config.STRIKE_SETS, size_mode="margin",
                size_value=config.MARGIN) -> FinderResult:
     """Pick expiry pairs, pull the chain, and return one PairSummary per pair with a CalendarRow
-    for every 35-45 delta strike. Per pair: one `is_near_40_delta` row (short delta nearest 0.40)
+    for every strike in config.DELTA_BAND. Per pair: one `is_near_target_delta` row (the name is historical: short delta nearest config.DELTA_TARGET)
     and one `is_best_skew` row (highest short IV - long IV)."""
     if size_mode not in config.SIZE_MODES:
         raise ValueError(f"size_mode must be one of {config.SIZE_MODES}")
@@ -128,7 +128,7 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
                 d_l = pricing.bs_put_delta(f_long, legs[1].strike, pricing.years(today, date.fromisoformat(pair.long)),
                                            implied[1] / 100, spx)
                 row.delta = (d_l - d_s) * cal.contracts * 100.0
-                row.td = row.theta / row.delta if abs(row.delta) >= config.TD_MIN_DELTA else None
+                row.td = row.theta / abs(row.delta) if abs(row.delta) >= config.TD_MIN_DELTA else None
             if f_long:
                 try:
                     row.break_evens = pricing.break_evens(row, spx, f_long, today)
@@ -139,11 +139,11 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
         if rows:
             near = min(rows, key=lambda r: abs(abs(r.short.delta) - config.DELTA_TARGET))
             best = max(rows, key=lambda r: r.skew)
-            near.is_near_40_delta, best.is_best_skew = True, True
+            near.is_near_target_delta, best.is_best_skew = True, True
         be = near.break_evens if near else None
         summaries.append(PairSummary(
             short_expiry=pair.short, long_expiry=pair.long, short_dte=pair.short_dte,
-            long_dte=pair.long_dte, width=pair.width, near_40_delta=near,
+            long_dte=pair.long_dte, width=pair.width, near_target_delta=near,
             best_skew=best.skew if best else None, best_skew_strike=best.strike if best else None,
             break_evens=be, strike_count=len(rows), rows=rows))
     return FinderResult(time=now.isoformat(timespec="seconds"), spx=spx, filters=filters,
@@ -190,7 +190,7 @@ def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEF
     i = pair_index if pair_index is not None else min(
         range(len(summaries)), key=lambda j: abs(summaries[j].short_dte - config.SHORT_DTE_TARGET))
     summary = summaries[i]
-    row = summary.near_40_delta
+    row = summary.near_target_delta
     if row is None:
         raise ValueError("that pair has no rows")
     pair = pick_expiries(today, dte_range, widths)[i]

@@ -28,7 +28,7 @@ def env(tmp_path, monkeypatch):
     store.init()
     res = services.get_finder(dte_range=(7, 56), widths=(7,))
     pair = next(p for p in res.pairs if p.rows)
-    row = pair.near_40_delta
+    row = pair.near_target_delta
     quotes = {"mid": 12.80}
 
     def fake_get_quotes(symbols, use_cache=True):

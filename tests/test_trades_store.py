@@ -95,6 +95,25 @@ def test_a_v1_database_upgrades_in_place(tmp_path):
     s.init()
     assert s.get_setting("finder_filters") == {"widths": [7]}            # old data intact
     with sqlite3.connect(path) as con:
-        assert con.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "2"
+        assert con.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "3"
     s.init()                                                            # and repeatable
     assert s.insert_trade(make()) == 1
+
+
+def test_a_v2_file_gets_the_renamed_finder_log_column_and_keeps_its_rows(tmp_path):
+    import sqlite3
+    path = str(tmp_path / "old.db")
+    with sqlite3.connect(path) as con:
+        con.executescript("""
+            CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+            INSERT INTO meta VALUES ('schema_version', '2');
+            CREATE TABLE finder_log (id INTEGER PRIMARY KEY, trade_date TEXT, short_expiry TEXT, long_expiry TEXT,
+                                     is_near_40_delta INTEGER);
+            INSERT INTO finder_log VALUES (1, '2026-11-20', '2026-12-24', '2026-12-31', 1);
+        """)
+    Store(path).init()
+    with sqlite3.connect(path) as con:
+        cols = [r[1] for r in con.execute("PRAGMA table_info(finder_log)")]
+        assert "is_near_target_delta" in cols and "is_near_40_delta" not in cols
+        assert con.execute("SELECT is_near_target_delta FROM finder_log").fetchone()[0] == 1
+        assert con.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "3"

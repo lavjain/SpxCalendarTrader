@@ -16,6 +16,7 @@ TEMPLATES_DIR = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 for _name in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma"):
     templates.env.filters[_name] = getattr(formatting, _name)
+templates.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 
 router = APIRouter()
 

@@ -14,6 +14,7 @@ from tests.test_services import CHAIN
 T = Jinja2Templates(directory=str(Path(__file__).parent.parent / "app" / "templates"))
 for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma"):
     T.env.filters[n] = getattr(formatting, n)
+T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 T.env.globals["url_for"] = lambda name, **kw: "/static/" + kw.get("path", "")
 
 

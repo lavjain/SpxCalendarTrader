@@ -6,13 +6,13 @@ from app.schemas import FinderSnapshot
 
 SORTS = {                       # key -> (value of a pair, descending by default)
     "date": (lambda p: (p.short_expiry, p.long_expiry), False),
-    "strike": (lambda p: p.near_40_delta.strike if p.near_40_delta else None, False),
-    "contracts": (lambda p: p.near_40_delta.contracts if p.near_40_delta else None, True),
-    "price": (lambda p: p.near_40_delta.price if p.near_40_delta else None, False),
-    "theta": (lambda p: p.near_40_delta.theta if p.near_40_delta else None, True),
-    "vega": (lambda p: p.near_40_delta.vega if p.near_40_delta else None, True),
-    "skew": (lambda p: p.near_40_delta.skew if p.near_40_delta else None, True),
-    "theta_margin": (lambda p: p.near_40_delta.theta_margin if p.near_40_delta else None, True),
+    "strike": (lambda p: p.near_target_delta.strike if p.near_target_delta else None, False),
+    "contracts": (lambda p: p.near_target_delta.contracts if p.near_target_delta else None, True),
+    "price": (lambda p: p.near_target_delta.price if p.near_target_delta else None, False),
+    "theta": (lambda p: p.near_target_delta.theta if p.near_target_delta else None, True),
+    "vega": (lambda p: p.near_target_delta.vega if p.near_target_delta else None, True),
+    "skew": (lambda p: p.near_target_delta.skew if p.near_target_delta else None, True),
+    "theta_margin": (lambda p: p.near_target_delta.theta_margin if p.near_target_delta else None, True),
     "best_skew": (lambda p: p.best_skew, True),
 }
 
@@ -56,7 +56,7 @@ def best_skew_key(snap: FinderSnapshot) -> str | None:
 
 def default_pair(snap: FinderSnapshot) -> PairSummary | None:
     """The pair holding the default trade: default width, short nearest 30 DTE."""
-    have = [p for p in snap.result.pairs if p.near_40_delta]
+    have = [p for p in snap.result.pairs if p.near_target_delta]
     narrowed = [p for p in have if p.width == config.WIDTHS_DEFAULT[0]] or have
     return min(narrowed, key=lambda p: (abs(p.short_dte - config.SHORT_DTE_TARGET), p.short_expiry),
                default=None)
@@ -70,7 +70,7 @@ def find_row(pair: PairSummary | None, strike: float | None) -> CalendarRow | No
     if pair is None:
         return None
     if strike is None:
-        return pair.near_40_delta
+        return pair.near_target_delta
     return next((r for r in pair.rows if r.strike == strike), None)
 
 
