@@ -50,18 +50,32 @@ class Leg:
         self.label = label or f"{self.dte}d"
 
 
+def _whole(x: float, rounding: str) -> int:
+    if rounding == "ceil":
+        return math.ceil(x)
+    if rounding == "nearest":
+        return max(1, math.floor(x + 0.5))
+    if rounding == "floor":
+        return max(1, math.floor(x))
+    raise ValueError(f"unknown rounding {rounding!r}")
+
+
 class Calendar:
     """Short the near leg, long the far leg. All position greeks are per-contract
     (x100) then scaled by contract count, matching the source spreadsheet."""
 
-    def __init__(self, short: Leg, long: Leg, capital: float):
+    def __init__(self, short: Leg, long: Leg, capital: float, rounding: str = "ceil",
+                 contracts: int | None = None):
+        """rounding: how capital / (debit*100) becomes whole contracts. "ceil" is the spreadsheet's rule
+        (margin is at least the target); "nearest" rounds half up, at least 1; "floor" never exceeds the
+        target, at least 1. `contracts` fixes the count and ignores capital."""
         self.s, self.l = short, long
         self.debit = long.mark - short.mark
         self.width = long.dte - short.dte
         if self.debit <= 0:
             self.contracts = 0
         else:
-            self.contracts = math.ceil(capital / (self.debit * 100.0))
+            self.contracts = contracts if contracts is not None else _whole(capital / (self.debit * 100.0), rounding)
         k = self.contracts * 100.0
         self.margin = self.debit * k
         self.delta = (long.delta - short.delta) * k

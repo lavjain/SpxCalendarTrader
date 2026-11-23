@@ -109,7 +109,33 @@ Then open <http://localhost:8000>. It starts on the Finder: set the filters, pre
 uv run --env-file .env python -m cli candidates
 ```
 
-Options (all optional; the defaults are the Finder's defaults): `--dte-min 25 --dte-max 35 --widths 7 --strike-sets 10 25 --size-mode margin --size-value 10000`. Example: `uv run --env-file .env python -m cli candidates --dte-min 20 --dte-max 40 --widths 5 7 --size-mode contracts --size-value 2`. To see why break-evens differ from thinkorswim: `uv run --env-file .env python -m cli diagnose --tos 6871.92 7415.05`.
+Options (all optional; the defaults below are the Finder's defaults, from `app/core/config.py`):
+
+| Option | Default | Meaning |
+|---|---|---|
+| `--dte-min` / `--dte-max` | 25 / 35 | short-leg DTE range |
+| `--widths` | 7 | days between short and long expiry (any of 3 4 5 6 7) |
+| `--strike-sets` | 10 25 | strike spacing: 10 = 10s plus 25/75, 25 = 25s |
+| `--size-mode` | margin | `margin`: contracts = target margin ÷ debit; `contracts`: a fixed count |
+| `--size-value` | 10000 | target margin in dollars, or the number of contracts |
+
+Contracts are rounded to the **nearest** whole contract (at least 1), so margin lands within half a contract of the target, above or below it. Change `SIZE_ROUNDING` in `app/core/config.py` to `"ceil"` (never under the target, the original spreadsheet rule) or `"floor"` (never over).
+
+Help, with every option and its default, is built in:
+
+```bash
+uv run --env-file .env python -m cli --help               # the commands and examples
+uv run --env-file .env python -m cli candidates --help    # every option of candidates, with defaults
+uv run --env-file .env python -m cli diagnose --help
+```
+
+Examples:
+
+```bash
+uv run --env-file .env python -m cli candidates --dte-min 20 --dte-max 40 --widths 5 7
+uv run --env-file .env python -m cli candidates --size-mode contracts --size-value 2
+uv run --env-file .env python -m cli diagnose --tos 6871.92 7415.05   # why break-evens differ from thinkorswim
+```
 
 **Tests:**
 

@@ -6,6 +6,7 @@ Updated at the end of every work session (≤ 20 lines). Newest first.
 - Done and tested in a sandbox (166 py tests + 29 js tests): td dash near zero delta, IVs implied from mids, per-row break-evens, `get_spot`, `get_expirations`; `app/` FastAPI factory (`create_app`), `/api` health, spot, expirations, finder refresh/get, settings; SQLite `Store` (settings, `finder_log`, one row per strike); snapshots in memory (5, 10 min) and saved to data/snapshots.json (one file, newest 20); shared Python/JS formatters; Finder page (filters, status strip, Calendars table with strike rows, calendar panel with tiles and legs).
 - NOT run yet: the FastAPI layer (no FastAPI in the sandbox). First run: `uv sync` (commit `uv.lock`), `uv run pytest` (tests/test_routes.py runs for the first time), `node --test tests/js/*.test.mjs`, `uv run serve`, open http://127.0.0.1:8000.
 - Deviations from WEEK2.md: break-evens per row in `get_finder()` (no `get_calendar_detail`); Refresh = JS fetch POST then `htmx.ajax` GET of partials; `create_app` factory; node glob form.
+- Sizing now rounds margin to the NEAREST whole contract (`config.SIZE_ROUNDING`; `Calendar(rounding=...)` keeps `ceil` as its default so the spreadsheet self-test still matches). CLI has full `--help` with defaults.
 - Open decisions: snapshots now also on disk; T/D shown to 2 decimals, dash threshold 2.0; "Open trade" disabled until week 3; NYSE holiday list for 2026-27 still unverified.
 - Step 10 (yours): paste a real thinkorswim order into `tests/fixtures/tos_order_samples.txt`.
 

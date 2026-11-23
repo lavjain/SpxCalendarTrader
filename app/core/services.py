@@ -39,10 +39,9 @@ def _calendar(short: OptionQuote, long: OptionQuote, pair: ExpiryPair, size_mode
     if debit <= 0:
         return None
     if size_mode == "margin":
-        capital = size_value
-    else:                                    # a fixed contract count: ceil((n - 0.5)) == n
-        capital = (size_value - 0.5) * debit * 100.0
-    cal = Calendar(s, l, capital)
+        cal = Calendar(s, l, size_value, rounding=config.SIZE_ROUNDING)
+    else:                                    # a fixed contract count
+        cal = Calendar(s, l, 0.0, contracts=int(size_value))
     return cal if cal.contracts > 0 else None
 
 

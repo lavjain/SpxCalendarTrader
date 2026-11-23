@@ -62,17 +62,44 @@ def format_diagnosis(d: dict) -> str:
     return "\n".join(out)
 
 
+EXAMPLES = """\
+examples:
+  uv run --env-file .env python -m cli candidates
+  uv run --env-file .env python -m cli candidates --dte-min 20 --dte-max 40 --widths 5 7
+  uv run --env-file .env python -m cli candidates --size-mode contracts --size-value 2
+  uv run --env-file .env python -m cli diagnose --tos 6871.92 7415.05
+
+Defaults come from app/core/config.py. Run `... candidates --help` or `... diagnose --help` for each command."""
+
+
+class _Fmt(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+    """Shows each option's default in --help and keeps the examples' line breaks."""
+
+
 def main(argv=None):
-    p = argparse.ArgumentParser(prog="cli", description=__doc__)
-    sub = p.add_subparsers(dest="cmd", required=True)
-    c = sub.add_parser("candidates", help="today's 35-45 delta SPX put calendars")
-    c.add_argument("--dte-min", type=int, default=config.SHORT_DTE_DEFAULT[0])
-    c.add_argument("--dte-max", type=int, default=config.SHORT_DTE_DEFAULT[1])
-    c.add_argument("--widths", type=int, nargs="+", default=list(config.WIDTHS_DEFAULT))
-    c.add_argument("--strike-sets", nargs="+", default=list(config.STRIKE_SETS), choices=config.STRIKE_SETS)
-    c.add_argument("--size-mode", choices=config.SIZE_MODES, default="margin")
-    c.add_argument("--size-value", type=float, default=config.MARGIN)
-    d = sub.add_parser("diagnose", help="why do the break-evens differ from thinkorswim?")
+    p = argparse.ArgumentParser(
+        prog="python -m cli", formatter_class=_Fmt, epilog=EXAMPLES,
+        description="SPX calendar finder from the terminal. Needs a Schwab login (weekly) and keys in .env.")
+    sub = p.add_subparsers(dest="cmd", required=True, metavar="{candidates,diagnose}")
+    c = sub.add_parser("candidates", formatter_class=_Fmt, epilog=EXAMPLES,
+                       help="print today's 35-45 delta SPX put calendars, one table per expiry pair",
+                       description="Pull the SPX chain and print every 35-45 delta put calendar for each short/long "
+                                   "expiry pair, with the ~40 delta strike (*40D), the best skew (BEST-SKEW) and break-evens.")
+    c.add_argument("--dte-min", type=int, default=config.SHORT_DTE_DEFAULT[0], help="shortest short-leg DTE")
+    c.add_argument("--dte-max", type=int, default=config.SHORT_DTE_DEFAULT[1], help="longest short-leg DTE")
+    c.add_argument("--widths", type=int, nargs="+", default=list(config.WIDTHS_DEFAULT), metavar="DAYS",
+                   help=f"days between short and long expiry, any of {list(config.WIDTHS)}")
+    c.add_argument("--strike-sets", nargs="+", default=list(config.STRIKE_SETS), choices=config.STRIKE_SETS,
+                   metavar="SET", help="strike spacing: 10 = 10s plus 25/75, 25 = 25s")
+    c.add_argument("--size-mode", choices=config.SIZE_MODES, default="margin",
+                   help="margin: contracts = target margin / debit, rounded to the nearest whole contract; "
+                        "contracts: a fixed number of contracts")
+    c.add_argument("--size-value", type=float, default=config.MARGIN,
+                   help="target margin in dollars (margin mode) or number of contracts (contracts mode)")
+    d = sub.add_parser("diagnose", formatter_class=_Fmt, epilog=EXAMPLES,
+                       help="show the inputs behind one calendar's break-evens (vs thinkorswim)",
+                       description="Print the numbers behind a calendar's break-evens, and compare them with the "
+                                   "break-evens thinkorswim shows in Analyze.")
     d.add_argument("--pair", type=int, default=None, help="pair number, 0 = first (default: nearest 30 DTE)")
     d.add_argument("--tos", type=float, nargs=2, metavar=("LOWER", "UPPER"),
                    help="thinkorswim break-evens at the short expiry")

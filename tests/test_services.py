@@ -43,9 +43,10 @@ def test_summary_matches_its_rows(mocked):
     assert all(r.short.strike == r.long.strike == r.strike for r in p.rows)
 
 
-def test_margin_sizing_matches_ceil_rule(mocked):
+def test_margin_sizing_rounds_to_the_nearest_whole_contract(mocked):
     for r in flat(services.get_finder(size_value=10_000)):
-        assert r.contracts == -(-10_000 // (r.price * 100)) or r.contracts * r.price * 100 >= 10_000
+        assert r.contracts == max(1, int(10_000 / (r.price * 100) + 0.5))
+        assert abs(r.margin - 10_000) <= r.price * 50 + 1e-6 or r.contracts == 1   # within half a contract
         assert r.margin == pytest.approx(r.price * 100 * r.contracts)
         assert r.contracts == int(r.contracts)
 

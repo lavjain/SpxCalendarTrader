@@ -2,6 +2,7 @@
 
 # --- sizing / fills
 MARGIN = 10_000                      # default when sizing by margin
+SIZE_ROUNDING = "nearest"            # margin -> contracts: "nearest" (half up, min 1), "ceil" or "floor"
 SIZE_MODES = ("margin", "contracts")
 FILL_OFFSET = 0.10                   # open at mid + 0.10, close at mid - 0.10
 
