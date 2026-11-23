@@ -122,3 +122,60 @@ def test_rows_carry_mid_implied_ivs_close_to_the_fixture_ivs(mocked):
     for r in flat(services.get_finder()):
         assert r.short_iv_implied == pytest.approx(r.short_iv, abs=0.3)
         assert r.long_iv_implied == pytest.approx(r.long_iv, abs=0.3)
+
+
+# ------------------------------------------------------------- week 2, step 1 and 4 services
+from types import SimpleNamespace
+
+
+def test_td_is_none_when_position_delta_is_near_zero():
+    assert services._td(SimpleNamespace(delta=0.0, td=float("nan"))) is None
+    assert services._td(SimpleNamespace(delta=-1.0, td=-528.0)) is None
+    assert services._td(SimpleNamespace(delta=-6.0, td=-87.0)) == -87.0
+
+
+def test_rows_use_implied_ivs_for_skew_and_have_iv_ratio_and_break_evens(mocked):
+    rows = flat(services.get_finder())
+    for r in rows:
+        assert r.short_iv_implied and r.long_iv_implied
+        assert r.short_iv == r.short_iv_implied and r.long_iv == r.long_iv_implied
+        assert r.skew == pytest.approx(r.short_iv - r.long_iv, abs=1e-6)
+        assert r.iv_ratio == pytest.approx(r.short_iv / r.long_iv)
+        assert r.break_evens and r.break_evens.lower < r.strike < r.break_evens.upper
+        assert r.td is None or isinstance(r.td, float)
+    p = services.get_finder().pairs[0]
+    assert p.break_evens == p.near_40_delta.break_evens
+
+
+def test_row_with_a_nan_td_still_round_trips():
+    r = flat_row_with_td(None)
+    assert type(r).model_validate_json(r.model_dump_json()) == r
+
+
+def flat_row_with_td(td):
+    from tests.test_models import row
+    return row().model_copy(update={"td": td})
+
+
+def test_get_spot_batches_one_call_and_tolerates_missing(monkeypatch):
+    calls = []
+    monkeypatch.setattr(schwab_api, "get_quotes", lambda syms: calls.append(syms) or {
+        "$SPX": {"bid": None, "ask": None, "mark": 7000.5, "last": 7001.0},
+        "$VIX": {"bid": None, "ask": None, "mark": 18.0, "last": None}})
+    s = services.get_spot()
+    assert calls == [["$SPX", "$VIX", "$VIX9D"]]
+    assert (s.spx, s.vix, s.vix9d) == (7001.0, 18.0, None)
+
+
+def test_get_expirations_flags_widths_without_a_pair(monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2027, 1, 12))
+    res = services.get_expirations((25, 35), (4, 7))
+    assert 3 in res.unavailable_widths                        # Presidents' Day kills the 3-day pair
+    assert {p.width for p in res.pairs} == {4, 7}
+
+
+def test_cli_table_survives_a_dash_td(mocked, capsys):
+    import cli
+    res = services.get_finder()
+    res.pairs[0].rows[0].td = None
+    assert "-" in cli.format_finder(res)

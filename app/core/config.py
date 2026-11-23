@@ -28,6 +28,7 @@ WAIT_TIMEOUT_S = 60
 FLAG_LOSS = -0.10
 FLAG_TARGET = 0.10
 MAX_DELTA_PER_CONTRACT = 2.0
+TD_MIN_DELTA = 2.0                   # below this position delta, T/D means nothing (shown as a dash)
 
 # --- market time and polling
 CLOSE_SNAPSHOT_ET = "16:15"

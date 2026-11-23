@@ -13,19 +13,28 @@ from scipy.optimize import brentq
 from app.core import config, pricing, schwab_api
 from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries
-from app.core.models import CalendarRow, ExpiryPair, FinderResult, OptionQuote, PairSummary
+from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, OptionQuote,
+                             PairSummary, Spot)
 
 SYMBOL = "$SPX"
 
 
 # ---------------------------------------------------------------- the Finder
 
-def _leg(q: OptionQuote, dte: int) -> Leg:
-    return Leg(dte, q.mark, q.delta, q.gamma or 0.0, q.theta or 0.0, q.vega or 0.0, q.iv)
+def _leg(q: OptionQuote, dte: int, iv: float) -> Leg:
+    return Leg(dte, q.mark, q.delta, q.gamma or 0.0, q.theta or 0.0, q.vega or 0.0, iv)
 
 
-def _calendar(short: OptionQuote, long: OptionQuote, pair: ExpiryPair, size_mode, size_value):
-    s, l = _leg(short, pair.short_dte), _leg(long, pair.long_dte)
+def _td(cal) -> float | None:
+    """Theta / delta, or None when position delta is too small for the ratio to mean anything."""
+    if abs(cal.delta) < config.TD_MIN_DELTA:
+        return None
+    return float(cal.td)
+
+
+def _calendar(short: OptionQuote, long: OptionQuote, pair: ExpiryPair, size_mode, size_value,
+              short_iv: float, long_iv: float):
+    s, l = _leg(short, pair.short_dte, short_iv), _leg(long, pair.long_dte, long_iv)
     debit = l.mark - s.mark
     if debit <= 0:
         return None
@@ -37,14 +46,17 @@ def _calendar(short: OptionQuote, long: OptionQuote, pair: ExpiryPair, size_mode
     return cal if cal.contracts > 0 else None
 
 
-def _row(short, long, pair, cal) -> CalendarRow:
+def _row(short, long, pair, cal, short_iv, long_iv, implied) -> CalendarRow:
+    """short_iv / long_iv are the IVs used (mid-implied when available, else Schwab's)."""
     return CalendarRow(
         strike=short.strike, width=pair.width, short=short, long=long, contracts=cal.contracts,
         price=float(cal.debit), margin=float(cal.margin), delta=float(cal.delta),
         gamma=float(cal.gamma), theta=float(cal.theta), vega=float(cal.vega),
-        short_iv=float(short.iv), long_iv=float(long.iv),
+        short_iv=float(short_iv), long_iv=float(long_iv),
         short_vega=float(short.vega or 0.0), long_vega=float(long.vega or 0.0),
-        skew=float(cal.skew), td=float(cal.td), theta_margin=float(cal.theta_margin))
+        short_iv_implied=implied[0], long_iv_implied=implied[1],
+        skew=float(cal.skew), td=_td(cal), theta_margin=float(cal.theta_margin),
+        iv_ratio=float(short_iv / long_iv) if long_iv else None)
 
 
 def _spot(chain) -> float:
@@ -91,24 +103,29 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
         rows = []
         for k in strikes:
             legs = schwab_api.calendar_legs(puts, pair.short, pair.long, k)
-            cal = _calendar(*legs, pair, size_mode, size_value) if legs else None
-            if cal:
-                row = _row(*legs, pair, cal)
-                if f_short and f_long:      # IVs that reproduce the mids, for P/L and break-evens
-                    row.short_iv_implied = pricing.implied_iv(row.short, f_short, today)
-                    row.long_iv_implied = pricing.implied_iv(row.long, f_long, today)
-                rows.append(row)
+            if not legs:
+                continue
+            implied = (None, None)
+            if f_short and f_long:      # IVs that reproduce the mids, for skew, P/L and break-evens
+                implied = (pricing.implied_iv(legs[0], f_short, today),
+                           pricing.implied_iv(legs[1], f_long, today))
+            s_iv, l_iv = implied[0] or legs[0].iv, implied[1] or legs[1].iv
+            cal = _calendar(*legs, pair, size_mode, size_value, s_iv, l_iv)
+            if not cal:
+                continue
+            row = _row(*legs, pair, cal, s_iv, l_iv, implied)
+            if f_long:
+                try:
+                    row.break_evens = pricing.break_evens(row, spx, f_long, today)
+                except ValueError:
+                    row.break_evens = None
+            rows.append(row)
         near = best = None
         if rows:
             near = min(rows, key=lambda r: abs(abs(r.short.delta) - config.DELTA_TARGET))
             best = max(rows, key=lambda r: r.skew)
             near.is_near_40_delta, best.is_best_skew = True, True
-        be = None
-        if near and f_long:
-            try:
-                be = pricing.break_evens(near, spx, f_long, today)
-            except ValueError:
-                be = None
+        be = near.break_evens if near else None
         summaries.append(PairSummary(
             short_expiry=pair.short, long_expiry=pair.long, short_dte=pair.short_dte,
             long_dte=pair.long_dte, width=pair.width, near_40_delta=near,
@@ -116,6 +133,29 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             break_evens=be, strike_count=len(rows), rows=rows))
     return FinderResult(time=now.isoformat(timespec="seconds"), spx=spx, filters=filters,
                         pairs=summaries)
+
+
+# ---------------------------------------------------------------- spot and expirations
+
+def _px(d: dict) -> float | None:
+    """Last price for an index quote, else the mark; None if Schwab sent neither."""
+    return d.get("last") if d.get("last") is not None else d.get("mark")
+
+
+def get_spot() -> Spot:
+    """SPX, VIX and VIX9D in one batched quotes call. Anything Schwab doesn't send is None."""
+    q = schwab_api.get_quotes(["$SPX", "$VIX", "$VIX9D"])
+    now = datetime.now(ZoneInfo(config.MARKET_TZ)).isoformat(timespec="seconds")
+    return Spot(time=now, spx=_px(q.get("$SPX", {})), vix=_px(q.get("$VIX", {})),
+                vix9d=_px(q.get("$VIX9D", {})))
+
+
+def get_expirations(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT) -> ExpirationsResult:
+    """The expiry pairs for the filters, and which of the widths 3-7 have no pair this week."""
+    all_pairs = pick_expiries(market_today(), dte_range, config.WIDTHS)
+    present = {p.width for p in all_pairs}
+    return ExpirationsResult(pairs=[p for p in all_pairs if p.width in widths],
+                             unavailable_widths=[w for w in config.WIDTHS if w not in present])
 
 
 # ---------------------------------------------------------------- break-even diagnostics

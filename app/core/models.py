@@ -30,6 +30,12 @@ class ExpiryPair(BaseModel):
     width: int                       # nominal days, counted from the Friday
 
 
+class BreakEvens(BaseModel):
+    lower: float
+    upper: float
+    at_date: str                     # ISO date the P/L curve was evaluated on
+
+
 class CalendarRow(BaseModel):
     strike: float
     width: int
@@ -49,16 +55,12 @@ class CalendarRow(BaseModel):
     short_iv_implied: float | None = None   # IV that reproduces the leg's mid with our Black-Scholes;
     long_iv_implied: float | None = None    # P/L and break-evens use it (Schwab's IV doesn't match its marks)
     skew: float                      # short IV - long IV, vol points
-    td: float
+    td: float | None = None          # None when the position delta is near zero
     theta_margin: float
+    iv_ratio: float | None = None    # short IV / long IV
+    break_evens: BreakEvens | None = None   # at the short expiry, for this strike
     is_best_skew: bool = False
     is_near_40_delta: bool = False
-
-
-class BreakEvens(BaseModel):
-    lower: float
-    upper: float
-    at_date: str                     # ISO date the P/L curve was evaluated on
 
 
 class PairSummary(BaseModel):
@@ -80,3 +82,15 @@ class FinderResult(BaseModel):
     spx: float
     filters: dict
     pairs: list[PairSummary]
+
+
+class Spot(BaseModel):
+    time: str                        # ISO timestamp, market time
+    spx: float | None = None
+    vix: float | None = None
+    vix9d: float | None = None
+
+
+class ExpirationsResult(BaseModel):
+    pairs: list[ExpiryPair]          # for the requested widths
+    unavailable_widths: list[int]    # widths (of all 3-7) with no pair this week in the DTE range

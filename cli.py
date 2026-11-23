@@ -26,7 +26,7 @@ def format_finder(result: FinderResult) -> str:
             out.append(COLS.format(f"{r.strike:.0f}", r.contracts, f"{r.price:.2f}", f"{r.margin:,.0f}",
                                    f"{r.delta:.2f}", f"{r.theta:,.0f}", f"{r.vega:,.0f}",
                                    f"{r.short_iv:.2f}", f"{r.long_iv:.2f}", f"{r.skew:.2f}",
-                                   f"{r.td:.0f}", f"{r.theta_margin:.4f}") + f"   {tag}")
+                                   ("-" if r.td is None else f"{r.td:.0f}"), f"{r.theta_margin:.4f}") + f"   {tag}")
         n = p.near_40_delta
         if n and p.break_evens:
             be = p.break_evens
