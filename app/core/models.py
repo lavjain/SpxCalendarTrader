@@ -12,6 +12,7 @@ class OptionQuote(BaseModel):
     expiry: str                      # ISO date
     strike: float
     right: Literal["P", "C"] = "P"   # puts for the calendar, a few calls for the forward
+    symbol: str | None = None        # Schwab's option symbol, e.g. "SPXW  261224P07140000" (to re-quote one leg)
     bid: float | None = None         # a missing quote is None, never 0
     ask: float | None = None
     mark: float | None = None
@@ -94,3 +95,19 @@ class Spot(BaseModel):
 class ExpirationsResult(BaseModel):
     pairs: list[ExpiryPair]          # for the requested widths
     unavailable_widths: list[int]    # widths (of all 3-7) with no pair this week in the DTE range
+
+
+class CalendarQuote(BaseModel):
+    """The calendar as one instrument, from both legs' quotes: you buy it at the ask and sell it at the bid."""
+    bid: float | None = None         # long bid - short ask
+    ask: float | None = None         # long ask - short bid
+    mid: float | None = None
+    spread: float | None = None      # ask - bid
+
+
+class StabilityResult(BaseModel):
+    is_stable: bool
+    waiting_reason: str | None = None
+    quotes_seen: int = 0             # valid quotes in a row, newest last
+    range_low: float | None = None   # lowest and highest mid over the window checked
+    range_high: float | None = None

@@ -384,7 +384,7 @@ def _is_spxw(c):
 
 def _quote(expiry, c, right):
     return OptionQuote(
-        expiry=expiry, strike=float(c["strikePrice"]), right=right,
+        expiry=expiry, strike=float(c["strikePrice"]), right=right, symbol=c.get("symbol"),
         bid=_num(c.get("bid")), ask=_num(c.get("ask")), mark=_num(c.get("mark")),
         delta=_num(c.get("delta")), gamma=_num(c.get("gamma")), theta=_num(c.get("theta")),
         vega=_num(c.get("vega")), iv=_num(c.get("volatility")))
