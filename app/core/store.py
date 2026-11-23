@@ -159,3 +159,13 @@ class Store:
                               "AND long_expiry = ? AND status = 'open'",
                               (account, strike, short_expiry, long_expiry)).fetchone()
         return self._trade(row) if row else None
+
+    def previous_close_ivs(self, trade_date: str, short_expiry: str, long_expiry: str, strike: float):
+        """(short_iv, long_iv, logged_at) of this calendar from the last earlier day it was logged: that day's last
+        refresh, which is the one after 4:15 PM ET when the close snapshot exists. None if there is no earlier day."""
+        with closing(self._connect()) as con:
+            row = con.execute(
+                "SELECT short_iv, long_iv, logged_at FROM finder_log WHERE short_expiry = ? AND long_expiry = ? "
+                "AND strike = ? AND trade_date < ? ORDER BY trade_date DESC, logged_at DESC LIMIT 1",
+                (short_expiry, long_expiry, strike, trade_date)).fetchone()
+        return (row["short_iv"], row["long_iv"], row["logged_at"]) if row else None

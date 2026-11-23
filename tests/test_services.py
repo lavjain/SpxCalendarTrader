@@ -90,9 +90,8 @@ def test_no_pairs_returns_empty_result(monkeypatch):
 
 @pytest.mark.parametrize("name,args", [
     ("get_holdings", ()), ("get_performance", ()), ("get_risk_profile", ()), ("get_spx_history", ()),
-    ("quote_spread", (None, None)), ("parse_tos_order", ("",)), ("open_trade", (None, "margin", 1, 1)),
-    ("close_trade", (1, 1.0))])
-def test_the_other_eight_signatures_exist_and_raise(name, args):
+    ("parse_tos_order", ("",)), ("close_trade", (1, 1.0))])
+def test_the_later_week_signatures_exist_and_raise(name, args):
     with pytest.raises(NotImplementedError):
         getattr(services, name)(*args)
 

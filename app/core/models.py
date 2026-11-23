@@ -103,6 +103,7 @@ class CalendarQuote(BaseModel):
     ask: float | None = None         # long ask - short bid
     mid: float | None = None
     spread: float | None = None      # ask - bid
+    leg_spread_pct: float | None = None   # the wider leg's bid-ask as a fraction of that leg's own mid
 
 
 class StabilityResult(BaseModel):
@@ -152,3 +153,28 @@ class Trade(BaseModel):
     entry_snapshot_source: Literal["refresh", "fresh quote"] | None = None
     notes: str = ""
     closed_at: str | None = None                  # the rest of the close side arrives with Close Trade
+
+
+class QuoteSpread(BaseModel):
+    """One re-quote of the calendar for the Open Trade dialog (the dialog only displays these fields)."""
+    time: str                        # ISO, market time
+    bid: float | None = None
+    ask: float | None = None
+    mid: float | None = None
+    spread: float | None = None
+    suggested_price: float | None = None     # mid + FILL_OFFSET on the tick grid
+    is_stable: bool = False
+    waiting_reason: str | None = None
+    quotes_seen: int = 0
+    seconds_waiting: float = 0.0
+    give_up: bool = False            # unstable for WAIT_TIMEOUT_S: the dialog asks Keep Waiting / Cancel
+    range_low: float | None = None
+    range_high: float | None = None
+    contracts: int | None = None     # for the requested size, at the mid
+    cost: float | None = None        # contracts x fill price x 100 (fill = the typed price, else the suggestion)
+    margin: float | None = None      # contracts x mid x 100
+
+
+class OpenTradeResult(BaseModel):
+    trade: Trade
+    warnings: list[str] = []         # e.g. a fill outside the bid-ask: allowed, but said out loud

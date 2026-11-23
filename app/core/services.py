@@ -13,8 +13,10 @@ from scipy.optimize import brentq
 from app.core import config, pricing, schwab_api
 from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries
-from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, OptionQuote,
-                             PairSummary, Spot)
+from app.core.calendar_math import _whole
+from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, OpenTradeResult,
+                             OptionQuote, PairSummary, QuoteSpread, Spot, Trade)
+from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
 SYMBOL = "$SPX"
 
@@ -250,9 +252,50 @@ def get_spx_history(range: str = "3M"):
     raise NotImplementedError("get_spx_history: week 5")
 
 
-def quote_spread(short: OptionQuote, long: OptionQuote):
-    """In: the two legs. Out: SpreadQuote (bid/ask/mid, is_stable, waiting_reason, suggested_price)."""
-    raise NotImplementedError("quote_spread: week 3")
+def _tick(x: float) -> float:
+    """Round a price to the SPX option tick: $0.05 from $3 up, $0.01 below."""
+    step = 0.05 if x >= 3 else 0.01
+    return round(round(x / step) * step, 2)
+
+
+def _size_contracts(size_mode: str, size_value: float, mid: float | None) -> int | None:
+    """Whole contracts for a size at the calendar's mid (the same rule the Finder uses)."""
+    if size_mode == "contracts":
+        return int(size_value)
+    if mid is None or mid <= 0:
+        return None
+    return _whole(size_value / (mid * 100.0), config.SIZE_ROUNDING)
+
+
+def _now_et() -> str:
+    return datetime.now(ZoneInfo(config.MARKET_TZ)).isoformat(timespec="seconds")
+
+
+quote_tracker = StabilityTracker()          # in memory, one per server (CLAUDE.md rule 9)
+
+
+def quote_spread(short_symbol: str, long_symbol: str, size_mode: str = "margin", size_value: float = config.MARGIN,
+                 fill_price: float | None = None, keep_waiting: bool = False) -> QuoteSpread:
+    """Re-quote the two legs (never from the cache), add the quote to the stability window and say whether the
+    price is steady. `fill_price` is the price in the dialog's box (for the cost); `keep_waiting` restarts the
+    60 seconds after the dialog asked Keep Waiting / Cancel."""
+    key = (short_symbol, long_symbol)
+    if keep_waiting:
+        quote_tracker.keep_waiting(key)
+    q = schwab_api.get_quotes([short_symbol, long_symbol], use_cache=False)
+    s, l = q.get(short_symbol) or {}, q.get(long_symbol) or {}
+    cq = calendar_quote_from_prices(s.get("bid"), s.get("ask"), l.get("bid"), l.get("ask"))
+    result, waited = quote_tracker.record(key, cq)
+    suggested = _tick(cq.mid + config.FILL_OFFSET) if cq.mid is not None else None
+    contracts = _size_contracts(size_mode, size_value, cq.mid)
+    price = fill_price if fill_price else suggested
+    return QuoteSpread(
+        time=_now_et(), bid=cq.bid, ask=cq.ask, mid=cq.mid, spread=cq.spread, suggested_price=suggested,
+        is_stable=result.is_stable, waiting_reason=result.waiting_reason, quotes_seen=result.quotes_seen,
+        seconds_waiting=round(waited, 1), give_up=(not result.is_stable and waited >= config.WAIT_TIMEOUT_S),
+        range_low=result.range_low, range_high=result.range_high, contracts=contracts,
+        cost=(contracts * price * 100.0) if contracts and price else None,
+        margin=(contracts * cq.mid * 100.0) if contracts and cq.mid is not None else None)
 
 
 def parse_tos_order(line: str):
@@ -260,10 +303,51 @@ def parse_tos_order(line: str):
     raise NotImplementedError("parse_tos_order: week 3")
 
 
-def open_trade(calendar: CalendarRow, size_mode: str, size_value: float, price: float,
-               price_source: str = "auto", account: str = "Paper"):
-    """In: a CalendarRow plus size and fill. Out: Trade (saved, with entry snapshot and tos_order)."""
-    raise NotImplementedError("open_trade: week 3")
+def open_trade(store, pair: PairSummary, row: CalendarRow, spot: Spot | None, size_mode: str, size_value: float,
+               contracts: int, fill_price: float, price_source: str | None = None,
+               snapshot_source: str = "refresh", account: str = "Paper",
+               opened_at: str | None = None) -> OpenTradeResult:
+    """Save a paper trade. `pair` and `row` come from the Finder snapshot the dialog was opened from (expiries,
+    IVs, skew, break-evens); `spot` is a fresh SPX/VIX/VIX9D quote. The market quote saved with the trade is the
+    last one the stability check saw for these two legs; the fill price is the one confirmed. `contracts` is what
+    the dialog showed. Raises ValueError for a bad request and DuplicateTradeError for an open duplicate."""
+    if fill_price is None or fill_price <= 0:
+        raise ValueError("The fill price must be above zero")
+    if contracts is None or contracts < 1:
+        raise ValueError("Contracts must be at least 1")
+    if pair.width not in config.WIDTHS:
+        raise ValueError(f"A {pair.width}-day width is outside {config.WIDTHS[0]}-{config.WIDTHS[-1]} days")
+    if size_mode not in config.SIZE_MODES:
+        raise ValueError(f"Size mode must be one of {config.SIZE_MODES}")
+    quote, _ = quote_tracker.latest((row.short.symbol, row.long.symbol))
+    suggested = _tick(quote.mid + config.FILL_OFFSET) if quote and quote.mid is not None else None
+    source = price_source or ("auto" if suggested is not None and abs(fill_price - suggested) < 1e-9 else "manual")
+    warnings = []
+    if quote and quote.bid is not None and not (quote.bid - 1e-9 <= fill_price <= quote.ask + 1e-9):
+        warnings.append(f"The fill ${fill_price:.2f} is outside the bid-ask ${quote.bid:.2f} to ${quote.ask:.2f}")
+    when = opened_at or _now_et()
+    vol = None
+    prev = store.previous_close_ivs(when[:10], pair.short_expiry, pair.long_expiry, row.strike)
+    if prev and prev[0] is not None and prev[1] is not None:
+        vol = pricing.vol_pnl(row.short_iv - prev[0], row.long_iv - prev[1], row.short_vega, row.long_vega, contracts)
+    be = row.break_evens
+    trade = Trade(
+        account=account, opened_at=when, short_expiry=pair.short_expiry, long_expiry=pair.long_expiry,
+        strike=row.strike, width=pair.width, short_dte=pair.short_dte, contracts=contracts,
+        size_mode=size_mode, size_value=size_value,
+        open_bid=quote.bid if quote else None, open_ask=quote.ask if quote else None,
+        open_mid=quote.mid if quote else None,
+        open_range_low=None, open_range_high=None,
+        open_suggested=suggested, open_fill=fill_price, open_price_source=source,
+        entry_spx=spot.spx if spot else None, entry_vix=spot.vix if spot else None,
+        entry_vix9d=spot.vix9d if spot else None, entry_short_iv=row.short_iv, entry_long_iv=row.long_iv,
+        entry_skew=row.skew, entry_break_lower=be.lower if be else None, entry_break_upper=be.upper if be else None,
+        entry_vol_pnl=vol, entry_snapshot_source=snapshot_source)
+    _, result = quote_tracker.latest((row.short.symbol, row.long.symbol))
+    if result is not None:
+        trade.open_range_low, trade.open_range_high = result.range_low, result.range_high
+    trade.id = store.insert_trade(trade)
+    return OpenTradeResult(trade=trade, warnings=warnings)
 
 
 def close_trade(trade_id: int, price: float, price_source: str = "auto", exit_reason: str | None = None,

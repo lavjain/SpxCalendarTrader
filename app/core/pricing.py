@@ -161,3 +161,9 @@ def break_evens(trade: CalendarRow, spot: float, long_forward: float, as_of: dat
     lower = brentq(f, grid[0], grid[peak])
     upper = brentq(f, grid[peak], grid[-1])
     return BreakEvens(lower=float(lower), upper=float(upper), at_date=at.isoformat())
+
+
+def vol_pnl(d_short_iv: float, d_long_iv: float, short_vega: float, long_vega: float, contracts: int) -> float:
+    """Tom Conley's Vol P&L in dollars: [(change in short IV) x short vega x (-1) + (change in long IV) x
+    long vega] x 100 x contracts. IV changes are in vol points, vegas are per share."""
+    return float((-d_short_iv * short_vega + d_long_iv * long_vega) * 100.0 * contracts)
