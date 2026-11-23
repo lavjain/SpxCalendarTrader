@@ -1,0 +1,12 @@
+{# StatusStrip #}
+{% set s = r.strip %}
+<div class="mt-2 flex flex-wrap gap-x-6 gap-y-1 rounded bg-slate-100 dark:bg-slate-800 px-3 py-1.5 text-sm" id="status-strip">
+  <span><span class="muted">Time</span> {{ s.time | etime }}</span>
+  <span><span class="muted">SPX</span> <strong>{{ s.spx | num(2) }}</strong></span>
+  {% if s.vix is not none %}<span><span class="muted">VIX</span> {{ s.vix | num(2) }}</span>{% endif %}
+  <span><span class="muted">Short Expiries</span>
+    {% for x in s.shorts %}{{ x.expiry | edate }} ({{ x.dte }}d){{ ', ' if not loop.last }}{% else %}None{% endfor %}</span>
+  <span><span class="muted">Widths</span> {{ s.filters.widths | join('d, ') }}d</span>
+  <span><span class="muted">Sizing</span>
+    {% if s.filters.size_mode == 'margin' %}{{ s.filters.size_value | money(0) }} Margin{% else %}{{ s.filters.size_value | int }} Contracts{% endif %}</span>
+</div>

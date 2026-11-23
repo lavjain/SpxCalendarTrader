@@ -2,6 +2,13 @@
 
 Updated at the end of every work session (≤ 20 lines). Newest first.
 
+## 2026-11-23 — week 2 built (needs your first run)
+- Done and tested in a sandbox (166 py tests + 29 js tests): td dash near zero delta, IVs implied from mids, per-row break-evens, `get_spot`, `get_expirations`; `app/` FastAPI factory (`create_app`), `/api` health, spot, expirations, finder refresh/get, settings; SQLite `Store` (settings, `finder_log`, one row per strike); snapshots in memory (5, 10 min) and saved to data/snapshots.json (one file, newest 20); shared Python/JS formatters; Finder page (filters, status strip, Calendars table with strike rows, calendar panel with tiles and legs).
+- NOT run yet: the FastAPI layer (no FastAPI in the sandbox). First run: `uv sync` (commit `uv.lock`), `uv run pytest` (tests/test_routes.py runs for the first time), `node --test tests/js/*.test.mjs`, `uv run serve`, open http://127.0.0.1:8000.
+- Deviations from WEEK2.md: break-evens per row in `get_finder()` (no `get_calendar_detail`); Refresh = JS fetch POST then `htmx.ajax` GET of partials; `create_app` factory; node glob form.
+- Open decisions: snapshots now also on disk; T/D shown to 2 decimals, dash threshold 2.0; "Open trade" disabled until week 3; NYSE holiday list for 2026-27 still unverified.
+- Step 10 (yours): paste a real thinkorswim order into `tests/fixtures/tos_order_samples.txt`.
+
 ## 2026-11-23 — week 1 implemented in `app/core/`; live and thinkorswim checks done
 - Done and committed step by step: `app/core/` layout (self-test now `uv run pytest tests/test_calendar_math.py`, 16 rows), `config.py` + `models.py`, `expiries.py` (NYSE holidays 2026–27, Thursday rule), `schwab_api.py` items 1–5 and item 6 (separate commit), `pricing.py`, `services.get_finder()` + `cli.py`, 93 tests green on fixtures.
 - Live checks done Nov 23: Schwab login, live pull and `cli candidates` work. thinkorswim check PASSED (-3.1% / -0.7%) once pricing used IVs implied from mids: Schwab's `volatility` field doesn't reproduce its own marks (see `tests/fixtures/tos_check.md`). Still to do: `uv sync` / `uv run pytest` on Python 3.12 (tests ran on 3.13 in a cloud sandbox).

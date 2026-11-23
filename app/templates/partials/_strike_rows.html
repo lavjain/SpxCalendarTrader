@@ -1,0 +1,20 @@
+{# StrikeRows: every 35-45 delta strike of the open pair. ★ = nearest 40Δ. #}
+{% set p = open_pair %}
+<table class="grid-table nested" data-for="{{ open_key }}">
+  <thead><tr>
+    <th class="text-left">Strike</th><th>Short Δ</th><th>Ctr</th><th>Price</th><th>Margin</th><th>Delta</th><th>Gamma</th>
+    <th>Theta</th><th>Vega</th><th>Skew</th><th>T/D</th><th>Θ/Mgn</th>
+  </tr></thead>
+  <tbody>
+  {% for x in p.rows %}
+    <tr class="strike-row {{ 'best' if x.is_best_skew }} {{ 'sel' if x.strike == selected_strike }}" data-strike="{{ x.strike }}"
+        hx-get="/partials/calendar-panel?snapshot_id={{ snapshot_id }}&short={{ p.short_expiry }}&long={{ p.long_expiry }}&strike={{ x.strike }}"
+        hx-target="#panel" hx-swap="innerHTML">
+      <td class="text-left">{{ x.strike | strike }}{% if x.is_near_40_delta %} <span class="text-amber-500" title="nearest 40Δ">★</span>{% endif %}</td>
+      <td>{{ x.short.delta | num(2) }}</td><td>{{ x.contracts }}</td><td>{{ x.price | money }}</td><td>{{ x.margin | money(0) }}</td>
+      <td>{{ x.delta | num(1) }}</td><td>{{ x.gamma | gamma }}</td><td>{{ x.theta | num }}</td><td>{{ x.vega | num }}</td>
+      <td>{{ x.skew | pts }}</td><td>{{ x.td | num(2) }}</td><td>{{ x.theta_margin | num(4) }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

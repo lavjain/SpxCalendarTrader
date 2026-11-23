@@ -1,0 +1,31 @@
+.muted { color: rgb(100 116 139); }
+.dark .muted { color: rgb(148 163 184); }
+.label { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; color: rgb(100 116 139); margin-bottom: 2px; }
+.dark .label { color: rgb(148 163 184); }
+.btn { padding: 4px 12px; border-radius: 6px; font-size: .85rem; border: 1px solid rgb(148 163 184 / .5); }
+.btn:hover:not(:disabled) { background: rgb(148 163 184 / .2); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: #1C83E1; color: #fff; border-color: #1C83E1; }
+.btn-light { background: rgb(148 163 184 / .15); }
+.field { background: transparent; border: 1px solid rgb(148 163 184 / .5); border-radius: 6px; padding: 3px 8px; }
+.dark .field option { background: #0f172a; }
+.chip { display: inline-block; padding: 2px 10px; border-radius: 999px; border: 1px solid rgb(148 163 184 / .5); cursor: pointer; font-size: .8rem; }
+.chip.unavailable { opacity: .45; border-style: dashed; }
+.peer:checked + .chip { background: #1C83E1; border-color: #1C83E1; color: #fff; }
+.peer:focus-visible + .chip { outline: 2px solid #1C83E1; }
+.grid-table { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.grid-table th { font-size: .7rem; text-transform: uppercase; color: rgb(100 116 139); padding: 4px 8px; text-align: right; font-weight: 600; white-space: nowrap; }
+.grid-table th.text-left, .grid-table td.text-left { text-align: left; }
+.grid-table td { padding: 4px 8px; text-align: right; border-top: 1px solid rgb(148 163 184 / .2); }
+.sort-head { cursor: pointer; user-select: none; }
+.sort-head:hover { color: #1C83E1; }
+tr.segment td { text-align: left; font-weight: 600; background: rgb(148 163 184 / .12); border-top: 0; }
+tr.pair-row, tr.strike-row { cursor: pointer; }
+tr.pair-row:hover, tr.strike-row:hover { background: rgb(28 131 225 / .08); }
+.sel { background: rgb(28 131 225 / .15); box-shadow: inset 3px 0 0 #1C83E1; }
+.best { box-shadow: inset -3px 0 0 #f59e0b; }
+.sel.best { box-shadow: inset 3px 0 0 #1C83E1, inset -3px 0 0 #f59e0b; }
+tr.strike-rows > td { padding: 0 0 0 18px; }
+.nested th, .nested td { padding: 3px 6px; }
+.tile { border: 1px solid rgb(148 163 184 / .35); border-radius: 6px; padding: 6px 8px; }
+.tile .value { font-size: 1rem; font-weight: 600; }

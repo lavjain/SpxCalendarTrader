@@ -1,0 +1,46 @@
+{# FinderFilters: saved in the app database (settings table) as you change them. #}
+<form id="filters" class="flex flex-wrap items-end gap-x-6 gap-y-2 text-sm" onsubmit="return false">
+  <div>
+    <div class="label">Short DTE <span id="dte-label" class="font-mono text-slate-700 dark:text-slate-200">{{ filters.dte_min }}–{{ filters.dte_max }}</span></div>
+    <div class="flex items-center gap-2">
+      <input id="dte-min" type="range" min="{{ dte_limits[0] }}" max="{{ dte_limits[1] }}" value="{{ filters.dte_min }}" class="accent-primary w-28" aria-label="Shortest short-leg DTE">
+      <input id="dte-max" type="range" min="{{ dte_limits[0] }}" max="{{ dte_limits[1] }}" value="{{ filters.dte_max }}" class="accent-primary w-28" aria-label="Longest short-leg DTE">
+    </div>
+  </div>
+  <div>
+    <div class="label">Days Between Short and Long</div>
+    <div class="flex gap-1" id="width-chips">
+      {% for w in widths_all %}
+      <label class="chip-wrap" title="{{ 'No expiry for this width this week' if w in unavailable_widths else '' }}">
+        <input type="checkbox" name="widths" value="{{ w }}" class="peer sr-only" {{ 'checked' if w in filters.widths }}>
+        <span class="chip {{ 'unavailable' if w in unavailable_widths }}">{{ w }}d</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  <div>
+    <div class="label">Strikes</div>
+    <div class="flex gap-1" id="strike-chips">
+      {% for s in ['10', '25'] %}
+      <label class="chip-wrap">
+        <input type="checkbox" name="strike_sets" value="{{ s }}" class="peer sr-only" {{ 'checked' if s in filters.strike_sets }}>
+        <span class="chip">{{ s }}s</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  <div>
+    <div class="label">Size By</div>
+    <div class="flex gap-1">
+      <select id="size-mode" class="field">
+        <option value="margin" {{ 'selected' if filters.size_mode == 'margin' }}>Margin $</option>
+        <option value="contracts" {{ 'selected' if filters.size_mode == 'contracts' }}>Contracts</option>
+      </select>
+      <input id="size-value" type="number" min="1" step="1" value="{{ filters.size_value | int }}" class="field w-24 text-right">
+    </div>
+  </div>
+  <div class="ml-auto flex items-center gap-3">
+    <span id="pulled-at" class="text-xs text-slate-500 dark:text-slate-400">{{ ('Pulled ' ~ (last_refresh | etime)) if last_refresh else '' }}</span>
+    <button id="refresh" type="button" class="btn btn-light">↻ Refresh</button>
+  </div>
+</form>

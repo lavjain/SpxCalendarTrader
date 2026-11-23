@@ -46,6 +46,7 @@ RATE = 0.04
 
 # --- storage
 DB_PATH = "data/paper_trades.db"
+SNAPSHOT_PATH = "data/snapshots.json"
 
 # --- NYSE full-day closures (2026-2027). Verify against the NYSE holiday calendar each year.
 MARKET_HOLIDAYS = frozenset({

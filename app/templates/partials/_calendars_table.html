@@ -1,0 +1,42 @@
+{# CalendarsTable: one row per short/long pair at its ~40-delta strike, one segment per width. #}
+{% macro head(label, key, left=false) %}
+<th class="sort-head {{ 'text-left' if left else 'text-right' }}" data-sort="{{ key }}">{{ label }}{% if sort_name == key %}<span class="ml-0.5">{{ '▼' if sort_desc else '▲' }}</span>{% endif %}</th>
+{% endmacro %}
+{% if not has_pairs %}
+  <p class="mt-4 text-slate-500 dark:text-slate-400">No expiry pairs for these filters.</p>
+{% else %}
+<table class="grid-table" id="calendars-table" data-sort-name="{{ sort_name }}" data-sort-desc="{{ 'true' if sort_desc else 'false' }}">
+  <thead>
+    <tr>
+      {{ head('Expiries', 'date', true) }}{{ head('~40Δ Strike', 'strike') }}{{ head('Ctr', 'contracts') }}{{ head('Price', 'price') }}
+      {{ head('Θ', 'theta') }}{{ head('Vega', 'vega') }}{{ head('Skew', 'skew') }}{{ head('Θ/Mgn', 'theta_margin') }}{{ head('Best Skew', 'best_skew') }}
+    </tr>
+  </thead>
+  <tbody>
+  {% for seg in segments %}
+    <tr class="segment"><td colspan="9">{{ seg.width }}-Day Width · {{ seg.pairs | length }} Pair{{ 's' if seg.pairs | length != 1 }}</td></tr>
+    {% for p in seg.pairs %}
+      {% set key = p.short_expiry ~ '|' ~ p.long_expiry %}
+      {% set n = p.near_40_delta %}
+      <tr class="pair-row {{ 'best' if key == best_key }} {{ 'sel' if key == open_key }}" data-key="{{ key }}"
+          data-short="{{ p.short_expiry }}" data-long="{{ p.long_expiry }}" data-near="{{ n.strike if n else '' }}">
+        <td class="text-left">
+          <span class="caret">{{ '▾' if key == open_key else '▸' }}</span> {{ p.short_expiry | edate }} → {{ p.long_expiry | edate }}
+          <div class="muted text-xs">{{ p.short_dte }} / {{ p.long_dte }} DTE · {{ p.strike_count }} Strike{{ 's' if p.strike_count != 1 }}</div>
+        </td>
+        {% if n %}
+        <td>{{ n.strike | strike }}</td><td>{{ n.contracts }}</td><td>{{ n.price | money }}</td>
+        <td>{{ n.theta | num }}</td><td>{{ n.vega | num }}</td><td>{{ n.skew | pts }}</td><td>{{ n.theta_margin | num(4) }}</td>
+        <td>{{ p.best_skew | pts }} <span class="muted">@ {{ p.best_skew_strike | strike }}</span></td>
+        {% else %}
+        <td colspan="8" class="muted text-left">No 35–45Δ Strikes on the Selected Spacing</td>
+        {% endif %}
+      </tr>
+      {% if key == open_key %}
+      <tr class="strike-rows" data-for="{{ key }}"><td colspan="9">{% include "partials/_strike_rows.html" %}</td></tr>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}

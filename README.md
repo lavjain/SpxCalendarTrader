@@ -74,27 +74,53 @@ uv sync                 # creates .venv/ with Python 3.12 and all dependencies
 
 ### Check it works
 
-Week 1 moves the starting files into `app/core/`. Until then, run them from the repo root instead: `uv run python calendar_math.py selftest`, `uv run python schwab_api.py …`.
-
 ```bash
 uv run python -m app.core.calendar_math selftest          # expect "16/16 rows reproduce exactly."
 mkdir -p data && uv run python -m app.core.schwab_api chain --demo \
     --out data/demo_chain.csv --smile data/demo_smile.csv  # parses a built-in sample chain, no network
-uv run pytest                                              # "no tests ran" until week 1 adds the first tests
-node --test tests/js/                                      # optional; JavaScript tests, from week 2
 ```
 
 ### Run
 
+One-time setup (do these once, in order):
+
 ```bash
-cp .env.example .env                              # once; then add your Schwab keys (see Schwab API setup)
-uv run --env-file .env python -m app.core.schwab_api auth  # once a week
-uv run serve                                               # from week 2; open http://localhost:8000
+cp .env.example .env            # then open .env and add SCHWAB_APP_KEY and SCHWAB_APP_SECRET (see Schwab API setup)
+uv sync                         # installs everything, including the web server
 ```
 
-`uv run serve` starts the web server with auto-reload and reads your Schwab keys from `.env` itself. The API is documented at http://localhost:8000/docs. For other commands, `--env-file .env` loads the keys; to skip typing it, run `export UV_ENV_FILE=.env` in your shell (or add it to your shell profile).
+Every week, log in to Schwab (the token lasts seven days):
 
-Paper trades are stored in `data/paper_trades.db`, which never leaves your machine (gitignored).
+```bash
+uv run --env-file .env python -m app.core.schwab_api auth
+```
+
+**Start the app** (the Finder screen):
+
+```bash
+uv run serve
+```
+
+Then open <http://localhost:8000>. It starts on the Finder: set the filters, press **↻ Refresh** (changing a filter refreshes by itself after a short pause), click a pair to open its strikes, click a strike to see its calendar. Stop it with `Ctrl+C`. `uv run serve` reloads when you edit files under `app/` and reads your keys from `.env` itself. The API is documented at <http://localhost:8000/docs>.
+
+**Terminal version** (no browser; prints today's 35–45Δ put calendars with break-evens), useful to compare against the page:
+
+```bash
+uv run --env-file .env python -m cli candidates
+```
+
+Options (all optional; the defaults are the Finder's defaults): `--dte-min 25 --dte-max 35 --widths 7 --strike-sets 10 25 --size-mode margin --size-value 10000`. Example: `uv run --env-file .env python -m cli candidates --dte-min 20 --dte-max 40 --widths 5 7 --size-mode contracts --size-value 2`. To see why break-evens differ from thinkorswim: `uv run --env-file .env python -m cli diagnose --tos 6871.92 7415.05`.
+
+**Tests:**
+
+```bash
+uv run pytest                           # Python tests
+node --test tests/js/*.test.mjs         # JavaScript tests (needs Node 18+)
+```
+
+For other commands, `--env-file .env` loads the keys; to skip typing it, run `export UV_ENV_FILE=.env` in your shell (or add it to your shell profile).
+
+**Where your data goes** (all under `data/`, which is gitignored and never leaves your machine): `paper_trades.db` holds settings and the Finder log (and paper trades from week 3); `snapshots.json` holds the last 20 Finder refreshes, so a restart reopens on the last one. Delete `snapshots.json` any time to clear it.
 
 ## Using VS Code
 

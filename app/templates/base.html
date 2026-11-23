@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SPX Calendar Trader{% endblock %}</title>
+  <script>
+    /* theme first, so the page never flashes the wrong one; dark is the default */
+    (function () {
+      try { if (localStorage.getItem("theme") === "light") document.documentElement.classList.remove("dark"); }
+      catch (e) {}
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: { extend: { colors: { primary: { DEFAULT: "#1C83E1" } } } }
+    };
+  </script>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+</head>
+<body class="bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen flex flex-col">
+  {% include "_header.html" %}
+  <main class="flex-1 px-4 py-3">
+    {% block content %}{% endblock %}
+  </main>
+  {% include "_footer.html" %}
+  <script type="module" src="{{ url_for('static', path='js/lib/theme.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,5 @@
+<footer class="flex gap-4 px-4 py-1.5 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
+  <span>v{{ version }}</span>
+  <span>Paper Trading Only</span>
+  <span class="ml-auto">Last Refresh: <span id="last-refresh" data-iso="{{ last_refresh or '' }}">{{ (last_refresh | etime) if last_refresh else '—' }}</span></span>
+</footer>

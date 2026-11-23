@@ -1,0 +1,17 @@
+{# LegsTable: both puts, then skew and the IV ratio (short IV ÷ long IV). IVs are the ones implied by each leg's mid. #}
+<table class="grid-table mt-3" id="legs-table">
+  <thead><tr><th class="text-left">Leg</th><th class="text-left">Expiry</th><th>DTE</th><th>Mark</th><th>Bid / Ask</th><th>Delta</th><th>Vega</th><th>IV</th></tr></thead>
+  <tbody>
+    {% for name, q, dte, iv in [('Short Put', row.short, pair.short_dte, row.short_iv), ('Long Put', row.long, pair.long_dte, row.long_iv)] %}
+    <tr>
+      <td class="text-left">{{ name }}</td><td class="text-left">{{ q.expiry | edate }}</td><td>{{ dte }}</td>
+      <td>{{ q.mark | money }}</td><td>{{ q.bid | money }} / {{ q.ask | money }}</td>
+      <td>{{ q.delta | num(2) }}</td><td>{{ q.vega | num(2) }}</td><td>{{ iv | pts }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="mt-2 flex gap-6 text-sm">
+  <span><span class="muted">Skew</span> <strong>{{ row.skew | signed }}</strong> Vol Pts</span>
+  <span><span class="muted">IV Ratio</span> <strong>{{ row.iv_ratio | num(3) }}</strong></span>
+</div>

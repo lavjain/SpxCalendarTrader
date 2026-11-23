@@ -1,0 +1,29 @@
+{# CalendarPanel: the selected calendar. Open Trade… is wired up in week 3. #}
+{% if not row %}
+  <div class="rounded border border-dashed border-slate-300 dark:border-slate-600 p-6 text-center text-slate-500 dark:text-slate-400">
+    Select a pair and a strike to see the calendar.
+  </div>
+{% else %}
+<div class="rounded border border-slate-200 dark:border-slate-700 p-3" id="calendar-panel" data-strike="{{ row.strike }}">
+  <div class="flex items-start gap-3">
+    <div class="min-w-0">
+      <h2 class="text-lg font-semibold">SPX {{ row.strike | strike }} Put Calendar</h2>
+      <div class="text-sm muted">Short {{ pair.short_expiry | edate }} / Long {{ pair.long_expiry | edate }} · {{ row.width }}-Day Width · {{ pair.short_dte }} / {{ pair.long_dte }} DTE</div>
+      <div class="text-sm">{{ row.contracts }} × {{ row.price | money }} <span class="muted">(Fill {{ (row.price + fill_offset) | money }} = Mid + {{ fill_offset | money }})</span></div>
+    </div>
+    <button type="button" class="btn btn-primary ml-auto" disabled title="Opens in week 3">Open Trade…</button>
+  </div>
+  <div class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2" id="tiles">
+    <div class="tile"><div class="label">Cost</div><div class="value">{{ cost | money(0) }}</div></div>
+    <div class="tile"><div class="label">Break-Evens</div>
+      <div class="value">{% if row.break_evens %}{{ row.break_evens.lower | num }} / {{ row.break_evens.upper | num }}{% else %}—{% endif %}</div>
+      {% if row.break_evens %}<div class="muted text-xs">{{ ((row.break_evens.lower - row.strike) / row.strike) | pct }} / {{ ((row.break_evens.upper - row.strike) / row.strike) | pct(1) }} at {{ row.break_evens.at_date | edate }}</div>{% endif %}</div>
+    <div class="tile"><div class="label">Delta</div><div class="value">{{ row.delta | signed(1) }}</div></div>
+    <div class="tile"><div class="label">Gamma</div><div class="value">{{ row.gamma | num(6) }}</div></div>
+    <div class="tile"><div class="label">Theta / Day</div><div class="value">{{ row.theta | money(0) }}</div></div>
+    <div class="tile"><div class="label">Vega / Pt</div><div class="value">{{ row.vega | money(0) }}</div></div>
+    <div class="tile"><div class="label">Margin</div><div class="value">{{ row.margin | money(0) }}</div></div>
+  </div>
+  {% include "partials/_legs_table.html" %}
+</div>
+{% endif %}

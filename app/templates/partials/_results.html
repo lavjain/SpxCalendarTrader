@@ -1,0 +1,17 @@
+{# One Refresh: status strip, Calendars table (left) and the selected-calendar panel (right). #}
+{% set r = results %}
+{% set segments = r.segments %}{% set sort_name = r.sort_name %}{% set sort_desc = r.sort_desc %}{% set has_pairs = r.has_pairs %}
+{% set best_key = r.best_key %}{% set open_key = r.open_key %}{% set open_pair = r.open_pair %}
+{% set selected_strike = r.selected_strike %}{% set snapshot_id = r.snapshot_id %}
+<div data-snapshot-id="{{ r.snapshot_id }}" id="snapshot-marker" hidden></div>
+{% include "partials/_status_strip.html" %}
+<div class="mt-3 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+  <section id="calendars" class="min-w-0">
+    {% include "partials/_calendars_table.html" %}
+  </section>
+  <aside id="panel" class="lg:sticky lg:top-3 self-start min-w-0">
+    {% set pair = r.pair %}{% set row = r.row %}{% set snapshot_id = r.snapshot_id %}
+    {% set cost = (row.contracts * (row.price + r.fill_offset) * 100) if row else none %}{% set fill_offset = r.fill_offset %}
+    {% include "partials/_calendar_panel.html" %}
+  </aside>
+</div>

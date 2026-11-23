@@ -356,15 +356,17 @@ Done when one command prints today's candidates and a calendar's break-evens are
 
 Step-by-step version: [WEEK2.md](WEEK2.md).
 
-- [ ] `uv add fastapi "uvicorn[standard]" jinja2 pydantic-settings` and `uv remove streamlit`; `[project.scripts] serve = "app.main:serve"` in `pyproject.toml` (with `[tool.uv] package = true` so uv installs the script); FastAPI app (`app/main.py`, with a `serve()` function behind the `uv run serve` script) with `base.html`, the header (tabs, account, theme toggle) and footer partials, `page_context()`, `/static`, `GET /api/health`, and `GET /api/spot` + `GET /api/expirations`; `/docs` lists them; `.vscode/launch.json` gets an **App** configuration (uvicorn with reload) in place of the old Streamlit one
-- [ ] Finder filter bar: short-leg DTE range (7–56, default 25–35), width chips (3–7 days, default 7), Size by (Margin, default $10,000, or Contracts), strike chips (10s and/or 25s, default both); saved in the `settings` table
-- [ ] Finder page: Calendars table (one row per short/long pair at ~40Δ, one segment per width, sortable within segments; click a pair to open its strike rows underneath, click a strike to select it) and the selected calendar panel, as HTMX partials over `get_finder()`
-- [ ] Save every Finder row (the whole strike ladder) to `finder_log` on each refresh, so daily closes start collecting for Vol P&L
-- [ ] Selected calendar panel: Open trade… button, tiles (cost, break-evens, delta, theta, vega from `get_finder()`), and Legs with skew and IV ratio; its Risk profile tab is added in week 3
-- [ ] Status strip (time, SPX, short expiries, sizing) under the filter bar
+- [x] `uv add fastapi "uvicorn[standard]" jinja2 pydantic-settings` and `uv remove streamlit`; `[project.scripts] serve = "app.main:serve"` in `pyproject.toml` (with `[tool.uv] package = true` so uv installs the script); FastAPI app (`app/main.py`, with a `serve()` function behind the `uv run serve` script) with `base.html`, the header (tabs, account, theme toggle) and footer partials, `page_context()`, `/static`, `GET /api/health`, and `GET /api/spot` + `GET /api/expirations`; `/docs` lists them; `.vscode/launch.json` gets an **App** configuration (uvicorn with reload) in place of the old Streamlit one
+- [x] Finder filter bar: short-leg DTE range (7–56, default 25–35), width chips (3–7 days, default 7), Size by (Margin, default $10,000, or Contracts), strike chips (10s and/or 25s, default both); saved in the `settings` table
+- [x] Finder page: Calendars table (one row per short/long pair at ~40Δ, one segment per width, sortable within segments; click a pair to open its strike rows underneath, click a strike to select it) and the selected calendar panel, as HTMX partials over `get_finder()`
+- [x] Save every Finder row (the whole strike ladder) to `finder_log` on each refresh, so daily closes start collecting for Vol P&L
+- [x] Selected calendar panel: Open trade… button, tiles (cost, break-evens, delta, theta, vega from `get_finder()`), and Legs with skew and IV ratio; its Risk profile tab is added in week 3
+- [x] Status strip (time, SPX, short expiries, sizing) under the filter bar
 - [ ] Copy a real calendar order from TOS to confirm the Copy to TOS line format (needed in week 3)
 
 Done when `uv run serve` serves the Finder, a refresh fills the Calendars table and the panel for the chosen filters, and the default pair's numbers match the CLI.
+
+Status (Nov 23): everything above is built and committed except the last box (a real TOS order, yours) and the first run of the web layer on your Mac; see the status block at the top of [WEEK2.md](WEEK2.md).
 
 ### Week 3 — Opening paper trades (Dec 8–14)
 
