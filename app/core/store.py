@@ -1,6 +1,6 @@
 """SQLite store: saved settings (per account) and the Finder log. Plain sqlite3, no web imports.
 
-Week 2 tables: meta, settings, finder_log. trades, marks and spx_daily arrive in later weeks.
+Tables: meta, settings, finder_log, trades (week 3). marks and spx_daily arrive in later weeks.
 Each call opens its own short-lived connection, so it is safe from any thread.
 """
 import json
@@ -11,9 +11,13 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 from app.core import config
-from app.core.models import FinderResult, Spot
+from app.core.models import FinderResult, Spot, Trade
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
+
+
+class DuplicateTradeError(ValueError):
+    """The same calendar (account, strike, expiries) is already open."""
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
@@ -30,6 +34,20 @@ CREATE TABLE IF NOT EXISTS finder_log (
     short_iv REAL, long_iv REAL, skew REAL, price REAL, contracts INTEGER, margin REAL,
     be_lower REAL, be_upper REAL, is_near_40_delta INTEGER, is_best_skew INTEGER);
 CREATE INDEX IF NOT EXISTS finder_log_date ON finder_log (trade_date, short_expiry, long_expiry);
+CREATE TABLE IF NOT EXISTS trades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account TEXT NOT NULL DEFAULT 'Paper', status TEXT NOT NULL DEFAULT 'open',
+    opened_at TEXT NOT NULL, short_expiry TEXT NOT NULL, long_expiry TEXT NOT NULL, strike REAL NOT NULL,
+    width INTEGER NOT NULL, short_dte INTEGER NOT NULL, contracts INTEGER NOT NULL,
+    size_mode TEXT NOT NULL, size_value REAL NOT NULL,
+    open_bid REAL, open_ask REAL, open_mid REAL, open_range_low REAL, open_range_high REAL,
+    open_suggested REAL, open_fill REAL NOT NULL, open_price_source TEXT NOT NULL,
+    entry_spx REAL, entry_vix REAL, entry_vix9d REAL, entry_short_iv REAL, entry_long_iv REAL,
+    entry_skew REAL, entry_break_lower REAL, entry_break_upper REAL, entry_vol_pnl REAL,
+    entry_snapshot_source TEXT, notes TEXT NOT NULL DEFAULT '', closed_at TEXT,
+    CHECK (status IN ('open', 'closed')), CHECK (contracts >= 1), CHECK (open_fill > 0));
+CREATE UNIQUE INDEX IF NOT EXISTS trades_one_open
+    ON trades (account, strike, short_expiry, long_expiry) WHERE status = 'open';
 """
 
 
@@ -46,8 +64,10 @@ class Store:
         folder = os.path.dirname(os.path.abspath(self.path))
         os.makedirs(folder, exist_ok=True)
         with closing(self._connect()) as con, con:
-            con.executescript(SCHEMA)
-            con.execute("INSERT OR IGNORE INTO meta (key, value) VALUES ('schema_version', ?)",
+            con.executescript(SCHEMA)            # every statement is IF NOT EXISTS, so a v1 file upgrades in place
+            con.execute("INSERT INTO meta (key, value) VALUES ('schema_version', ?) "
+                        "ON CONFLICT (key) DO UPDATE SET value = excluded.value "
+                        "WHERE CAST(meta.value AS INTEGER) < CAST(excluded.value AS INTEGER)",
                         (str(SCHEMA_VERSION),))
 
     # ---- settings
@@ -97,3 +117,45 @@ class Store:
     def count_finder_rows(self) -> int:
         with closing(self._connect()) as con:
             return con.execute("SELECT COUNT(*) FROM finder_log").fetchone()[0]
+
+    # ---- trades
+    def insert_trade(self, trade: Trade) -> int:
+        """Save one trade in a single transaction and return its id. Raises DuplicateTradeError if the same
+        calendar is already open in this account."""
+        data = trade.model_dump(exclude={"id"})
+        cols = ", ".join(data)
+        try:
+            with closing(self._connect()) as con, con:
+                cur = con.execute(f"INSERT INTO trades ({cols}) VALUES ({','.join('?' * len(data))})",
+                                  list(data.values()))
+                return cur.lastrowid
+        except sqlite3.IntegrityError as e:
+            if "trades.account" in str(e) or "UNIQUE" in str(e).upper():
+                raise DuplicateTradeError(
+                    f"SPX {trade.strike:.0f} put calendar {trade.short_expiry} / {trade.long_expiry} "
+                    f"is already open") from e
+            raise
+
+    @staticmethod
+    def _trade(row: sqlite3.Row) -> Trade:
+        return Trade(**dict(row))
+
+    def get_trade(self, trade_id: int) -> Trade | None:
+        with closing(self._connect()) as con:
+            row = con.execute("SELECT * FROM trades WHERE id = ?", (trade_id,)).fetchone()
+        return self._trade(row) if row else None
+
+    def list_trades(self, status: str | None = None, account: str = "Paper") -> list[Trade]:
+        sql, args = "SELECT * FROM trades WHERE account = ?", [account]
+        if status:
+            sql, args = sql + " AND status = ?", args + [status]
+        with closing(self._connect()) as con:
+            rows = con.execute(sql + " ORDER BY opened_at DESC, id DESC", args).fetchall()
+        return [self._trade(r) for r in rows]
+
+    def find_open(self, strike: float, short_expiry: str, long_expiry: str, account: str = "Paper") -> Trade | None:
+        with closing(self._connect()) as con:
+            row = con.execute("SELECT * FROM trades WHERE account = ? AND strike = ? AND short_expiry = ? "
+                              "AND long_expiry = ? AND status = 'open'",
+                              (account, strike, short_expiry, long_expiry)).fetchone()
+        return self._trade(row) if row else None

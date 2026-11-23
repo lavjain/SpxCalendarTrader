@@ -111,3 +111,44 @@ class StabilityResult(BaseModel):
     quotes_seen: int = 0             # valid quotes in a row, newest last
     range_low: float | None = None   # lowest and highest mid over the window checked
     range_high: float | None = None
+
+
+class Trade(BaseModel):
+    """One paper trade, as saved in the `trades` table. Market quote and fill are separate fields and are
+    never overwritten by one another (Fill rules). Timestamps are ISO strings in market time (ET)."""
+    id: int | None = None
+    account: str = "Paper"
+    status: Literal["open", "closed"] = "open"
+    # the open side
+    opened_at: str
+    short_expiry: str
+    long_expiry: str
+    strike: float
+    width: int
+    short_dte: int
+    contracts: int
+    size_mode: Literal["margin", "contracts"]
+    size_value: float
+    # market quote at confirm
+    open_bid: float | None = None
+    open_ask: float | None = None
+    open_mid: float | None = None
+    open_range_low: float | None = None
+    open_range_high: float | None = None
+    # price
+    open_suggested: float | None = None
+    open_fill: float
+    open_price_source: Literal["auto", "manual", "pasted"]
+    # entry snapshot
+    entry_spx: float | None = None
+    entry_vix: float | None = None
+    entry_vix9d: float | None = None
+    entry_short_iv: float | None = None
+    entry_long_iv: float | None = None
+    entry_skew: float | None = None
+    entry_break_lower: float | None = None
+    entry_break_upper: float | None = None
+    entry_vol_pnl: float | None = None            # None until a previous-close log exists
+    entry_snapshot_source: Literal["refresh", "fresh quote"] | None = None
+    notes: str = ""
+    closed_at: str | None = None                  # the rest of the close side arrives with Close Trade
