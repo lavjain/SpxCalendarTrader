@@ -71,3 +71,14 @@ def test_tos_order_endpoint_writes_the_line(client):
     assert r.json()["line"] == "BUY +13 CALENDAR SPX 100 (Weeklys) 19 FEB 27/12 FEB 27 6800 PUT @7.70 LMT"
     assert client.post("/api/tos-order", json={"short_expiry": "2027-02-12", "long_expiry": "2027-02-19",
                                                "strike": 6800, "contracts": 0, "price": 7.7}).status_code == 422
+
+
+def test_parse_endpoint_reads_a_line_and_explains_a_refusal(client):
+    line = "BUY +13 CALENDAR SPX 100 (Weeklys) 19 FEB 27/12 FEB 27 6800 PUT @7.70 LMT"
+    ok = client.post("/api/tos-order/parse", json={"text": line, "short_expiry": "2027-02-12",
+                                                   "long_expiry": "2027-02-19", "strike": 6800})
+    assert ok.status_code == 200 and ok.json()["contracts"] == 13 and ok.json()["price"] == 7.7
+    sell = client.post("/api/tos-order/parse", json={"text": line.replace("BUY +13", "SELL -13")})
+    assert sell.status_code == 422 and "closing order" in sell.json()["detail"]
+    other = client.post("/api/tos-order/parse", json={"text": line, "strike": 6790})
+    assert other.status_code == 422 and "strike 6800" in other.json()["detail"]

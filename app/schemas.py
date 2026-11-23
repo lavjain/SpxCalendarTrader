@@ -104,3 +104,11 @@ class TosOrderRequest(BaseModel):
 
 class TosOrderLine(BaseModel):
     line: str
+
+
+class TosParseRequest(BaseModel):
+    """A pasted thinkorswim line, and the dialog's calendar it must match."""
+    text: str = Field(max_length=2000)
+    short_expiry: str | None = None
+    long_expiry: str | None = None
+    strike: float | None = None

@@ -45,7 +45,7 @@ function openDialog(btn) {
   const d = btn.dataset;
   cal = { snapshotId: d.snapshotId, shortExpiry: d.shortExpiry, longExpiry: d.longExpiry, strike: Number(d.strike),
           shortSymbol: d.shortSymbol, longSymbol: d.longSymbol, sizeMode: d.sizeMode, sizeValue: Number(d.sizeValue) };
-  userPrice = false; last = null; saving = false;
+  userPrice = false; last = null; saving = false; cal.pastedPrice = null;
   $("od-title").textContent = `Open SPX ${fmtStrike(cal.strike)} Put Calendar`;
   $("od-sub").textContent = `Short ${edate(cal.shortExpiry)} / Long ${edate(cal.longExpiry)} · ${d.width}-Day Width · ${d.shortDte} / ${d.longDte} DTE`;
   for (const id of ["od-bid", "od-mid", "od-ask", "od-suggested", "od-contracts", "od-cost", "od-margin"]) $(id).textContent = DASH;
@@ -63,7 +63,7 @@ async function confirm() {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ snapshot_id: cal.snapshotId, short_expiry: cal.shortExpiry, long_expiry: cal.longExpiry,
                              strike: cal.strike, size_mode: cal.sizeMode, size_value: cal.sizeValue,
-                             contracts: last.contracts, fill_price: typedPrice(), price_source: cal.pasted ? "pasted" : null }),
+                             contracts: last.contracts, fill_price: typedPrice(), price_source: cal.pastedPrice != null && typedPrice() === cal.pastedPrice ? "pasted" : null }),
     });
     if (!res.ok) throw new Error(await errorText(res));
     const out = await res.json();
@@ -73,6 +73,25 @@ async function confirm() {
     banner.textContent = `Paper trade #${out.trade.id} opened: ${out.trade.contracts} × ${fmtStrike(out.trade.strike)} at ${money(out.trade.open_fill)}.` +
       (out.warnings.length ? ` ${out.warnings.join(" ")}` : "");
   } catch (e) { show("od-error", e.message); saving = false; render(last); }
+}
+
+// Paste from TOS: the line's contracts and price replace what the dialog suggested; it must be this calendar.
+async function pasteFromTos() {
+  let text = "";
+  try { text = await navigator.clipboard.readText(); } catch { text = window.prompt("Paste the order line from thinkorswim:") || ""; }
+  if (!text.trim()) return;
+  try {
+    const res = await fetch("/api/tos-order/parse", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, short_expiry: cal.shortExpiry, long_expiry: cal.longExpiry, strike: cal.strike }),
+    });
+    if (!res.ok) throw new Error(await errorText(res));
+    const o = await res.json();
+    cal.sizeMode = "contracts"; cal.sizeValue = o.contracts; cal.pastedPrice = o.price;
+    userPrice = true; $("od-price").value = o.price.toFixed(2);
+    show("od-error", ""); show("od-note", `Pasted: ${o.contracts} contracts at ${money(o.price)}`);
+    clearTimeout(timer); poll();
+  } catch (e) { show("od-error", e.message); }
 }
 
 async function copyToTos() {
@@ -97,4 +116,5 @@ $("od-cancel").addEventListener("click", closeDialog);
 dlg.addEventListener("close", () => clearTimeout(timer));
 $("od-confirm").addEventListener("click", confirm);
 $("od-copy").addEventListener("click", copyToTos);
+$("od-paste").addEventListener("click", pasteFromTos);
 $("od-price").addEventListener("input", () => { userPrice = true; if (last) render(last); });
