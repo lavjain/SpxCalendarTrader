@@ -1,10 +1,21 @@
+> **Disclaimer.** This is a research and paper-trading tool, not financial advice. Options trading carries substantial risk. The app never places orders: the Copy to TOS buttons only copy an order line to your clipboard, and anything you do with it in thinkorswim is your own decision.
+
 # SPX Calendar Trader
 
 A web app for finding and paper-trading ~40Δ SPX put calendars, using live option chains from the Schwab API. **No real orders are sent.** Built with FastAPI, Jinja templates, HTMX and a little vanilla JavaScript: no frontend framework and no build step; it runs on your own computer.
 
-> **Disclaimer.** This is a research and paper-trading tool, not financial advice. Options trading carries substantial risk. The app never places orders: the Copy to TOS buttons only copy an order line to your clipboard, and anything you do with it in thinkorswim is your own decision.
+**Status:** under construction. Release 1, the core (find, open, track, close, results), is a 6-week build, Nov 24, 2026 – Jan 4, 2027; Release 2 adds the extras by Jan 18, 2027 (see the [build plan](docs/PLAN.md#6-week-build-plan)). An interactive Analyzer (a thinkorswim-style position modeler) and optional hosting on Railway come later, in Application Phase 2 ([plan](docs/PLAN.md#application-phase-2-after-release-2)).
 
-**Status:** under construction. Release 1, the core (find, open, track, close, results), is a 6-week build, Nov 24, 2026 – Jan 4, 2027; Release 2 adds the extras by Jan 18, 2027 (see the [build plan](docs/PLAN.md#6-week-build-plan)). The screens below are mockups of both releases; the app itself arrives in week 2. An interactive Analyzer (a thinkorswim-style position modeler) and optional hosting on Railway come later, in Application Phase 2 ([plan](docs/PLAN.md#application-phase-2-after-release-2)).
+**Progress so far**
+
+| Week | What | State |
+|---|---|---|
+| 1 | Schwab login, chains, calendar math, `cli candidates` | Done |
+| 2 | The Finder page: filters, auto-refresh, sortable pairs, snapshots saved to `data/snapshots.json`, model greeks (gamma and delta computed, because Schwab rounds them to 3 decimals) | Done, pushed |
+| 3 | Opening paper trades: [plan](docs/WEEK3.md). The Open Trade dialog (live quote every 2 s, suggested fill, Confirm saves one `trades` row), Copy to TOS and Paste from TOS. The Finder now lists 40–50Δ strikes (target 45Δ). The stability wait is switched off for now. Not yet: risk profile tab, ⓘ popovers | Steps 1–7 done |
+| 4–6 | Holdings, closing, Performance | Planned |
+
+**Screens vs. the mockups.** The Finder in the running app follows the mockup below, with these differences: labels use Title Case; contracts are rounded to the nearest whole number (at least 1) instead of up; gamma and delta come from the model; and the filters refresh the table by themselves. The stability check in the Open Trade dialog tests each leg's bid-ask (at most 10% of that leg's price) rather than the whole calendar's, because the calendar's own bid-ask is the sum of both legs. The Holdings, Close, Performance and TOS screens are still mockups.
 
 **Contents:** [What it does](#what-it-does) · [Screenshots](#screenshots) · [Installation](#installation) · [Using VS Code](#using-vs-code) · [Project layout](#project-layout) · [Schwab API setup](#schwab-api-setup) · [Acknowledgments](#acknowledgments) · [License](#license)
 
