@@ -1,22 +1,18 @@
-# thinkorswim break-even check (Step 6) — PENDING, needs a live pull on a market day
+# thinkorswim break-even check (Step 6) - 2026-11-23, ~12:45 ET
 
-Goal: each break-even within ~5% of thinkorswim's distance from the strike.
+Result: PASS after switching pricing to IVs implied from the mid prices (within 5% of tos on both sides).
 
-1. `uv run --env-file .env python -m cli candidates` and note the ~40Δ row of one pair
-   (strike, expiries, short/long IV, SPX) and the app's break-evens.
-2. In thinkorswim → Analyze, enter the same put calendar (same strike, same two expiries), read the
-   break-evens at the short expiry.
-3. Fill in below. If they differ by more than ~5%, look at the long-leg IV and the day count first.
+| field | thinkorswim | app (`cli diagnose`) |
+|---|---|---|
+| SPX | live | 7,236.38 |
+| strike | 7120 | 7125 (the app's ~40-delta row at that moment; tos was set up at 7120) |
+| expiries | short Thu 24 Dec 26 (W), long Thu 31 Dec 26 | same |
+| calendar price | 12.80 | mid 12.75 |
+| short IV / long IV | 24.58 / 23.92 | Schwab field 23.18 / 22.36; implied from mids 24.49 / 23.82 |
+| break-evens at the short expiry | 6,871.92 / 7,415.05 | 6,880 / 7,413 (mid-implied IVs) |
+| distance error vs tos | - | -3.1% / -0.7% |
 
-| field | value |
-|---|---|
-| date / time (ET) | |
-| SPX | |
-| strike | |
-| short expiry / long expiry | |
-| short IV / long IV | |
-| app lower BE (distance from strike) | |
-| app upper BE (distance from strike) | |
-| tos lower BE (distance from strike) | |
-| tos upper BE (distance from strike) | |
-| difference, lower / upper | |
+Before the change (Schwab's `volatility` field as the IV): 6,901 / 7,387, i.e. -11.5% / -9.5% from tos.
+Why: Schwab's IV does not reproduce its own marks (model 134.27 vs mid 144.75 on the short put).
+tos model: Bjerksund-Stensland, 4.00% interest. App: Black-Scholes on the put-call-parity forward (carry +3.61%/yr that day).
+Caveat: the strikes differ by 5 points (7120 in tos, 7125 in the app); the gap is smaller than the error margin.

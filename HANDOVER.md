@@ -2,13 +2,14 @@
 
 Updated at the end of every work session (≤ 20 lines). Newest first.
 
-## 2026-11-20 — week 1 implemented in `app/core/` (Steps 2–7 coded; live checks still to do)
+## 2026-11-23 — week 1 implemented in `app/core/`; live and thinkorswim checks done
 - Done and committed step by step: `app/core/` layout (self-test now `uv run pytest tests/test_calendar_math.py`, 16 rows), `config.py` + `models.py`, `expiries.py` (NYSE holidays 2026–27, Thursday rule), `schwab_api.py` items 1–5 and item 6 (separate commit), `pricing.py`, `services.get_finder()` + `cli.py`, 93 tests green on fixtures.
-- NOT done, needs your Mac + Schwab login + market hours: (1) `uv run --env-file .env python -m app.core.schwab_api chain` → rows for exactly two expiries; (2) `uv run --env-file .env python -m cli candidates` on a live chain; (3) the thinkorswim break-even check (template: `tests/fixtures/tos_check.md`); (4) `uv sync` / `uv run pytest` with Python 3.12 (tests were run on 3.13 in a cloud sandbox).
+- Live checks done Nov 23: Schwab login, live pull and `cli candidates` work. thinkorswim check PASSED (-3.1% / -0.7%) once pricing used IVs implied from mids: Schwab's `volatility` field doesn't reproduce its own marks (see `tests/fixtures/tos_check.md`). Still to do: `uv sync` / `uv run pytest` on Python 3.12 (tests ran on 3.13 in a cloud sandbox).
 - Check on the first live pull: the contract field `optionRoot` (code falls back to the `symbol` prefix if absent); the call request (`contractType=CALL&strikeCount=6`, `config.CALL_STRIKE_COUNT`) and its payload size; the quotes response keys in `get_quotes()` (`bidPrice`, `askPrice`, `mark`, `lastPrice`).
 - Changes beyond WEEK1.md: `calendar_math.py` repo-root path fixed for its new folder; `OptionQuote.right` ("P"/"C"); `PairSummary.break_evens` (of the ~40Δ row); `config.CALL_STRIKE_COUNT`; `schwab_api.parse_parity_quotes()` (puts + calls at common strikes for the forward); `chain` command without `--demo` is now a live pull with default Finder filters (old CSV output only with `--demo`); token refresh lock is a `threading.Lock` (calls run in threads), not `asyncio.Lock`; old token files with `obtained_at` still read.
 - Open: holiday list is hard-coded 2026–27 (verify against NYSE); r = 4% and carry implied from parity (no q input); break-evens priced on `mark` mids; day count = calendar days / 365.
-- Next: run the live checks above, record the tos result, then week 2 (FastAPI shell + Finder page).
+- Open decision: the Finder's displayed IV/skew columns still use Schwab's IV (matches Lane's sheet logic, but is ~1.3 vol points below tos); `short_iv_implied`/`long_iv_implied` on `CalendarRow` hold the mid-implied IVs used for P/L. `cli diagnose --tos LOWER UPPER` shows the inputs.
+- Next: week 2 (FastAPI shell + Finder page).
 
 ## 2026-11-19 — stack changed to FastAPI + HTMX + vanilla JS (docs and mockups only, no code yet)
 - Decided: no Streamlit. FastAPI + Jinja templates + HTMX + vanilla JS ES modules, Tailwind from CDN (dark default, theme toggle), canvas risk profile, Lightweight Charts for SPX candles, Chart.js for Performance. All trading logic in `app/core/` (no web imports); `app/core/config.py` replaces `settings.py` for trading numbers; `app/settings.py` is pydantic-settings for env vars. Start with `uv run serve`.

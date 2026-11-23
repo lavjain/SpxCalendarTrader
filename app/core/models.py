@@ -46,6 +46,8 @@ class CalendarRow(BaseModel):
     long_iv: float
     short_vega: float
     long_vega: float
+    short_iv_implied: float | None = None   # IV that reproduces the leg's mid with our Black-Scholes;
+    long_iv_implied: float | None = None    # P/L and break-evens use it (Schwab's IV doesn't match its marks)
     skew: float                      # short IV - long IV, vol points
     td: float
     theta_margin: float

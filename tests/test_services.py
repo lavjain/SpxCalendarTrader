@@ -111,6 +111,14 @@ def test_diagnose_reports_inputs_and_variants(mocked):
     for l in d["legs"]:   # the fixture was priced with these IVs, so the model reproduces the mids
         assert l["model_at_schwab_iv"] == pytest.approx(l["mid"], abs=0.1)
         assert l["implied_iv_from_mid"] == pytest.approx(l["schwab_iv"], abs=0.2)
-    assert d["variants"]["as the app computes it"][0] < d["strike"] < d["variants"]["as the app computes it"][1]
+    app = d["variants"]["app (IVs implied from mids)"]
+    assert app[0] < d["strike"] < app[1]
+    assert "old: Schwab's IV field" in d["variants"]
     text = cli.format_diagnosis(d)
     assert "implied carry" in text and "vs tos" in text
+
+
+def test_rows_carry_mid_implied_ivs_close_to_the_fixture_ivs(mocked):
+    for r in flat(services.get_finder()):
+        assert r.short_iv_implied == pytest.approx(r.short_iv, abs=0.3)
+        assert r.long_iv_implied == pytest.approx(r.long_iv, abs=0.3)

@@ -69,6 +69,19 @@ def forward_from_parity(quotes, expiry: str, as_of: date, rate=config.RATE) -> f
     return float(k + math.exp(rate * t) * (mid(calls[k]) - mid(puts[k])))
 
 
+def implied_iv(q: OptionQuote, forward: float, as_of: date) -> float | None:
+    """Vol points that make Black-Scholes reproduce the put's mid on `forward`, or None if no IV can
+    (price at or below intrinsic, expiry not after as_of). Schwab's own `volatility` field does not
+    reproduce its marks (10+ points off on a 7120 put), so pricing uses this instead."""
+    t = years(as_of, date.fromisoformat(q.expiry))
+    if t <= 0:
+        return None
+    try:
+        return 100 * brentq(lambda v: float(bs_put(forward, q.strike, t, v)) - mid(q), 0.01, 3.0)
+    except ValueError:
+        return None
+
+
 def calendar_value_now(short: OptionQuote, long: OptionQuote) -> float:
     """What the calendar is worth at mid right now: long - short."""
     return float(mid(long) - mid(short))
@@ -85,7 +98,7 @@ def pl_curve(trade: CalendarRow, spx_levels, spot: float, long_forward: float, a
              at_date: date | None = None, rate=config.RATE, fill_offset=config.FILL_OFFSET):
     """P/L in dollars per share at each SPX level on `at_date` (default: the short expiry).
 
-    Each leg's IV is held fixed. A leg that has expired is worth its intrinsic value; otherwise
+    Each leg's IV is held fixed (the mid-implied IV when the row has it, else Schwab's). A leg that has expired is worth its intrinsic value; otherwise
     it is priced with Black-Scholes at its IV and remaining days, on a forward that keeps the
     carry implied by `long_forward`. Entry cost is the calendar's mid debit plus `fill_offset`."""
     short_exp = date.fromisoformat(trade.short.expiry)
@@ -97,12 +110,14 @@ def pl_curve(trade: CalendarRow, spx_levels, spot: float, long_forward: float, a
     carry = _carry(spot, long_forward, years(as_of, long_exp))
     x = np.asarray(spx_levels, dtype=float)
 
-    def leg(q, exp):
+    def leg(iv, exp):
         t = years(at_date, exp)
         f = x * math.exp(carry * max(t, 0.0))
-        return bs_put(f, k, t, (q.iv or 0.0) / 100, rate)
+        return bs_put(f, k, t, (iv or 0.0) / 100, rate)
 
-    value = leg(trade.long, long_exp) - leg(trade.short, short_exp)
+    long_iv = trade.long_iv_implied or trade.long.iv
+    short_iv = trade.short_iv_implied or trade.short.iv
+    value = leg(long_iv, long_exp) - leg(short_iv, short_exp)
     return [float(v) for v in value - (trade.price + fill_offset)]
 
 

@@ -78,25 +78,35 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
     puts = schwab_api.parse(put_chain, pairs, strike_sets)
     parity = schwab_api.parse_parity_quotes(put_chain, call_chain, pairs)
 
+    def forward(expiry):
+        try:
+            return pricing.forward_from_parity(parity, expiry, today)
+        except ValueError:
+            return None
+
     summaries = []
     for pair in pairs:
+        f_short, f_long = forward(pair.short), forward(pair.long)
         strikes = sorted({q.strike for q in puts if q.expiry == pair.short})
         rows = []
         for k in strikes:
             legs = schwab_api.calendar_legs(puts, pair.short, pair.long, k)
             cal = _calendar(*legs, pair, size_mode, size_value) if legs else None
             if cal:
-                rows.append(_row(*legs, pair, cal))
+                row = _row(*legs, pair, cal)
+                if f_short and f_long:      # IVs that reproduce the mids, for P/L and break-evens
+                    row.short_iv_implied = pricing.implied_iv(row.short, f_short, today)
+                    row.long_iv_implied = pricing.implied_iv(row.long, f_long, today)
+                rows.append(row)
         near = best = None
         if rows:
             near = min(rows, key=lambda r: abs(abs(r.short.delta) - config.DELTA_TARGET))
             best = max(rows, key=lambda r: r.skew)
             near.is_near_40_delta, best.is_best_skew = True, True
         be = None
-        if near:
+        if near and f_long:
             try:
-                fwd = pricing.forward_from_parity(parity, pair.long, today)
-                be = pricing.break_evens(near, spx, fwd, today)
+                be = pricing.break_evens(near, spx, f_long, today)
             except ValueError:
                 be = None
         summaries.append(PairSummary(
@@ -110,19 +120,11 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
 
 # ---------------------------------------------------------------- break-even diagnostics
 
-def _implied_iv(price, forward, strike, t):
-    """IV (vol points) that makes Black-Scholes reproduce `price`, or None if it can't."""
-    try:
-        return 100 * brentq(lambda v: float(pricing.bs_put(forward, strike, t, v)) - price, 0.01, 3.0)
-    except ValueError:
-        return None
-
-
 def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
                     strike_sets=config.STRIKE_SETS, pair_index=None, tos=None) -> dict:
     """Why do the break-evens differ from thinkorswim? Returns the inputs behind the ~40-delta row of
     one pair (default: the short nearest 30 DTE) and the break-evens under variants: no fill offset,
-    zero carry (forward = spot), and IVs implied from the mid prices with our own model.
+    zero carry (forward = spot), and Schwab's IV field instead of the mid-implied IVs.
 
     `tos` = (lower, upper) break-evens read from thinkorswim, to print the distance error of each."""
     today = market_today()
@@ -151,11 +153,8 @@ def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEF
         legs.append({"leg": name, "expiry": q.expiry, "strike": q.strike, "t_days": (date.fromisoformat(q.expiry) - today).days,
                      "bid": q.bid, "ask": q.ask, "mark": q.mark, "mid": mid, "schwab_iv": q.iv,
                      "forward": f, "model_at_schwab_iv": float(pricing.bs_put(f, q.strike, t, q.iv / 100)),
-                     "implied_iv_from_mid": _implied_iv(mid, f, q.strike, t)})
-    implied = {l["leg"]: l["implied_iv_from_mid"] for l in legs}
-    swapped = row.model_copy(update={
-        "short": row.short.model_copy(update={"iv": implied["short"] or row.short.iv}),
-        "long": row.long.model_copy(update={"iv": implied["long"] or row.long.iv})})
+                     "implied_iv_from_mid": pricing.implied_iv(q, f, today)})
+    schwab_ivs = row.model_copy(update={"short_iv_implied": None, "long_iv_implied": None})
 
     def be(trade, fwd, offset):
         try:
@@ -164,11 +163,10 @@ def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEF
         except ValueError:
             return None
 
-    variants = {"as the app computes it": be(row, f_l, config.FILL_OFFSET),
-                "no fill offset": be(row, f_l, 0.0),
-                "carry 0 (forward = spot)": be(row, spot, config.FILL_OFFSET),
-                "IVs implied from mids": be(swapped, f_l, config.FILL_OFFSET),
-                "implied IVs + carry 0": be(swapped, spot, config.FILL_OFFSET)}
+    variants = {"app (IVs implied from mids)": be(row, f_l, config.FILL_OFFSET),
+                "old: Schwab's IV field": be(schwab_ivs, f_l, config.FILL_OFFSET),
+                "app, no fill offset": be(row, f_l, 0.0),
+                "app, carry 0 (forward = spot)": be(row, spot, config.FILL_OFFSET)}
     out = {"spx": spot, "strike": row.strike, "pair": f"{pair.short} -> {pair.long}", "price": row.price,
            "forward_short": f_s, "forward_long": f_l,
            "carry_per_year": math.log(f_l / spot) / t_l, "legs": legs, "variants": variants}

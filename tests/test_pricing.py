@@ -122,3 +122,27 @@ def test_core_has_no_web_imports():
     out = subprocess.run(["grep", "-rn", "streamlit\\|fastapi\\|starlette\\|jinja2", "app/core"],
                          capture_output=True, text=True, cwd=Path(__file__).parents[1])
     assert out.stdout == ""
+
+
+def test_implied_iv_reproduces_the_mid_and_rejects_impossible_prices():
+    t = sample_trade()
+    f = pricing.forward_from_parity(parity_quotes(), PAIR.long, AS_OF)
+    iv = pricing.implied_iv(t.long, f, AS_OF)
+    assert iv == pytest.approx(t.long.iv, abs=0.2)
+    tt = pricing.years(AS_OF, date.fromisoformat(PAIR.long))
+    assert float(pricing.bs_put(f, t.strike, tt, iv / 100)) == pytest.approx(pricing.mid(t.long), abs=1e-6)
+    below = t.long.model_copy(update={"bid": 0.01, "ask": 0.03, "mark": 0.02, "strike": 9000.0})
+    assert pricing.implied_iv(below, f, AS_OF) is None
+
+
+def test_pricing_uses_implied_ivs_not_schwabs_field():
+    t = sample_trade()
+    f = long_forward()
+    good = pricing.break_evens(t, SPOT, f, AS_OF)
+    wrong = t.model_copy(update={"short": t.short.model_copy(update={"iv": t.short.iv - 1.5}),
+                                 "long": t.long.model_copy(update={"iv": t.long.iv - 1.5})})
+    off = pricing.break_evens(wrong, SPOT, f, AS_OF)                     # Schwab IV 1.5 pts low
+    assert (off.upper - off.lower) < (good.upper - good.lower) - 10     # narrower, like the live 11%
+    fixed = wrong.model_copy(update={"short_iv_implied": t.short.iv, "long_iv_implied": t.long.iv})
+    again = pricing.break_evens(fixed, SPOT, f, AS_OF)
+    assert again.lower == pytest.approx(good.lower, abs=1e-6) and again.upper == pytest.approx(good.upper, abs=1e-6)
