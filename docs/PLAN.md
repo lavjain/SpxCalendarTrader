@@ -370,6 +370,8 @@ Status (Nov 23): everything above is built and committed except the last box (a 
 
 ### Week 3 — Opening paper trades (Dec 8–14)
 
+Step-by-step version: [WEEK3.md](WEEK3.md).
+
 - [ ] `trades` rows carry an `account` column (default "Paper"), ready for multiple accounts later
 - [ ] Open trade… in the Finder's panel opens a confirmation ("Open trade"), and Confirm saves the trade and its entry snapshot (time, SPX, VIX, VIX9D, short and long IV, skew, break-evens, Vol P&L at entry, width, short DTE, sizing) to the `trades` table
 - [ ] Stability check (5 quotes in 10 seconds within $0.10, spread ≤ 10% of mid) with a waiting reason and a 60-second keep-waiting prompt; fill at mid + $0.10 in an editable box, with a bid–ask warning and the manual-price tag
