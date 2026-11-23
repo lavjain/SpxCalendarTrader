@@ -8,6 +8,11 @@ __pycache__/
 data/
 docs/mockups/build/
 *.db
+*.db-journal
+*.db-wal
+*.db-shm
+snapshots.json
+snapshots.json.tmp
 .env
 .schwab/
 *token*.json
