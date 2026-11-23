@@ -12,7 +12,7 @@ from pathlib import Path
 from tests.test_services import CHAIN
 
 T = Jinja2Templates(directory=str(Path(__file__).parent.parent / "app" / "templates"))
-for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma"):
+for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma", "mdate"):
     T.env.filters[n] = getattr(formatting, n)
 T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 T.env.globals["url_for"] = lambda name, **kw: "/static/" + kw.get("path", "")
@@ -86,3 +86,14 @@ def test_size_by_select_carries_the_defaults_for_each_mode(snap):
                 default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     html = render("finder.html", results=None, **base)
     assert 'data-default-contracts="10"' in html and 'data-default-margin="10000"' in html
+
+
+def test_holiday_note_shows_under_the_width_chips(snap):
+    from app.core.models import HolidayNote
+    base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
+                filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
+                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS,
+                holidays=[HolidayNote(date="2026-12-25", name="Christmas Day", moves_to="2026-12-24")])
+    html = render("finder.html", results=None, **base)
+    assert "Holiday Dec 25 (Christmas Day)" in html and "Move To" not in html and 'id="width-notes"' in html

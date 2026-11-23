@@ -92,3 +92,4 @@ Steps 1–7 are built, one commit each. Steps 8 (risk profile tab) and 9 (ⓘ po
 
 - **Finder lists 40–50Δ strikes with 45Δ as the target** (`DELTA_BAND`, `DELTA_TARGET`): the bid-ask on 35–40Δ strikes was too wide. The field `near_40_delta` was renamed `near_target_delta` (database column `finder_log.is_near_target_delta`, schema version 3; an existing database is upgraded in place on the next start).
 - **Switching Size By to Contracts starts at 10** (`config.DEFAULT_CONTRACTS`); switching back starts at $10,000.
+- **The DTE sliders push each other** (the upper moves up if the lower passes it, and the other way round), the width chips grey out as the range changes, and a note under **Days Between** names any holiday in the range ("Holiday Dec 25 (Christmas Day)"). The filter groups are top-aligned; Refresh sits in the middle of the bar.

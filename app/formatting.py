@@ -61,6 +61,14 @@ def edate(iso) -> str:
     return f"{d:%a %b} {d.day}"
 
 
+def mdate(iso) -> str:
+    """'2026-12-25' -> 'Dec 25' (no weekday)."""
+    if not iso:
+        return DASH
+    d = date.fromisoformat(iso[:10])
+    return f"{d:%b} {d.day}"
+
+
 def strike(x) -> str:
     """7120.0 -> '7120' (no separators on strikes)."""
     return DASH if x is None else f"{x:.0f}"

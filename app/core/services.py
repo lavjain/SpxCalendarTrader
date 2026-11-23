@@ -3,7 +3,7 @@
 Week 1 implements get_finder(); the other eight keep their signatures and raise
 NotImplementedError until their week in docs/PLAN.md.
 """
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import math
@@ -12,9 +12,9 @@ from scipy.optimize import brentq
 
 from app.core import config, pricing, schwab_api, tos
 from app.core.calendar_math import Calendar, Leg
-from app.core.expiries import market_today, pick_expiries
+from app.core.expiries import market_today, pick_expiries, previous_trading_day
 from app.core.calendar_math import _whole
-from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, OpenTradeResult,
+from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, HolidayNote, OpenTradeResult,
                              OptionQuote, PairSummary, QuoteSpread, Spot, TosOrder, Trade)
 from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
@@ -170,7 +170,23 @@ def get_expirations(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEF
     all_pairs = pick_expiries(market_today(), dte_range, config.WIDTHS)
     present = {p.width for p in all_pairs}
     return ExpirationsResult(pairs=[p for p in all_pairs if p.width in widths],
-                             unavailable_widths=[w for w in config.WIDTHS if w not in present])
+                             unavailable_widths=[w for w in config.WIDTHS if w not in present],
+                             holidays=_holiday_notes(dte_range))
+
+
+def _holiday_notes(dte_range) -> list[HolidayNote]:
+    """Holidays that touch a short Friday inside the DTE range or any long date 3-7 days after it."""
+    today = market_today()
+    friday = today + timedelta(days=(4 - today.weekday()) % 7)
+    found = {}
+    while (friday - today).days <= dte_range[1] + 7:
+        if dte_range[0] <= (previous_trading_day(friday) - today).days <= dte_range[1]:
+            for d in [friday] + [friday + timedelta(days=w) for w in config.WIDTHS]:
+                if d.isoformat() in config.HOLIDAY_NAMES:
+                    found[d] = HolidayNote(date=d.isoformat(), name=config.HOLIDAY_NAMES[d.isoformat()],
+                                           moves_to=previous_trading_day(d).isoformat())
+        friday += timedelta(days=7)
+    return [found[d] for d in sorted(found)]
 
 
 # ---------------------------------------------------------------- break-even diagnostics

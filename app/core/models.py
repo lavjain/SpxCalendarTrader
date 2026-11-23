@@ -92,9 +92,16 @@ class Spot(BaseModel):
     vix9d: float | None = None
 
 
+class HolidayNote(BaseModel):
+    date: str                        # ISO date of the market holiday
+    name: str
+    moves_to: str                    # the trading day an expiry on that date moves to
+
+
 class ExpirationsResult(BaseModel):
     pairs: list[ExpiryPair]          # for the requested widths
     unavailable_widths: list[int]    # widths (of all 3-7) with no pair this week in the DTE range
+    holidays: list[HolidayNote] = []   # holidays that move a short or long expiry for pairs in this range
 
 
 class CalendarQuote(BaseModel):

@@ -57,7 +57,7 @@ def test_fixed_contract_sizing(mocked):
     assert all(r.margin == pytest.approx(r.price * 300) for r in rows)
 
 
-def test_break_evens_on_the_target_delta_row(mocked):
+def test_break_evens_on_the_near_40_row(mocked):
     p = services.get_finder().pairs[0]
     be = p.break_evens
     assert be and be.lower < p.near_target_delta.strike < be.upper and be.at_date == p.short_expiry
@@ -179,3 +179,12 @@ def test_cli_table_survives_a_dash_td(mocked, capsys):
     res = services.get_finder()
     res.pairs[0].rows[0].td = None
     assert "-" in cli.format_finder(res)
+
+
+def test_holiday_notes_name_the_holiday_and_where_the_expiry_moves(monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    notes = services.get_expirations((25, 35)).holidays
+    xmas = next(h for h in notes if h.date == "2026-12-25")
+    assert (xmas.name, xmas.moves_to) == ("Christmas Day", "2026-12-24")
+    assert services.get_expirations((7, 7)).holidays == []              # no holiday near the first Friday
+    assert all(h.date in config.HOLIDAY_NAMES for h in services.get_expirations((7, 56)).holidays)

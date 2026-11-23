@@ -14,7 +14,7 @@ from app.settings import app_version, get_settings
 
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
-for _name in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma"):
+for _name in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma", "mdate"):
     templates.env.filters[_name] = getattr(formatting, _name)
 templates.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 
@@ -44,7 +44,7 @@ async def finder_page(request: Request):
     exp = services.get_expirations(filters.dte_range, tuple(filters.widths))   # date math only, no Schwab call
     snap = request.app.state.snapshots.latest()
     ctx = {**page_context(request, "finder"), "filters": filters, "widths_all": config.WIDTHS,
-           "unavailable_widths": exp.unavailable_widths, "dte_limits": config.SHORT_DTE_LIMITS,
+           "unavailable_widths": exp.unavailable_widths, "holidays": exp.holidays, "dte_limits": config.SHORT_DTE_LIMITS,
            "results": view_models.results_context(snap) if snap else None,
            "default_margin": config.MARGIN, "default_contracts": config.DEFAULT_CONTRACTS,
            "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
