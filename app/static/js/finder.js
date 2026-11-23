@@ -1,4 +1,4 @@
-import { etime } from "./lib/format.js";
+import { etime, mdate } from "./lib/format.js";
 
 // Finder page behaviour. Only wires events and swaps server-rendered HTML; no trading math here.
 const $ = (id) => document.getElementById(id);
@@ -120,5 +120,40 @@ document.body.addEventListener("htmx:responseError", async (ev) => {
   showBanner(await errorText(ev.detail.xhr.response ? { json: async () => JSON.parse(ev.detail.xhr.response), statusText: ev.detail.xhr.statusText } : ev.detail.xhr).catch(() => "Request failed"));
 });
 
+// Grey out the widths that have no expiry pair in the chosen DTE range (a holiday, for example). The server decides.
+let widthsTimer;
+function updateUnavailableWidths() {
+  clearTimeout(widthsTimer);
+  widthsTimer = setTimeout(async () => {
+    const q = new URLSearchParams({ dte_min: $("dte-min").value, dte_max: $("dte-max").value });
+    document.querySelectorAll("input[name=widths]").forEach((e) => q.append("widths", e.value));
+    try {
+      const res = await fetch(`/api/expirations?${q}`);
+      if (!res.ok) return;
+      const body = await res.json();
+      const gone = new Set(body.unavailable_widths.map(String));
+      $("width-notes").replaceChildren(...body.holidays.map((h) => {
+        const row = document.createElement("div");
+        row.textContent = `Holiday ${mdate(h.date)} (${h.name})`;
+        return row;
+      }));
+      document.querySelectorAll("#width-chips .chip-wrap").forEach((wrap) => {
+        const off = gone.has(wrap.querySelector("input").value);
+        wrap.querySelector(".chip").classList.toggle("unavailable", off);
+        wrap.title = off ? "No expiry for this width in this DTE range (a holiday or a weekend)" : "";
+      });
+    } catch { /* the greying is a hint only */ }
+  }, 200);
+}
+
 $("refresh").addEventListener("click", refresh);
-$("filters").addEventListener("input", () => { saveFilters(); scheduleRefresh(); });
+$("filters").addEventListener("input", (ev) => {
+  const lo = $("dte-min"), hi = $("dte-max");               // the two DTE sliders push each other, never cross
+  if (ev.target === lo && Number(lo.value) > Number(hi.value)) hi.value = lo.value;
+  if (ev.target === hi && Number(hi.value) < Number(lo.value)) lo.value = hi.value;
+  if (ev.target === lo || ev.target === hi) updateUnavailableWidths();
+  if (ev.target.id === "size-mode") {                       // switching Size By starts from that mode's default
+    $("size-value").value = ev.target.value === "contracts" ? ev.target.dataset.defaultContracts : ev.target.dataset.defaultMargin;
+  }
+  saveFilters(); scheduleRefresh();
+});

@@ -50,7 +50,7 @@ def test_settings_survive_reopening(store):
 def test_log_finder_writes_one_row_per_strike_with_flags(store, result):
     n = store.log_finder(result, Spot(time=result.time, spx=6800.0, vix=18.5, vix9d=19.1), snapshot_id="abc")
     rows = sqlite3.connect(store.path).execute(
-        "select snapshot_id, vix, strike, is_near_40_delta, is_best_skew, be_lower, be_upper, is_close_snapshot, "
+        "select snapshot_id, vix, strike, is_near_target_delta, is_best_skew, be_lower, be_upper, is_close_snapshot, "
         "trade_date, filters from finder_log").fetchall()
     assert n == len(rows) == sum(p.strike_count for p in result.pairs) > 1
     assert {r[0] for r in rows} == {"abc"} and {r[1] for r in rows} == {18.5}

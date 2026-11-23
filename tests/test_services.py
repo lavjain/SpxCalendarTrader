@@ -21,25 +21,25 @@ def flat(result):
     return [r for p in result.pairs for r in p.rows]
 
 
-def test_exactly_one_best_skew_and_one_near_40_delta(mocked):
+def test_exactly_one_best_skew_and_one_near_target_delta(mocked):
     res = services.get_finder()
     assert isinstance(res, FinderResult)
     assert len(res.pairs) == 1
     p = res.pairs[0]
     assert (p.short_expiry, p.long_expiry, p.width) == ("2026-12-24", "2026-12-31", 7)
     assert sum(r.is_best_skew for r in flat(res)) == 1
-    assert sum(r.is_near_40_delta for r in flat(res)) == 1
+    assert sum(r.is_near_target_delta for r in flat(res)) == 1
     assert p.strike_count == len(p.rows) > 1
 
 
 def test_summary_matches_its_rows(mocked):
     p = services.get_finder().pairs[0]
-    near = next(r for r in p.rows if r.is_near_40_delta)
+    near = next(r for r in p.rows if r.is_near_target_delta)
     best = next(r for r in p.rows if r.is_best_skew)
-    assert p.near_40_delta == near
+    assert p.near_target_delta == near
     assert (p.best_skew, p.best_skew_strike) == (best.skew, best.strike)
     assert best.skew == max(r.skew for r in p.rows)
-    assert abs(abs(near.short.delta) - 0.40) == min(abs(abs(r.short.delta) - 0.40) for r in p.rows)
+    assert abs(abs(near.short.delta) - config.DELTA_TARGET) == min(abs(abs(r.short.delta) - config.DELTA_TARGET) for r in p.rows)
     assert all(r.short.strike == r.long.strike == r.strike for r in p.rows)
 
 
@@ -60,7 +60,7 @@ def test_fixed_contract_sizing(mocked):
 def test_break_evens_on_the_near_40_row(mocked):
     p = services.get_finder().pairs[0]
     be = p.break_evens
-    assert be and be.lower < p.near_40_delta.strike < be.upper and be.at_date == p.short_expiry
+    assert be and be.lower < p.near_target_delta.strike < be.upper and be.at_date == p.short_expiry
 
 
 def test_result_is_plain_json(mocked):
@@ -100,7 +100,7 @@ def test_cli_table_prints_flags_and_break_evens(mocked, capsys):
     import cli
     print(cli.format_finder(services.get_finder()))
     out = capsys.readouterr().out
-    assert "*40D" in out and "BEST-SKEW" in out and "break-evens" in out and "2026-12-24 -> 2026-12-31" in out
+    assert "*45D" in out and "BEST-SKEW" in out and "break-evens" in out and "2026-12-24 -> 2026-12-31" in out
 
 
 def test_diagnose_reports_inputs_and_variants(mocked):
@@ -144,7 +144,7 @@ def test_rows_use_implied_ivs_for_skew_and_have_iv_ratio_and_break_evens(mocked)
         assert r.break_evens and r.break_evens.lower < r.strike < r.break_evens.upper
         assert r.td is None or isinstance(r.td, float)
     p = services.get_finder().pairs[0]
-    assert p.break_evens == p.near_40_delta.break_evens
+    assert p.break_evens == p.near_target_delta.break_evens
 
 
 def test_row_with_a_nan_td_still_round_trips():
@@ -179,3 +179,12 @@ def test_cli_table_survives_a_dash_td(mocked, capsys):
     res = services.get_finder()
     res.pairs[0].rows[0].td = None
     assert "-" in cli.format_finder(res)
+
+
+def test_holiday_notes_name_the_holiday_and_where_the_expiry_moves(monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    notes = services.get_expirations((25, 35)).holidays
+    xmas = next(h for h in notes if h.date == "2026-12-25")
+    assert (xmas.name, xmas.moves_to) == ("Christmas Day", "2026-12-24")
+    assert services.get_expirations((7, 7)).holidays == []              # no holiday near the first Friday
+    assert all(h.date in config.HOLIDAY_NAMES for h in services.get_expirations((7, 56)).holidays)

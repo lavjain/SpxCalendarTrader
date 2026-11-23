@@ -2,7 +2,7 @@
 
 # SPX Calendar Trader
 
-A web app for finding and paper-trading ~40Δ SPX put calendars, using live option chains from the Schwab API. **No real orders are sent.** Built with FastAPI, Jinja templates, HTMX and a little vanilla JavaScript: no frontend framework and no build step; it runs on your own computer.
+A web app for finding and paper-trading ~45Δ SPX put calendars, using live option chains from the Schwab API. **No real orders are sent.** Built with FastAPI, Jinja templates, HTMX and a little vanilla JavaScript: no frontend framework and no build step; it runs on your own computer.
 
 **Status:** under construction. Release 1, the core (find, open, track, close, results), is a 6-week build, Nov 24, 2026 – Jan 4, 2027; Release 2 adds the extras by Jan 18, 2027 (see the [build plan](docs/PLAN.md#6-week-build-plan)). An interactive Analyzer (a thinkorswim-style position modeler) and optional hosting on Railway come later, in Application Phase 2 ([plan](docs/PLAN.md#application-phase-2-after-release-2)).
 
@@ -15,13 +15,13 @@ A web app for finding and paper-trading ~40Δ SPX put calendars, using live opti
 | 3 | Opening paper trades: [plan](docs/WEEK3.md). The Open Trade dialog (live quote every 2 s, suggested fill, Confirm saves one `trades` row), Copy to TOS and Paste from TOS. The Finder now lists 40–50Δ strikes (target 45Δ). The stability wait is switched off for now. Not yet: risk profile tab, ⓘ popovers | Steps 1–7 done |
 | 4–6 | Holdings, closing, Performance | Planned |
 
-**Screens vs. the mockups.** The Finder in the running app follows the mockup below, with these differences: labels use Title Case; contracts are rounded to the nearest whole number (at least 1) instead of up; gamma and delta come from the model; and the filters refresh the table by themselves. The stability check in the Open Trade dialog tests each leg's bid-ask (at most 10% of that leg's price) rather than the whole calendar's, because the calendar's own bid-ask is the sum of both legs. The Holdings, Close, Performance and TOS screens are still mockups.
+**Screens vs. the mockups.** The Finder in the running app follows the mockup below, with these differences: labels use Title Case; contracts are rounded to the nearest whole number (at least 1) instead of up; gamma and delta come from the model; and the filters refresh the table by themselves. The stability check in the Open Trade dialog tests each leg's bid-ask (at most 10% of that leg's price) rather than the whole calendar's, because the calendar's own bid-ask is the sum of both legs. The Finder now lists 40–50Δ strikes with 45Δ as the target (the screenshots still show 35–45Δ with 40Δ). The Holdings, Close, Performance and TOS screens are still mockups.
 
 **Contents:** [What it does](#what-it-does) · [Screenshots](#screenshots) · [Installation](#installation) · [Using VS Code](#using-vs-code) · [Project layout](#project-layout) · [Schwab API setup](#schwab-api-setup) · [Acknowledgments](#acknowledgments) · [License](#license)
 
 ## What it does
 
-- **Finder:** 35–45Δ put calendars sized to $10,000 margin (or any amount, or a fixed number of contracts), with greeks and term-structure skew. Filters choose the short leg's DTE (1–8 weeks out; default ~30 days), the days between short and long (3–7; default 7) and which strikes to show (10s and/or 25s).
+- **Finder:** 40–50Δ put calendars sized to $10,000 margin (or any amount, or a fixed number of contracts), with greeks and term-structure skew. Filters choose the short leg's DTE (1–8 weeks out; default ~30 days), the days between short and long (3–7; default 7) and which strikes to show (10s and/or 25s).
 - **Holdings:** open paper trades with P/L, break-evens, Vol P&L (how much of today's move came from volatility) and ±10% flags.
 - **Performance:** results by month and week, and which entry conditions (skew, VIX, volatility at entry, short DTE, width, days held, day of week) made money.
 
@@ -33,7 +33,7 @@ Mockups of the planned screens, built from a simulated SPX chain priced with Bla
 
 Every screen has a header with the Finder / Holdings / Performance tabs, the account and a light/dark theme toggle (dark by default), and every tile, heading and control has a small ⓘ that explains it.
 
-**Finder:** filters on one line across the top, then two columns. On the left, one row per short/long pair at its ~40Δ strike, split by width and sortable (here by best skew); clicking a pair opens all its strikes underneath, with the highest skew marked in amber and the strike nearest 40Δ starred. On the right, a panel for the selected strike stays in view: a thinkorswim-style risk profile (P/L today and at the short expiry, profit and loss shading, the ±1 SD move and break-evens), tiles for cost, max profit and loss, break-evens and greeks, and both legs with their IVs, skew and IV ratio.
+**Finder:** filters on one line across the top, then two columns. On the left, one row per short/long pair at its ~45Δ strike, split by width and sortable (here by best skew); clicking a pair opens all its strikes underneath, with the highest skew marked in amber and the strike nearest 40Δ starred. On the right, a panel for the selected strike stays in view: a thinkorswim-style risk profile (P/L today and at the short expiry, profit and loss shading, the ±1 SD move and break-evens), tiles for cost, max profit and loss, break-evens and greeks, and both legs with their IVs, skew and IV ratio.
 
 ![Finder screen](docs/images/finder.png)
 
@@ -152,7 +152,7 @@ Then open <http://localhost:8000>. It starts on the Finder: set the filters, pre
 
 To type just `spxcal` from anywhere, add `alias spxcal="$HOME/dev/SPXCalendarTrader/spxcal"` to `~/.zshrc` (adjust the path to where you cloned the repo), then open a new terminal.
 
-**Terminal version** (no browser; prints today's 35–45Δ put calendars with break-evens), useful to compare against the page:
+**Terminal version** (no browser; prints today's 40–50Δ put calendars with break-evens), useful to compare against the page:
 
 ```bash
 uv run --env-file .env python -m cli candidates
@@ -299,7 +299,7 @@ Confirmed against a real `$SPX` pull (2026-08-17):
 1. **Symbol format:** `$SPX` works as-is.
 2. **Field names:** `strategy=SINGLE` returns `volatility`, `delta`, `gamma`, `theta`, `vega` per contract as `parse()` expects.
 3. **Greek scaling:** greeks arrive **per share**, not ×100. This is what `calendar_math.py` expects.
-4. **`volatility` can be garbage on worthless contracts:** deep OTM/ITM contracts with near-zero bid/ask can return IV in the thousands of percent. The 35–45Δ band filter (week 1) will skip them, but any code that iterates all contracts should also filter on a plausible IV range.
+4. **`volatility` can be garbage on worthless contracts:** deep OTM/ITM contracts with near-zero bid/ask can return IV in the thousands of percent. The 40–50Δ band filter (week 1) will skip them, but any code that iterates all contracts should also filter on a plausible IV range.
 5. **`theoreticalVolatility` is not usable:** it comes back as a flat constant across strikes and expiries. Use `volatility`.
 6. **"Body buffer overflow" 502:** an unbounded chain request is too large. `get_chain()` always sends `fromDate`/`toDate` and `range=OTM` to keep the payload small.
 

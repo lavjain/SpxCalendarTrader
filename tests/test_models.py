@@ -18,13 +18,13 @@ def row():
                        margin=10_000.0, delta=-1.2, gamma=-0.01, theta=40.0, vega=300.0,
                        short_iv=16.0, long_iv=15.2, short_vega=4.0, long_vega=4.5,
                        skew=0.8, td=3.2, theta_margin=0.004,
-                       is_best_skew=True, is_near_40_delta=True)
+                       is_best_skew=True, is_near_target_delta=True)
 
 
 def all_models():
     r = row()
     summary = PairSummary(short_expiry="2026-12-24", long_expiry="2026-12-31", short_dte=30,
-                          long_dte=37, width=7, near_40_delta=r, best_skew=0.8,
+                          long_dte=37, width=7, near_target_delta=r, best_skew=0.8,
                           best_skew_strike=5000.0, strike_count=1, rows=[r],
                           break_evens=BreakEvens(lower=4900.5, upper=5100.25, at_date="2026-12-24"))
     return [

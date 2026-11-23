@@ -243,5 +243,26 @@
    null
   ],
   "out": "—"
+ },
+ {
+  "fn": "mdate",
+  "args": [
+   "2026-12-25"
+  ],
+  "out": "Dec 25"
+ },
+ {
+  "fn": "mdate",
+  "args": [
+   "2027-01-05"
+  ],
+  "out": "Jan 5"
+ },
+ {
+  "fn": "mdate",
+  "args": [
+   null
+  ],
+  "out": "—"
  }
 ]

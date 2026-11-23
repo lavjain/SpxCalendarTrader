@@ -1,6 +1,7 @@
 """Every tunable trading number. No web imports; environment/secret settings live in app/settings.py."""
 
 # --- sizing / fills
+DEFAULT_CONTRACTS = 10               # default when switching Size By to contracts
 MARGIN = 10_000                      # default when sizing by margin
 MODEL_GREEKS = True                  # delta and gamma from Black-Scholes at the mid-implied IVs (False: Schwab's, 3 decimals)
 SIZE_ROUNDING = "nearest"            # margin -> contracts: "nearest" (half up, min 1), "ceil" or "floor"
@@ -8,8 +9,10 @@ SIZE_MODES = ("margin", "contracts")
 FILL_OFFSET = 0.10                   # open at mid + 0.10, close at mid - 0.10
 
 # --- what the Finder looks for
-DELTA_TARGET = 0.40
-DELTA_BAND = (0.35, 0.45)
+DELTA_TARGET = 0.45                  # the strike the Finder stars and the Open Trade dialog starts from
+DELTA_BAND = (0.40, 0.50)            # short-put deltas the Finder lists
+DELTA_LABEL = "45Δ"                  # shown in headings (keep in step with DELTA_TARGET)
+DELTA_BAND_LABEL = "40–50Δ"
 SHORT_DTE_TARGET = 30
 SHORT_DTE_DEFAULT = (25, 35)
 SHORT_DTE_LIMITS = (7, 56)
@@ -52,11 +55,14 @@ DB_PATH = "data/paper_trades.db"
 SNAPSHOT_PATH = "data/snapshots.json"
 
 # --- NYSE full-day closures (2026-2027). Verify against the NYSE holiday calendar each year.
-MARKET_HOLIDAYS = frozenset({
-    # 2026
-    "2026-01-01", "2026-01-19", "2026-02-16", "2026-04-03", "2026-05-25", "2026-06-19",
-    "2026-07-03", "2026-09-07", "2026-11-26", "2026-12-25",
-    # 2027
-    "2027-01-01", "2027-01-18", "2027-02-15", "2027-03-26", "2027-05-31", "2027-06-18",
-    "2027-07-05", "2027-09-06", "2027-11-25", "2027-12-24",
-})
+HOLIDAY_NAMES = {                    # NYSE full-day closures; an expiry on one moves to the trading day before
+    "2026-01-01": "New Year's Day", "2026-01-19": "Martin Luther King Jr. Day", "2026-02-16": "Presidents' Day",
+    "2026-04-03": "Good Friday", "2026-05-25": "Memorial Day", "2026-06-19": "Juneteenth",
+    "2026-07-03": "Independence Day (observed)", "2026-09-07": "Labor Day", "2026-11-26": "Thanksgiving",
+    "2026-12-25": "Christmas Day",
+    "2027-01-01": "New Year's Day", "2027-01-18": "Martin Luther King Jr. Day", "2027-02-15": "Presidents' Day",
+    "2027-03-26": "Good Friday", "2027-05-31": "Memorial Day", "2027-06-18": "Juneteenth (observed)",
+    "2027-07-05": "Independence Day (observed)", "2027-09-06": "Labor Day", "2027-11-25": "Thanksgiving",
+    "2027-12-24": "Christmas Day (observed)",
+}
+MARKET_HOLIDAYS = frozenset(HOLIDAY_NAMES)

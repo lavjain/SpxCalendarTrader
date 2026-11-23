@@ -13,7 +13,7 @@ from zoneinfo import ZoneInfo
 from app.core import config
 from app.core.models import FinderResult, Spot, Trade
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3      # 3: finder_log.is_near_40_delta renamed is_near_target_delta (the target is now 45 delta)
 
 
 class DuplicateTradeError(ValueError):
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS finder_log (
     width INTEGER, strike REAL NOT NULL, short_delta REAL,
     short_mark REAL, short_bid REAL, short_ask REAL, long_mark REAL, long_bid REAL, long_ask REAL,
     short_iv REAL, long_iv REAL, skew REAL, price REAL, contracts INTEGER, margin REAL,
-    be_lower REAL, be_upper REAL, is_near_40_delta INTEGER, is_best_skew INTEGER);
+    be_lower REAL, be_upper REAL, is_near_target_delta INTEGER, is_best_skew INTEGER);
 CREATE INDEX IF NOT EXISTS finder_log_date ON finder_log (trade_date, short_expiry, long_expiry);
 CREATE TABLE IF NOT EXISTS trades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,7 +64,10 @@ class Store:
         folder = os.path.dirname(os.path.abspath(self.path))
         os.makedirs(folder, exist_ok=True)
         with closing(self._connect()) as con, con:
-            con.executescript(SCHEMA)            # every statement is IF NOT EXISTS, so a v1 file upgrades in place
+            cols = [r[1] for r in con.execute("PRAGMA table_info(finder_log)")]
+            if "is_near_40_delta" in cols:       # a v1/v2 file: rename the column; older rows keep their values
+                con.execute("ALTER TABLE finder_log RENAME COLUMN is_near_40_delta TO is_near_target_delta")
+            con.executescript(SCHEMA)            # every statement is IF NOT EXISTS, so an older file upgrades in place
             con.execute("INSERT INTO meta (key, value) VALUES ('schema_version', ?) "
                         "ON CONFLICT (key) DO UPDATE SET value = excluded.value "
                         "WHERE CAST(meta.value AS INTEGER) < CAST(excluded.value AS INTEGER)",
@@ -103,7 +106,7 @@ class Store:
                     r.short.delta, r.short.mark, r.short.bid, r.short.ask,
                     r.long.mark, r.long.bid, r.long.ask, r.short_iv, r.long_iv, r.skew, r.price,
                     r.contracts, r.margin, be.lower if be else None, be.upper if be else None,
-                    int(r.is_near_40_delta), int(r.is_best_skew)))
+                    int(r.is_near_target_delta), int(r.is_best_skew)))
         if not rows:
             return 0
         with closing(self._connect()) as con, con:
@@ -111,7 +114,7 @@ class Store:
                             "spx, vix, vix9d, filters, short_expiry, long_expiry, short_dte, long_dte, width, "
                             "strike, short_delta, short_mark, short_bid, short_ask, long_mark, long_bid, long_ask, "
                             "short_iv, long_iv, skew, price, contracts, margin, be_lower, be_upper, "
-                            "is_near_40_delta, is_best_skew) VALUES (" + ",".join("?" * 31) + ")", rows)
+                            "is_near_target_delta, is_best_skew) VALUES (" + ",".join("?" * 31) + ")", rows)
         return len(rows)
 
     def count_finder_rows(self) -> int:

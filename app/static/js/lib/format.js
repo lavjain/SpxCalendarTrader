@@ -45,6 +45,13 @@ export function edate(iso) {
   return `${wd} ${mo} ${d}`;
 }
 
+export function mdate(iso) {
+  if (!iso) return DASH;
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  const mo = new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+  return `${mo} ${d}`;
+}
+
 export function strike(x) {
   return x === null || x === undefined ? DASH : x.toFixed(0);
 }

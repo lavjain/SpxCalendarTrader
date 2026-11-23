@@ -4,7 +4,7 @@ calendar_math.py - calendar pricing/sizing math, screener, XSP overlay and fill/
 
 Reproduces the Sheridan/Lane Snell spreadsheet metrics exactly:
     Skew        = short-leg IV - long-leg IV   (vol points; want POSITIVE)
-    T/D         = position theta / position delta
+    T/D         = position theta / |position delta|   (absolute delta, so T/D has the same sign as theta)
     Theta/Mgn   = position theta / margin      (margin == debit for a calendar)
     Contracts   = ceil(target_capital / (debit * 100))
 
@@ -83,7 +83,7 @@ class Calendar:
         self.theta = (long.theta - short.theta) * k
         self.vega = (long.vega - short.vega) * k
         self.skew = (short.iv - long.iv) * 100.0          # vol points
-        self.td = self.theta / self.delta if self.delta else float("nan")
+        self.td = self.theta / abs(self.delta) if self.delta else float("nan")
         self.theta_margin = self.theta / self.margin if self.margin else float("nan")
         # front vega is the divergence exposure: $ lost per vol pt of front-vs-back
         self.front_vega = short.vega * k
