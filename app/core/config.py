@@ -20,6 +20,7 @@ MAX_DTE = 63                         # 56 + 7
 CALL_STRIKE_COUNT = 6                # calls requested around the money, per expiry (for the forward)
 
 # --- stability check before a fill
+REQUIRE_STABLE = False               # deferred: when True, Confirm waits for a stable price (the check below still runs)
 STABLE_RANGE = 0.10
 STABLE_QUOTES = 5
 QUOTE_INTERVAL_S = 2

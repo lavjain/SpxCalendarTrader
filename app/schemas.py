@@ -67,3 +67,26 @@ class FinderSnapshot(BaseModel):
     snapshot_id: str
     spot: Spot | None = None
     result: FinderResult
+
+
+class QuoteSpreadRequest(BaseModel):
+    short_symbol: str
+    long_symbol: str
+    size_mode: Literal["margin", "contracts"] = "margin"
+    size_value: float = Field(default=config.MARGIN, gt=0)
+    fill_price: float | None = None
+    keep_waiting: bool = False
+
+
+class OpenTradeRequest(BaseModel):
+    """What the Open Trade dialog sends: which calendar (from a Finder snapshot) and what was confirmed."""
+    snapshot_id: str
+    short_expiry: str
+    long_expiry: str
+    strike: float
+    size_mode: Literal["margin", "contracts"] = "margin"
+    size_value: float = Field(default=config.MARGIN, gt=0)
+    contracts: int = Field(ge=1)
+    fill_price: float = Field(gt=0)
+    price_source: Literal["auto", "manual", "pasted"] | None = None
+    account: str = "Paper"

@@ -292,7 +292,7 @@ def quote_spread(short_symbol: str, long_symbol: str, size_mode: str = "margin",
     return QuoteSpread(
         time=_now_et(), bid=cq.bid, ask=cq.ask, mid=cq.mid, spread=cq.spread, suggested_price=suggested,
         is_stable=result.is_stable, waiting_reason=result.waiting_reason, quotes_seen=result.quotes_seen,
-        seconds_waiting=round(waited, 1), give_up=(not result.is_stable and waited >= config.WAIT_TIMEOUT_S),
+        seconds_waiting=round(waited, 1), stability_required=config.REQUIRE_STABLE, give_up=(not result.is_stable and waited >= config.WAIT_TIMEOUT_S),
         range_low=result.range_low, range_high=result.range_high, contracts=contracts,
         cost=(contracts * price * 100.0) if contracts and price else None,
         margin=(contracts * cq.mid * 100.0) if contracts and cq.mid is not None else None)

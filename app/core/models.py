@@ -167,6 +167,7 @@ class QuoteSpread(BaseModel):
     waiting_reason: str | None = None
     quotes_seen: int = 0
     seconds_waiting: float = 0.0
+    stability_required: bool = False   # the dialog only waits for a stable price when this is True
     give_up: bool = False            # unstable for WAIT_TIMEOUT_S: the dialog asks Keep Waiting / Cancel
     range_low: float | None = None
     range_high: float | None = None
