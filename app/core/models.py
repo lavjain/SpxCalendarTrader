@@ -179,3 +179,13 @@ class QuoteSpread(BaseModel):
 class OpenTradeResult(BaseModel):
     trade: Trade
     warnings: list[str] = []         # e.g. a fill outside the bid-ask: allowed, but said out loud
+
+
+class TosOrder(BaseModel):
+    """A thinkorswim calendar order line, read into fields."""
+    side: Literal["BUY", "SELL"]
+    contracts: int
+    short_expiry: str                # ISO date
+    long_expiry: str
+    strike: float
+    price: float

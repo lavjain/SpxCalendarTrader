@@ -10,12 +10,12 @@ import math
 
 from scipy.optimize import brentq
 
-from app.core import config, pricing, schwab_api
+from app.core import config, pricing, schwab_api, tos
 from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries
 from app.core.calendar_math import _whole
 from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, OpenTradeResult,
-                             OptionQuote, PairSummary, QuoteSpread, Spot, Trade)
+                             OptionQuote, PairSummary, QuoteSpread, Spot, TosOrder, Trade)
 from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
 SYMBOL = "$SPX"
@@ -298,9 +298,23 @@ def quote_spread(short_symbol: str, long_symbol: str, size_mode: str = "margin",
         margin=(contracts * cq.mid * 100.0) if contracts and cq.mid is not None else None)
 
 
-def parse_tos_order(line: str):
-    """In: a thinkorswim order line. Out: ParsedOrder (legs, price, contracts, side)."""
-    raise NotImplementedError("parse_tos_order: week 3")
+def tos_order(side: str, contracts: int, short_expiry: str, long_expiry: str, strike: float, price: float) -> str:
+    """The thinkorswim order line to paste into TOS. The app sends nothing."""
+    return tos.format_order(side, contracts, short_expiry, long_expiry, strike, price)
+
+
+def parse_tos_order(text: str, short_expiry: str | None = None, long_expiry: str | None = None,
+                    strike: float | None = None) -> TosOrder:
+    """Read a pasted thinkorswim line for the open dialog. It must be a BUY (a SELL is a closing order, week 5) and,
+    when the dialog's calendar is given, must be that calendar. Raises tos.TosParseError with the reason."""
+    order = tos.parse_order(text)
+    if order.side == "SELL":
+        raise tos.TosParseError("This is a closing order: paste it in Close Trade (week 5)")
+    if short_expiry and (order.short_expiry, order.long_expiry) != (short_expiry, long_expiry):
+        raise tos.TosParseError(f"This line is for {order.short_expiry} / {order.long_expiry}, not {short_expiry} / {long_expiry}")
+    if strike is not None and abs(order.strike - strike) > 1e-6:
+        raise tos.TosParseError(f"This line is for strike {order.strike:g}, not {strike:g}")
+    return order
 
 
 def open_trade(store, pair: PairSummary, row: CalendarRow, spot: Spot | None, size_mode: str, size_value: float,

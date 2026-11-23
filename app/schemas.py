@@ -90,3 +90,17 @@ class OpenTradeRequest(BaseModel):
     fill_price: float = Field(gt=0)
     price_source: Literal["auto", "manual", "pasted"] | None = None
     account: str = "Paper"
+
+
+class TosOrderRequest(BaseModel):
+    """The calendar and price in the dialog, to be written as a thinkorswim line."""
+    short_expiry: str
+    long_expiry: str
+    strike: float = Field(gt=0)
+    contracts: int = Field(ge=1)
+    price: float = Field(gt=0)
+    side: Literal["BUY", "SELL"] = "BUY"
+
+
+class TosOrderLine(BaseModel):
+    line: str

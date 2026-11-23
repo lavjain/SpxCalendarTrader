@@ -75,6 +75,20 @@ async function confirm() {
   } catch (e) { show("od-error", e.message); saving = false; render(last); }
 }
 
+async function copyToTos() {
+  if (!last || typedPrice() == null) { show("od-error", "Wait for a quote and a price first"); return; }
+  try {
+    const res = await fetch("/api/tos-order", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ short_expiry: cal.shortExpiry, long_expiry: cal.longExpiry, strike: cal.strike,
+                             contracts: last.contracts, price: typedPrice(), side: "BUY" }),
+    });
+    if (!res.ok) throw new Error(await errorText(res));
+    await navigator.clipboard.writeText((await res.json()).line);
+    show("od-error", ""); show("od-note", "Copied: paste it into thinkorswim");
+  } catch (e) { show("od-error", `Could not copy: ${e.message}`); }
+}
+
 document.addEventListener("click", (ev) => {
   const btn = ev.target.closest("#open-trade-btn");
   if (btn && !btn.disabled) openDialog(btn);
@@ -82,4 +96,5 @@ document.addEventListener("click", (ev) => {
 $("od-cancel").addEventListener("click", closeDialog);
 dlg.addEventListener("close", () => clearTimeout(timer));
 $("od-confirm").addEventListener("click", confirm);
+$("od-copy").addEventListener("click", copyToTos);
 $("od-price").addEventListener("input", () => { userPrice = true; if (last) render(last); });

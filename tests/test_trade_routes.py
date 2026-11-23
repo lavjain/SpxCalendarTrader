@@ -62,3 +62,12 @@ def test_open_trade_errors(client):
     assert client.post("/api/trades", json={**base, "strike": 1.0}).status_code == 404
     assert client.post("/api/trades", json={**base, "fill_price": 0}).status_code == 422
     assert client.get("/api/trades").json() == []
+
+
+def test_tos_order_endpoint_writes_the_line(client):
+    r = client.post("/api/tos-order", json={"short_expiry": "2027-02-12", "long_expiry": "2027-02-19",
+                                            "strike": 6800, "contracts": 13, "price": 7.7})
+    assert r.status_code == 200
+    assert r.json()["line"] == "BUY +13 CALENDAR SPX 100 (Weeklys) 19 FEB 27/12 FEB 27 6800 PUT @7.70 LMT"
+    assert client.post("/api/tos-order", json={"short_expiry": "2027-02-12", "long_expiry": "2027-02-19",
+                                               "strike": 6800, "contracts": 0, "price": 7.7}).status_code == 422
