@@ -121,4 +121,9 @@ document.body.addEventListener("htmx:responseError", async (ev) => {
 });
 
 $("refresh").addEventListener("click", refresh);
-$("filters").addEventListener("input", () => { saveFilters(); scheduleRefresh(); });
+$("filters").addEventListener("input", (ev) => {
+  if (ev.target.id === "size-mode") {                       // switching Size By starts from that mode's default
+    $("size-value").value = ev.target.value === "contracts" ? ev.target.dataset.defaultContracts : ev.target.dataset.defaultMargin;
+  }
+  saveFilters(); scheduleRefresh();
+});

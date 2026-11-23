@@ -53,7 +53,8 @@ def test_finder_page_renders_both_states(snap):
     filters = FinderFilters()
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=filters, widths_all=config.WIDTHS, unavailable_widths=[7], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET)
+                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     empty = render("finder.html", results=None, **base)
     assert "Press" in empty and "unavailable" in empty and 'id="refresh"' in empty and "Holdings" in empty
     full = render("finder.html", results=vm.results_context(snap), **{**base, "last_refresh": snap.result.time})
@@ -69,8 +70,18 @@ def test_no_unformatted_floats_leak(snap):
 def test_the_open_trade_button_carries_the_calendar_and_the_dialog_is_on_the_page(snap):
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET)
+                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     full = render("finder.html", results=vm.results_context(snap), **base)
     assert 'id="open-dialog"' in full and 'data-interval-ms="2000"' in full and "js/opentrade.js" in full
     assert 'id="open-trade-btn"' in full and f'data-snapshot-id="{snap.snapshot_id}"' in full
     assert 'data-short-symbol="SPXW' in full and 'data-size-mode="margin"' in full and "Copy to TOS" in full
+
+
+def test_size_by_select_carries_the_defaults_for_each_mode(snap):
+    base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
+                filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
+                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
+    html = render("finder.html", results=None, **base)
+    assert 'data-default-contracts="10"' in html and 'data-default-margin="10000"' in html

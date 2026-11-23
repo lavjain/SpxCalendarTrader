@@ -45,5 +45,6 @@ async def finder_page(request: Request):
     ctx = {**page_context(request, "finder"), "filters": filters, "widths_all": config.WIDTHS,
            "unavailable_widths": exp.unavailable_widths, "dte_limits": config.SHORT_DTE_LIMITS,
            "results": view_models.results_context(snap) if snap else None,
+           "default_margin": config.MARGIN, "default_contracts": config.DEFAULT_CONTRACTS,
            "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
     return templates.TemplateResponse(request, "finder.html", ctx)

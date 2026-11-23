@@ -1,6 +1,7 @@
 """Every tunable trading number. No web imports; environment/secret settings live in app/settings.py."""
 
 # --- sizing / fills
+DEFAULT_CONTRACTS = 10               # default when switching Size By to contracts
 MARGIN = 10_000                      # default when sizing by margin
 MODEL_GREEKS = True                  # delta and gamma from Black-Scholes at the mid-implied IVs (False: Schwab's, 3 decimals)
 SIZE_ROUNDING = "nearest"            # margin -> contracts: "nearest" (half up, min 1), "ceil" or "floor"

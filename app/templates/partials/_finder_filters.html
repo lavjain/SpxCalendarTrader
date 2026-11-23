@@ -32,7 +32,7 @@
   <div>
     <div class="label">Size By</div>
     <div class="flex gap-1">
-      <select id="size-mode" class="field">
+      <select id="size-mode" class="field" data-default-margin="{{ default_margin }}" data-default-contracts="{{ default_contracts }}">
         <option value="margin" {{ 'selected' if filters.size_mode == 'margin' }}>Margin $</option>
         <option value="contracts" {{ 'selected' if filters.size_mode == 'contracts' }}>Contracts</option>
       </select>
