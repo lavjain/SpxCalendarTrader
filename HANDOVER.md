@@ -7,6 +7,7 @@ Updated at the end of every work session (≤ 20 lines). Newest first.
 - NOT run yet: the FastAPI layer (no FastAPI in the sandbox). First run: `uv sync` (commit `uv.lock`), `uv run pytest` (tests/test_routes.py runs for the first time), `node --test tests/js/*.test.mjs`, `uv run serve`, open http://127.0.0.1:8000.
 - Deviations from WEEK2.md: break-evens per row in `get_finder()` (no `get_calendar_detail`); Refresh = JS fetch POST then `htmx.ajax` GET of partials; `create_app` factory; node glob form.
 - Sizing now rounds margin to the NEAREST whole contract (`config.SIZE_ROUNDING`; `Calendar(rounding=...)` keeps `ceil` as its default so the spreadsheet self-test still matches). CLI has full `--help` with defaults.
+- Decided Nov 23: position delta, gamma and T/D come from the model at mid-implied IVs (`config.MODEL_GREEKS = True`), because Schwab rounds greeks to 3 decimals. The model's delta differs from Schwab's by about 0.01 per leg (7140 calendar: -1.5 vs -3.2 position delta); thinkorswim also differs slightly from Schwab and Lav accepts that, so no thinkorswim delta check is planned.
 - Open decisions: snapshots now also on disk; T/D shown to 2 decimals, dash threshold 2.0; "Open trade" disabled until week 3; NYSE holiday list for 2026-27 still unverified.
 - Step 10 (yours): paste a real thinkorswim order into `tests/fixtures/tos_order_samples.txt`.
 

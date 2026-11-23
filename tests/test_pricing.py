@@ -146,3 +146,56 @@ def test_pricing_uses_implied_ivs_not_schwabs_field():
     fixed = wrong.model_copy(update={"short_iv_implied": t.short.iv, "long_iv_implied": t.long.iv})
     again = pricing.break_evens(fixed, SPOT, f, AS_OF)
     assert again.lower == pytest.approx(good.lower, abs=1e-6) and again.upper == pytest.approx(good.upper, abs=1e-6)
+
+
+def test_bs_gamma_matches_a_numeric_second_derivative():
+    spot, f0, k, t, iv = 7237.0, 7260.0, 7140.0, 31 / 365, 0.236
+    def put_at(s):
+        return float(pricing.bs_put(f0 * s / spot, k, t, iv))
+    h = 2.0
+    numeric = (put_at(spot + h) - 2 * put_at(spot) + put_at(spot - h)) / h**2
+    assert pricing.bs_gamma(f0, k, t, iv, spot) == pytest.approx(numeric, rel=1e-3)
+    assert 0.0006 < pricing.bs_gamma(f0, k, t, iv, spot) < 0.0009      # per share, per SPX point
+    assert pricing.bs_gamma(f0, k, 0.0, iv, spot) == 0.0
+
+
+def test_calendar_gamma_is_not_lost_to_schwabs_rounding():
+    from tests.test_services import CHAIN
+    import app.core.services as services
+    from datetime import date
+    import app.core.schwab_api as api
+    mp = pytest.MonkeyPatch()
+    mp.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    mp.setattr(api, "get_chain", lambda s, p, **kw: CHAIN)
+    mp.setattr(api, "get_call_chain", lambda s, p, **kw: CHAIN)
+    try:
+        rows = [r for p in services.get_finder(dte_range=(7, 56), widths=(7,)).pairs for r in p.rows]
+    finally:
+        mp.undo()
+    assert rows and all(r.gamma < 0 for r in rows)      # short the near, long the far: net short gamma
+
+
+def test_bs_put_delta_matches_a_numeric_derivative():
+    spot, f0, k, t, iv = 7237.0, 7260.0, 7140.0, 31 / 365, 0.236
+    def put_at(s):
+        return float(pricing.bs_put(f0 * s / spot, k, t, iv))
+    h = 0.5
+    numeric = (put_at(spot + h) - put_at(spot - h)) / (2 * h)
+    assert pricing.bs_put_delta(f0, k, t, iv, spot) == pytest.approx(numeric, rel=1e-4)
+    assert -0.45 < pricing.bs_put_delta(f0, k, t, iv, spot) < -0.35
+
+
+def test_calendar_delta_and_td_come_from_the_model(monkeypatch):
+    from tests.test_services import CHAIN
+    import app.core.services as services
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    monkeypatch.setattr(schwab_api, "get_chain", lambda s, p, **kw: CHAIN)
+    monkeypatch.setattr(schwab_api, "get_call_chain", lambda s, p, **kw: CHAIN)
+    rows = [r for p in services.get_finder(dte_range=(7, 56), widths=(7,)).pairs for r in p.rows]
+    assert rows
+    for r in rows:
+        assert abs(r.delta * 1000 - round(r.delta * 1000)) > 1e-9 or r.delta == 0   # not on Schwab's coarse grid
+        if r.td is not None:
+            assert r.td == pytest.approx(r.theta / r.delta)
+        else:
+            assert abs(r.delta) < config.TD_MIN_DELTA

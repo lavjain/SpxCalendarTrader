@@ -37,6 +37,26 @@ def bs_call(forward, strike, t, iv, rate=config.RATE):
     return math.exp(-rate * t) * (f * norm.cdf(d1) - strike * norm.cdf(d2))
 
 
+def bs_put_delta(forward, strike, t, iv, spot, rate=config.RATE):
+    """Put delta per share per 1 SPX point (negative), with the forward moving with spot.
+    Schwab's delta has 3 decimals, which makes a calendar's small net delta (and T/D) jumpy."""
+    if t <= 0 or iv <= 0:
+        return -1.0 if forward < strike else 0.0
+    sd = iv * math.sqrt(t)
+    d1 = (math.log(forward / strike) + 0.5 * sd * sd) / sd
+    return float(-math.exp(-rate * t) * norm.cdf(-d1) * forward / spot)
+
+
+def bs_gamma(forward, strike, t, iv, spot, rate=config.RATE):
+    """Gamma of the option per share, per 1 SPX point, with the forward moving with spot
+    (F = spot x carry). Schwab's gamma is rounded to 3 decimals, which is too coarse for a calendar."""
+    if t <= 0 or iv <= 0:
+        return 0.0
+    sd = iv * math.sqrt(t)
+    d1 = (math.log(forward / strike) + 0.5 * sd * sd) / sd
+    return float(math.exp(-rate * t) * norm.pdf(d1) * forward / (spot * spot * sd))
+
+
 # ---------------------------------------------------------------- quotes and the forward
 
 def mid(q: OptionQuote) -> float:

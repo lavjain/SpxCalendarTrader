@@ -2,6 +2,7 @@
 
 # --- sizing / fills
 MARGIN = 10_000                      # default when sizing by margin
+MODEL_GREEKS = True                  # delta and gamma from Black-Scholes at the mid-implied IVs (False: Schwab's, 3 decimals)
 SIZE_ROUNDING = "nearest"            # margin -> contracts: "nearest" (half up, min 1), "ceil" or "floor"
 SIZE_MODES = ("margin", "contracts")
 FILL_OFFSET = 0.10                   # open at mid + 0.10, close at mid - 0.10

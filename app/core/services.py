@@ -113,6 +113,20 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             if not cal:
                 continue
             row = _row(*legs, pair, cal, s_iv, l_iv, implied)
+            if config.MODEL_GREEKS and f_short and f_long and implied[0] and implied[1]:
+                # Schwab's gamma has 3 decimals (0.001 on both legs, so the difference is exactly 0):
+                # use the model gamma at the mid-implied IVs instead
+                g_s = pricing.bs_gamma(f_short, legs[0].strike, pricing.years(today, date.fromisoformat(pair.short)),
+                                       implied[0] / 100, spx)
+                g_l = pricing.bs_gamma(f_long, legs[1].strike, pricing.years(today, date.fromisoformat(pair.long)),
+                                       implied[1] / 100, spx)
+                row.gamma = (g_l - g_s) * cal.contracts * 100.0
+                d_s = pricing.bs_put_delta(f_short, legs[0].strike, pricing.years(today, date.fromisoformat(pair.short)),
+                                           implied[0] / 100, spx)
+                d_l = pricing.bs_put_delta(f_long, legs[1].strike, pricing.years(today, date.fromisoformat(pair.long)),
+                                           implied[1] / 100, spx)
+                row.delta = (d_l - d_s) * cal.contracts * 100.0
+                row.td = row.theta / row.delta if abs(row.delta) >= config.TD_MIN_DELTA else None
             if f_long:
                 try:
                     row.break_evens = pricing.break_evens(row, spx, f_long, today)
