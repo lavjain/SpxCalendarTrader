@@ -344,15 +344,17 @@ Six weeks at about 6–8 hours a week, Nov 24, 2026 to Jan 4, 2027, with Claude 
 Step-by-step version: [WEEK1.md](WEEK1.md).
 
 - [x] Starting files in place; `calendar_math.py` self-test passes 16/16
-- [ ] Fix the pull: use one strike for both legs, return the 35–45Δ puts for the chosen expiries on the strikes switched on (10s and/or 25s), keep SPXW contracts on the third-Friday expiry, and limit the pull to 63 DTE
-- [ ] Expiry picker: every Friday in the short-leg DTE range (default 25–35), each paired with longs 3–7 days later for the widths switched on (default 7); holidays handled
-- [ ] Calendar pricer in `pricing.py`: Black-Scholes put (forward form), forward per expiry from put-call parity (the chain pull adds the calls nearest the money, which parity needs), value at mid now, P/L across SPX levels on the short expiry and on any date before it, break-evens with `brentq`; `tests/test_pricing.py` (see How the risk profile is computed)
-- [ ] Move `schwab_api.py` and `calendar_math.py` into `app/core/` and make the Schwab code safe to call from a web server: exceptions instead of `sys.exit`, the 7-day login age kept separately from the 30-minute access-token refresh, market dates in New York time, a lock around token refresh, a short cache and a rate limiter (see WEEK1.md, step 4)
-- [ ] Services skeleton; `get_finder()` with filters and Size by (margin or contracts); `cli.py candidates`
+- [x] Fix the pull: use one strike for both legs, return the 35–45Δ puts for the chosen expiries on the strikes switched on (10s and/or 25s), keep SPXW contracts on the third-Friday expiry, and limit the pull to 63 DTE
+- [x] Expiry picker: every Friday in the short-leg DTE range (default 25–35), each paired with longs 3–7 days later for the widths switched on (default 7); holidays handled
+- [x] Calendar pricer in `pricing.py`: Black-Scholes put (forward form), forward per expiry from put-call parity (the chain pull adds the calls nearest the money, which parity needs), value at mid now, P/L across SPX levels on the short expiry and on any date before it, break-evens with `brentq`; `tests/test_pricing.py` (see How the risk profile is computed)
+- [x] Move `schwab_api.py` and `calendar_math.py` into `app/core/` and make the Schwab code safe to call from a web server: exceptions instead of `sys.exit`, the 7-day login age kept separately from the 30-minute access-token refresh, market dates in New York time, a lock around token refresh, a short cache and a rate limiter (see WEEK1.md, step 4)
+- [x] Services skeleton; `get_finder()` with filters and Size by (margin or contracts); `cli.py candidates`
 
 Done when one command prints today's candidates and a calendar's break-evens are within about 5% of thinkorswim Analyze.
 
 ### Week 2 — App skeleton and Finder screen (Dec 1–7)
+
+Step-by-step version: [WEEK2.md](WEEK2.md).
 
 - [ ] `uv add fastapi "uvicorn[standard]" jinja2 pydantic-settings` and `uv remove streamlit`; `[project.scripts] serve = "app.main:serve"` in `pyproject.toml` (with `[tool.uv] package = true` so uv installs the script); FastAPI app (`app/main.py`, with a `serve()` function behind the `uv run serve` script) with `base.html`, the header (tabs, account, theme toggle) and footer partials, `page_context()`, `/static`, `GET /api/health`, and `GET /api/spot` + `GET /api/expirations`; `/docs` lists them; `.vscode/launch.json` gets an **App** configuration (uvicorn with reload) in place of the old Streamlit one
 - [ ] Finder filter bar: short-leg DTE range (7–56, default 25–35), width chips (3–7 days, default 7), Size by (Margin, default $10,000, or Contracts), strike chips (10s and/or 25s, default both); saved in the `settings` table
