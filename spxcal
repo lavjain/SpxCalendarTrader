@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# spxcal: shortcut for the everyday SPX calendar commands (a future spxfly will do the same for butterflies), so you don't type `uv run --env-file .env python -m cli ...`.
+#   ./spxcal candidates [options]   today's calendars          ./spxcal diagnose --tos LOW UP
+#   ./spxcal serve                  start the web app          ./spxcal auth        weekly Schwab login
+#   ./spxcal test                   Python + JavaScript tests  ./spxcal help        this list, and the CLI help
+cd "$(dirname "$0")" || exit 1
+case "${1:-help}" in
+  serve) shift; exec uv run serve "$@" ;;
+  auth)  shift; exec uv run --env-file .env python -m app.core.schwab_api auth "$@" ;;
+  test)  uv run pytest "${@:2}" && { command -v node >/dev/null && node --test tests/js/*.test.mjs || echo "(node not installed: JavaScript tests skipped)"; } ;;
+  help|-h|--help)
+    sed -n '2,5p' "$0" | sed 's/^# \{0,1\}//'; echo; exec uv run --env-file .env python -m cli --help ;;
+  *)     exec uv run --env-file .env python -m cli "$@" ;;   # candidates, diagnose, ...
+esac

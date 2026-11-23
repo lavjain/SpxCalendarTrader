@@ -103,6 +103,20 @@ uv run serve
 
 Then open <http://localhost:8000>. It starts on the Finder: set the filters, press **↻ Refresh** (changing a filter refreshes by itself after a short pause), click a pair to open its strikes, click a strike to see its calendar. Stop it with `Ctrl+C`. `uv run serve` reloads when you edit files under `app/` and reads your keys from `.env` itself. The API is documented at <http://localhost:8000/docs>.
 
+**Shortcut:** the `./spxcal` script in the repo root runs all of the commands below without the long prefix (run it from the repo folder; the first time, `chmod +x spxcal` if it says permission denied):
+
+```bash
+./spxcal candidates                 # same as: uv run --env-file .env python -m cli candidates
+./spxcal candidates --widths 5 7 --size-value 15000
+./spxcal diagnose --tos 6871.92 7415.05
+./spxcal serve                      # starts the web app
+./spxcal auth                       # weekly Schwab login
+./spxcal test                       # Python and JavaScript tests
+./spxcal help                       # list of shortcuts, then the CLI help
+```
+
+To type just `spxcal` from anywhere, add `alias spxcal="$HOME/dev/SPXCalendarTrader/spxcal"` to `~/.zshrc` (adjust the path to where you cloned the repo), then open a new terminal.
+
 **Terminal version** (no browser; prints today's 35–45Δ put calendars with break-evens), useful to compare against the page:
 
 ```bash
