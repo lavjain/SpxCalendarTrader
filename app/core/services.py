@@ -3,8 +3,12 @@
 Week 1 implements get_finder(); the other eight keep their signatures and raise
 NotImplementedError until their week in docs/PLAN.md.
 """
-from datetime import datetime
+from datetime import date, datetime
 from zoneinfo import ZoneInfo
+
+import math
+
+from scipy.optimize import brentq
 
 from app.core import config, pricing, schwab_api
 from app.core.calendar_math import Calendar, Leg
@@ -102,6 +106,75 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             break_evens=be, strike_count=len(rows), rows=rows))
     return FinderResult(time=now.isoformat(timespec="seconds"), spx=spx, filters=filters,
                         pairs=summaries)
+
+
+# ---------------------------------------------------------------- break-even diagnostics
+
+def _implied_iv(price, forward, strike, t):
+    """IV (vol points) that makes Black-Scholes reproduce `price`, or None if it can't."""
+    try:
+        return 100 * brentq(lambda v: float(pricing.bs_put(forward, strike, t, v)) - price, 0.01, 3.0)
+    except ValueError:
+        return None
+
+
+def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
+                    strike_sets=config.STRIKE_SETS, pair_index=None, tos=None) -> dict:
+    """Why do the break-evens differ from thinkorswim? Returns the inputs behind the ~40-delta row of
+    one pair (default: the short nearest 30 DTE) and the break-evens under variants: no fill offset,
+    zero carry (forward = spot), and IVs implied from the mid prices with our own model.
+
+    `tos` = (lower, upper) break-evens read from thinkorswim, to print the distance error of each."""
+    today = market_today()
+    result = get_finder(dte_range, widths, strike_sets)
+    if not result.pairs:
+        raise ValueError("no pairs")
+    summaries = result.pairs
+    i = pair_index if pair_index is not None else min(
+        range(len(summaries)), key=lambda j: abs(summaries[j].short_dte - config.SHORT_DTE_TARGET))
+    summary = summaries[i]
+    row = summary.near_40_delta
+    if row is None:
+        raise ValueError("that pair has no rows")
+    pair = pick_expiries(today, dte_range, widths)[i]
+    put_chain = schwab_api.get_chain(SYMBOL, [pair], today=today)       # cached: same URL as above
+    call_chain = schwab_api.get_call_chain(SYMBOL, [pair])
+    parity = schwab_api.parse_parity_quotes(put_chain, call_chain, [pair])
+    spot = result.spx
+    f_s = pricing.forward_from_parity(parity, pair.short, today)
+    f_l = pricing.forward_from_parity(parity, pair.long, today)
+    t_l = pricing.years(today, date.fromisoformat(pair.long))
+    legs = []
+    for name, q, f in (("short", row.short, f_s), ("long", row.long, f_l)):
+        t = pricing.years(today, date.fromisoformat(q.expiry))
+        mid = pricing.mid(q)
+        legs.append({"leg": name, "expiry": q.expiry, "strike": q.strike, "t_days": (date.fromisoformat(q.expiry) - today).days,
+                     "bid": q.bid, "ask": q.ask, "mark": q.mark, "mid": mid, "schwab_iv": q.iv,
+                     "forward": f, "model_at_schwab_iv": float(pricing.bs_put(f, q.strike, t, q.iv / 100)),
+                     "implied_iv_from_mid": _implied_iv(mid, f, q.strike, t)})
+    implied = {l["leg"]: l["implied_iv_from_mid"] for l in legs}
+    swapped = row.model_copy(update={
+        "short": row.short.model_copy(update={"iv": implied["short"] or row.short.iv}),
+        "long": row.long.model_copy(update={"iv": implied["long"] or row.long.iv})})
+
+    def be(trade, fwd, offset):
+        try:
+            b = pricing.break_evens(trade, spot, fwd, today, fill_offset=offset)
+            return b.lower, b.upper
+        except ValueError:
+            return None
+
+    variants = {"as the app computes it": be(row, f_l, config.FILL_OFFSET),
+                "no fill offset": be(row, f_l, 0.0),
+                "carry 0 (forward = spot)": be(row, spot, config.FILL_OFFSET),
+                "IVs implied from mids": be(swapped, f_l, config.FILL_OFFSET),
+                "implied IVs + carry 0": be(swapped, spot, config.FILL_OFFSET)}
+    out = {"spx": spot, "strike": row.strike, "pair": f"{pair.short} -> {pair.long}", "price": row.price,
+           "forward_short": f_s, "forward_long": f_l,
+           "carry_per_year": math.log(f_l / spot) / t_l, "legs": legs, "variants": variants}
+    if tos:
+        out["tos"] = list(tos)
+    return out
 
 
 # ---------------------------------------------------------------- later weeks (signatures only)

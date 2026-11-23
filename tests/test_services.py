@@ -101,3 +101,16 @@ def test_cli_table_prints_flags_and_break_evens(mocked, capsys):
     print(cli.format_finder(services.get_finder()))
     out = capsys.readouterr().out
     assert "*40D" in out and "BEST-SKEW" in out and "break-evens" in out and "2026-12-24 -> 2026-12-31" in out
+
+
+def test_diagnose_reports_inputs_and_variants(mocked):
+    import cli
+    d = services.diagnose_finder(tos=(6600.0, 6850.0))
+    assert d["spx"] == 6800.0 and d["carry_per_year"] == pytest.approx(0.0, abs=0.01)
+    assert {l["leg"] for l in d["legs"]} == {"short", "long"}
+    for l in d["legs"]:   # the fixture was priced with these IVs, so the model reproduces the mids
+        assert l["model_at_schwab_iv"] == pytest.approx(l["mid"], abs=0.1)
+        assert l["implied_iv_from_mid"] == pytest.approx(l["schwab_iv"], abs=0.2)
+    assert d["variants"]["as the app computes it"][0] < d["strike"] < d["variants"]["as the app computes it"][1]
+    text = cli.format_diagnosis(d)
+    assert "implied carry" in text and "vs tos" in text

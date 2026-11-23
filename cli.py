@@ -38,6 +38,30 @@ def format_finder(result: FinderResult) -> str:
     return "\n".join(out)
 
 
+def format_diagnosis(d: dict) -> str:
+    out = [f"SPX {d['spx']:,.2f}   pair {d['pair']}   strike {d['strike']:.0f}   calendar mid {d['price']:.2f}",
+           f"parity forwards: short {d['forward_short']:,.2f}  long {d['forward_long']:,.2f}   "
+           f"implied carry (r - q) {d['carry_per_year']:+.2%} per year", ""]
+    out.append(f"{'leg':>6}{'expiry':>12}{'days':>5}{'bid':>8}{'ask':>8}{'mid':>8}{'schwab IV':>11}"
+               f"{'model@IV':>10}{'IV from mid':>12}")
+    for l in d["legs"]:
+        iv = l["implied_iv_from_mid"]
+        out.append(f"{l['leg']:>6}{l['expiry']:>12}{l['t_days']:>5}{l['bid']:>8.2f}{l['ask']:>8.2f}{l['mid']:>8.2f}"
+                   f"{l['schwab_iv']:>11.2f}{l['model_at_schwab_iv']:>10.2f}{(iv if iv else float('nan')):>12.2f}")
+    out.append("\nbreak-evens at the short expiry (distance from the strike in points):")
+    k = d["strike"]
+    for name, b in d["variants"].items():
+        if not b:
+            out.append(f"  {name:<28} none")
+            continue
+        line = f"  {name:<28} {b[0]:>8,.0f} / {b[1]:>8,.0f}   ({b[0] - k:+.0f} / {b[1] - k:+.0f})"
+        if d.get("tos"):
+            lo, hi = d["tos"]
+            line += f"   vs tos: {((k - b[0]) / (k - lo) - 1):+.1%} / {((b[1] - k) / (hi - k) - 1):+.1%}"
+        out.append(line)
+    return "\n".join(out)
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="cli", description=__doc__)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -48,7 +72,18 @@ def main(argv=None):
     c.add_argument("--strike-sets", nargs="+", default=list(config.STRIKE_SETS), choices=config.STRIKE_SETS)
     c.add_argument("--size-mode", choices=config.SIZE_MODES, default="margin")
     c.add_argument("--size-value", type=float, default=config.MARGIN)
+    d = sub.add_parser("diagnose", help="why do the break-evens differ from thinkorswim?")
+    d.add_argument("--pair", type=int, default=None, help="pair number, 0 = first (default: nearest 30 DTE)")
+    d.add_argument("--tos", type=float, nargs=2, metavar=("LOWER", "UPPER"),
+                   help="thinkorswim break-evens at the short expiry")
     args = p.parse_args(argv)
+    if args.cmd == "diagnose":
+        try:
+            print(format_diagnosis(services.diagnose_finder(pair_index=args.pair, tos=args.tos)))
+        except (SchwabError, ValueError) as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
+        return
     try:
         result = services.get_finder((args.dte_min, args.dte_max), tuple(args.widths),
                                      tuple(args.strike_sets), args.size_mode, args.size_value)
