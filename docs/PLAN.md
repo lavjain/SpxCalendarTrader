@@ -380,6 +380,7 @@ Step-by-step version: [WEEK3.md](WEEK3.md). `[x]` done, `[~]` partly done (see t
 - [~] Paste from TOS in the open dialog, below Copy to TOS: `parse_tos_order()` with tests (good lines and each kind of bad one), the checks, editable fill price and time, entry snapshot from the nearest saved refresh, `price_source = "pasted"`
 - [x] Risk profile tab in the Finder panel (moved from week 2, which was the fullest week):  `get_risk_profile()` (Today and At-short-expiry lines, profit/loss shading, ±1 SD band, break-evens, tiles) at `GET /api/risk-profile`, painted on canvas by `charts/riskgraph.js` (read-only: hover crosshair, zoom, pan)
 - [x] ⓘ popovers on the Finder's tiles and controls (moved from week 2)
+- [x] Extras added at your request: the Weekly Comparison above the Finder settings (put and call calendars at one strike for the Friday nearest 7–42 DTE, with a Strike Override), SPX 10/20/50-day moving averages beside it, page auto-refresh every 60 s, Bid / Ask columns
 
 Done when you can refresh, pick a 45Δ calendar and commit it in under a minute.
 

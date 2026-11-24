@@ -2,6 +2,15 @@
 
 Updated at the end of every work session (≤ 20 lines). Newest first.
 
+## 2026-11-24 — week 3 done except your browser run of Open Trade; next: week 4 (Holdings)
+- Week 3 steps 1–10 are built and committed. On your Mac `uv run pytest` ran (269 py tests, route tests included in the sandbox; 44 js tests); the Finder, Weekly Comparison, SPX moving averages and Risk Profile were checked in the browser on live Schwab chains.
+- Added at your request since the last entry: Weekly Comparison puts then calls at one strike (Price, Bid / Ask, greeks, IVs, skew) with a Strike Override box; SPX 10/20/50-day SMAs (`get_spx_averages`, Schwab pricehistory, `config.SMA_DAYS`); Risk Profile chart repainted like the mockups, zoom/pan only on the SPX numbers; centred headers on the Finder tables.
+- Decisions: call greeks in the comparison are the put's plus a put-call-parity difference (one dividend yield from the long forward); tests never reach Schwab (`tests/conftest.py`).
+- Unverified live: `get_call_chain_at` (Schwab `strike=` filter) and `get_daily_closes` (`periodType=year`) worked on your page on Nov 24; nothing else is outstanding there.
+- Not done: Size By box in the dialog, fill-time box and delta warning on Paste, Paste for a different calendar, Risk Profile +3/+5-day lines, SD toggle.
+- Yours: Open Trade → Confirm once in the browser (`sqlite3 data/paper_trades.db "select * from trades;"`); three real-quote runs; `tests/fixtures/tos_order_samples.txt`; check `config.HOLIDAY_NAMES`; regenerate the mockup images (`uv run --group mockups python docs/mockups/render.py`) and commit; push.
+- Next: week 4 per docs/PLAN.md (Holdings table, flags, Close trade…, Notes, Columns popover); start `docs/WEEK4.md` from the plan.
+
 ## 2026-11-23 — week 3 steps 1–9 built (needs your first run in a browser)
 - Done and committed (one commit per plan step): leg symbols + stability check, `trades` table (schema v3), `quote_spread`/`open_trade` services, `/api/quote-spread` + `/api/trades`, Open Trade dialog, Copy to TOS, Paste from TOS. 241 py tests + 37 js tests pass in a sandbox; the route tests (FastAPI) and the dialog have NOT run in a browser yet.
 - Decided Nov 23: stability wait switched off (`config.REQUIRE_STABLE = False`); bid-ask limit is per leg; Finder lists 40–50Δ with 45Δ target (`near_target_delta`, `is_near_target_delta` column); T/D = theta / |delta|; Size By to Contracts starts at 10; DTE sliders push each other; holiday note under Days Between.

@@ -76,9 +76,9 @@ Week 2 gave the Finder: filters, the Calendars table, strike rows and the select
 9. **Risk profile and popovers slip first.** If Steps 1–7 take the whole week, Steps 8 and 9 start week 4 and Holdings follows; I would rather slip them than ship the open flow half-tested.
 10. **Fill time in Eastern Time**, like every other timestamp (CLAUDE.md rule 10); a pasted fill can be edited to an earlier time.
 
-## Status (Nov 23, 2026)
+## Status (Nov 24, 2026)
 
-Steps 1–9 are built (one commit each for Steps 1–9, plus follow-up commits). Step 10 (wrap-up) is done except the parts only you can do: the three real-quote runs and `tests/fixtures/tos_order_samples.txt`. Nothing here has been run in a browser or against live Schwab quotes yet; everything was tested in a sandbox without FastAPI, so run `uv run pytest` and `node --test tests/js/*.test.mjs` first.
+Steps 1–9 are built (one commit each for Steps 1–9, plus follow-up commits). Step 10 (wrap-up) is done except the parts only you can do: the three real-quote runs and `tests/fixtures/tos_order_samples.txt`. `uv run pytest` (route tests included) and `node --test tests/js/*.test.mjs` have run on your Mac. On Nov 24 the Finder, Weekly Comparison (puts and calls), SPX moving averages and Risk Profile were also checked in the browser against live Schwab chains. Not yet run: the Open Trade dialog through to Confirm, and the three real-quote runs.
 
 **Built differently from the steps above:**
 
