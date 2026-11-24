@@ -47,6 +47,20 @@ def bs_put_delta(forward, strike, t, iv, spot, rate=config.RATE):
     return float(-math.exp(-rate * t) * norm.cdf(-d1) * forward / spot)
 
 
+def dividend_yield(forward, spot, t, rate=config.RATE):
+    """The carry q in F = S e^((r-q)T), read from a put-call-parity forward."""
+    return rate - math.log(forward / spot) / t
+
+
+def call_minus_put(q, strike, t, spot, rate=config.RATE):
+    """What a call at the same strike and expiry adds to the put's delta and theta, per share (theta per day).
+    Put-call parity: C - P = S e^(-qT) - K e^(-rT). Gamma and vega are the same for both."""
+    if t <= 0:
+        return 0.0, 0.0
+    carry = math.exp(-q * t)
+    return float(carry), float((q * spot * carry - rate * strike * math.exp(-rate * t)) / 365.0)
+
+
 def bs_gamma(forward, strike, t, iv, spot, rate=config.RATE):
     """Gamma of the option per share, per 1 SPX point, with the forward moving with spot
     (F = spot x carry). Schwab's gamma is rounded to 3 decimals, which is too coarse for a calendar."""

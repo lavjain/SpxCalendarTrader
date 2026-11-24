@@ -62,6 +62,7 @@ class CalendarRow(BaseModel):
     theta_margin: float
     iv_ratio: float | None = None    # short IV / long IV
     break_evens: BreakEvens | None = None   # at the short expiry, for this strike
+    short_forward: float | None = None  # put-call-parity forward of the short expiry
     long_forward: float | None = None   # put-call-parity forward of the long expiry: the risk profile reprices from it
     is_best_skew: bool = False
     is_near_target_delta: bool = False
@@ -204,6 +205,7 @@ class TosOrder(BaseModel):
 
 
 class ComparisonRow(BaseModel):
+    right: Literal["P", "C"] = "P"   # the put calendar, or the call calendar at the same strike
     """The target-delta calendar of one short expiry, for one contract (the Weekly Comparison)."""
     target_dte: int                  # the DTE asked for; short_dte is the nearest Friday that exists
     short_expiry: str
@@ -211,6 +213,7 @@ class ComparisonRow(BaseModel):
     short_dte: int
     long_dte: int
     strike: float
+    price: float                     # the calendar's price per share (the Finder's Price)
     bid: float | None                # the calendar's bid per share: long bid - short ask
     ask: float | None                # long ask - short bid
     delta: float                     # position greeks for one contract

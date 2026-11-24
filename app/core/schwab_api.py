@@ -365,6 +365,21 @@ def get_call_chain(symbol, pairs, strike_count=config.CALL_STRIKE_COUNT):
         "strikeCount": strike_count, "fromDate": lo, "toDate": hi}))
 
 
+def get_call_chain_at(symbol, pairs, strike):
+    """The calls at ONE strike on every expiry of `pairs` (a few contracts): the Weekly Comparison's call side.
+    Uses the chain's `strike` filter, so the strike can be in the money (unverified live: check once)."""
+    lo, hi = _window(pairs)
+    return _get_json(CHAINS_URL + "?" + urllib.parse.urlencode({
+        "symbol": symbol, "contractType": "CALL", "strategy": "SINGLE",
+        "strike": f"{strike:g}", "fromDate": lo, "toDate": hi}))
+
+
+def parse_calls_at(chain, strike):
+    """{expiry: OptionQuote} of the SPXW calls at `strike` that have a mark, delta and IV."""
+    return {e: q for e, q in _contracts(chain, "callExpDateMap", "C")
+            if q.strike == strike and None not in (q.mark, q.delta, q.iv)}
+
+
 def _num(x):
     """Schwab uses None, "NaN" and -999 for "no value"."""
     if x is None or x == "NaN" or x == -999 or x == -999.0:

@@ -13,18 +13,28 @@ showUpdated(document.getElementById("updated-at")?.dataset.iso);
 
 // The Weekly Comparison starts collapsed and stays however the user leaves it (remembered in this browser).
 // It only pulls while open; opening it fires the toggle event, which loads it.
-// The strike the Weekly Comparison uses: the box if something is typed there, else the starred row's.
-window.compareVals = () => {
-  const typed = (document.getElementById("compare-strike") || {}).value || "";
-  const starred = (document.querySelector("#calendars tr.strike-row[data-starred]") || { dataset: {} }).dataset.strike || "";
-  return typed ? { strike: typed, override: "1" } : { strike: starred, override: "" };
-};
+// The strike the Weekly Comparison uses. The box always shows it: the starred row's strike until you type your own
+// (then it stays yours, even when the star moves); Reset goes back to following the star.
 const strikeBox = document.getElementById("compare-strike"), strikeReset = document.getElementById("compare-strike-reset");
+const strikeIsMine = () => !!strikeBox && strikeBox.dataset.mine === "1";
+window.compareVals = () => {
+  const starred = (document.querySelector("#calendars tr.strike-row[data-starred]") || { dataset: {} }).dataset.strike || "";
+  return strikeIsMine() && strikeBox.value ? { strike: strikeBox.value, override: "1" } : { strike: starred, override: "" };
+};
 if (strikeBox) {
-  strikeBox.addEventListener("input", () => strikeReset.classList.toggle("hidden", !strikeBox.value));
+  strikeBox.addEventListener("input", () => {
+    strikeBox.dataset.mine = strikeBox.value ? "1" : "";
+    strikeReset.classList.toggle("hidden", !strikeBox.value);
+  });
   strikeReset.addEventListener("click", () => {
-    strikeBox.value = ""; strikeReset.classList.add("hidden");
+    strikeBox.dataset.mine = ""; strikeReset.classList.add("hidden");
     strikeBox.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  // After each comparison, show the strike it used unless the user is typing their own.
+  document.body.addEventListener("htmx:afterSwap", (e) => {
+    if (!e.detail || !e.detail.target || e.detail.target.id !== "compare-body" || strikeIsMine()) return;
+    const t = document.getElementById("compare-table");
+    if (t && t.dataset.strike) strikeBox.value = t.dataset.strike;
   });
 }
 

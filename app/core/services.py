@@ -124,7 +124,7 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             if not cal:
                 continue
             row = _row(*legs, pair, cal, s_iv, l_iv, implied)
-            row.long_forward = f_long
+            row.short_forward, row.long_forward = f_short, f_long
             if config.MODEL_GREEKS and f_short and f_long and implied[0] and implied[1]:
                 # Schwab's gamma has 3 decimals (0.001 on both legs, so the difference is exactly 0):
                 # use the model gamma at the mid-implied IVs instead
@@ -235,9 +235,42 @@ def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
         r = p.rows[0]
         rows.append(ComparisonRow(
             target_dte=t, short_expiry=p.short_expiry, long_expiry=p.long_expiry, short_dte=p.short_dte,
-            long_dte=p.long_dte, strike=r.strike, bid=r.bid, ask=r.ask, delta=r.delta, gamma=r.gamma,
+            long_dte=p.long_dte, strike=r.strike, price=r.price, bid=r.bid, ask=r.ask, delta=r.delta, gamma=r.gamma,
             theta=r.theta, vega=r.vega, short_iv=r.short_iv, long_iv=r.long_iv, skew=r.skew))
+    rows += _call_rows(rows, [p.rows[0] for _, p in chosen], strike, res.spx, market_today())
+    rows.sort(key=lambda r: (r.right == "C", r.target_dte))      # the puts by week, then the calls by week
     return ComparisonResult(time=res.time, spx=res.spx, width=width, strike=strike, overridden=exact, rows=rows)
+
+
+def _call_rows(put_rows, put_cals, strike, spot, as_of) -> list[ComparisonRow]:
+    """The call calendars at the same strike and expiries as `put_rows` (`put_cals`: their CalendarRows), one
+    contract each. Price and bid/ask come from Schwab's call quotes. IVs, gamma and vega are the put's (the
+    same for a call at one strike and expiry); delta and theta are the put's plus the put-call-parity
+    difference, so the two sides agree exactly. Empty when Schwab has no calls there or the pull fails."""
+    if not put_rows:
+        return []
+    pairs = [ExpiryPair(short=r.short_expiry, long=r.long_expiry, short_dte=r.short_dte, long_dte=r.long_dte,
+                        width=config.COMPARE_WIDTH) for r in put_rows]
+    try:
+        calls = schwab_api.parse_calls_at(schwab_api.get_call_chain_at(SYMBOL, pairs, strike), strike)
+    except schwab_api.SchwabError:
+        return []
+    out = []
+    for r, c in zip(put_rows, put_cals):
+        s, l = calls.get(r.short_expiry), calls.get(r.long_expiry)
+        if not (s and l) or l.mark - s.mark <= 0:
+            continue
+        d_delta = d_theta = 0.0
+        if c.long_forward:      # one yield for both legs, from the long forward (the steadier of the two)
+            tl_, ts_ = (pricing.years(as_of, date.fromisoformat(e)) for e in (r.long_expiry, r.short_expiry))
+            q = pricing.dividend_yield(c.long_forward, spot, tl_)
+            cs, ts = pricing.call_minus_put(q, strike, ts_, spot)
+            cl, tl = pricing.call_minus_put(q, strike, tl_, spot)
+            d_delta, d_theta = 100.0 * (cl - cs), 100.0 * (tl - ts)
+        out.append(r.model_copy(update=dict(
+            right="C", price=float(l.mark - s.mark), bid=_spread_side(l.bid, s.ask), ask=_spread_side(l.ask, s.bid),
+            delta=r.delta + d_delta, theta=r.theta + d_theta)))
+    return out
 
 
 # ---------------------------------------------------------------- break-even diagnostics

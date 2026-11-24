@@ -31,9 +31,14 @@ tr.strike-rows > td { padding: 0 0 0 18px; }
 .tile { border: 1px solid rgb(148 163 184 / .35); border-radius: 6px; padding: 6px 8px; }
 .tile .value { font-size: 1rem; font-weight: 600; }
 
+/* Calendars and strike tables: centred column headers (the values keep their alignment) */
+#calendars-table th, .grid-table.nested th { text-align: center; }
+
 /* Weekly Comparison: headers and values share one centred alignment (the id beats .grid-table th/td and the text-left helpers) */
-#compare-table th, #compare-table td { text-align: center; }
-#compare-table td:nth-child(5), #compare-table th:nth-child(5) { min-width: 9.5rem; white-space: nowrap; }
+#compare-table th, #compare-table td { text-align: center; padding: 3px 6px; }   /* the same padding as the strike table below */
+/* the calls start under a thicker line */
+#compare-table tr.call-start td { border-top: 3px solid rgb(100 116 139 / .55); }
+#compare-table td:nth-child(6), #compare-table th:nth-child(6) { min-width: 7.5rem; white-space: nowrap; }
 
 /* ⓘ popovers (static/js/lib/popover.js) */
 .info-btn { display: inline-block; margin-left: 2px; padding: 0 2px; border-radius: 4px; font-size: .8rem; line-height: 1; text-transform: none; letter-spacing: 0; color: rgb(100 116 139); cursor: pointer; vertical-align: baseline; }

@@ -242,3 +242,29 @@ def test_rows_carry_the_calendar_bid_and_ask(mocked):
     for r in flat(services.get_finder()):
         assert r.bid == pytest.approx(r.long.bid - r.short.ask) and r.ask == pytest.approx(r.long.ask - r.short.bid)
         assert r.bid < r.ask
+
+
+def test_weekly_comparison_adds_the_call_calendar_at_the_same_strike(mocked, monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    asked = []
+    monkeypatch.setattr(schwab_api, "get_call_chain_at", lambda sym, pairs, strike: asked.append(strike) or CHAIN)
+    res = services.get_dte_comparison(targets=(21, 28), width=7, strike=6800.0)
+    puts = [r for r in res.rows if r.right == "P"]
+    calls = [r for r in res.rows if r.right == "C"]
+    order = [(r.right, r.target_dte) for r in res.rows]
+    assert order == sorted(order, key=lambda x: (x[0] == "C", x[1])) and order[0][0] == "P" and order[-1][0] == "C"
+    assert puts and calls and asked == [6800.0] and {r.strike for r in res.rows} == {6800.0}
+    assert [r.target_dte for r in calls] == [r.target_dte for r in puts][:len(calls)]
+    for c in calls:
+        p = next(x for x in puts if x.short_expiry == c.short_expiry)
+        assert (c.short_iv, c.long_iv, c.gamma) == (p.short_iv, p.long_iv, p.gamma)       # shared with the put
+        assert c.price > 0 and c.bid < c.ask and c.delta > 0                               # a long call calendar
+
+
+def test_weekly_comparison_keeps_the_puts_when_the_call_pull_fails(mocked, monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    def boom(*a, **k):
+        raise schwab_api.SchwabError("no calls")
+    monkeypatch.setattr(schwab_api, "get_call_chain_at", boom)
+    res = services.get_dte_comparison(targets=(21, 28), width=7, strike=6800.0)
+    assert res.rows and all(r.right == "P" for r in res.rows)

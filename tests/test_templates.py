@@ -62,6 +62,7 @@ def test_finder_page_renders_both_states(snap):
     empty = render("finder.html", results=None, **base)
     assert 'hx-post="/partials/compare"' in empty and 'data-refresh-s="60"' in empty and "↻ Compare" not in empty
     assert 'id="compare-box">' in empty and 'id="compare-box" open' not in empty
+    assert 'hx-vals="js:{' in empty            # htmx wraps a js: value in braces unless it starts with one
     assert 'id="compare-strike"' in empty and 'hx-post="/partials/spx-averages"' in empty
     assert "Press" in empty and "unavailable" in empty and 'id="refresh"' in empty and "Holdings" in empty
     assert empty.index('id="refresh"') < empty.index('id="updated-at"') and "Pulled" not in empty
@@ -111,10 +112,12 @@ def test_weekly_comparison_table_renders_bid_ask_and_greeks(snap):
     row = dict(short_expiry="2026-12-18", long_expiry="2026-12-24", short_dte=24, long_dte=30, strike=7210.0, price=7.15, short_iv=14.2, long_iv=13.6, skew=0.6)
     c = ComparisonResult(time="2026-11-24T10:00:00-05:00", spx=7240.0, width=7, rows=[
         ComparisonRow(target_dte=21, bid=7.05, ask=7.25, delta=-0.18, gamma=-0.0056, theta=30.6, vega=58.6, **row),
-        ComparisonRow(target_dte=28, bid=None, ask=None, delta=-0.2, gamma=-0.004, theta=25.0, vega=70.0, **row)])
+        ComparisonRow(target_dte=28, bid=None, ask=None, delta=-0.2, gamma=-0.004, theta=25.0, vega=70.0, **row),
+        ComparisonRow(target_dte=21, right="C", bid=6.0, ask=6.2, delta=0.2, gamma=-0.0056, theta=30.6, vega=58.6, **row)])
     html = render("partials/_compare.html", comparison=c)
     assert 'id="compare-table"' in html and "$7.05 / $7.25" in html and "Bid / Ask" in html and "Price" in html and "$7.15" in html
-    assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Short IV" in html and "Long IV" in html and "Skew" in html and "14.2%" in html and html.count("<tr>") == 3
+    assert 'data-strike=""' in html or 'data-strike="' in html
+    assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Short IV" in html and "Long IV" in html and "Skew" in html and "14.2%" in html and html.count("<tr") == 4 and "7210 Call" in html and "7210 Put" in html and html.count("call-start") == 1 and html.index("7210 Put") < html.index("call-start") < html.index("7210 Call")
     assert "No calendars found" in render("partials/_compare.html", comparison=c.model_copy(update={"rows": []}))
 
 
@@ -189,3 +192,4 @@ def test_spx_averages_panel_and_strike_override_box():
     html = render("partials/_spx_averages.html", averages=a)
     assert 'id="sma-table"' in html and "10-Day" in html and "50-Day" in html and "below" in html and "No 20-day average" in html
     assert "Not enough daily closes" in render("partials/_spx_averages.html", averages=SpxAverages(time="t", missing=[10, 20, 50]))
+

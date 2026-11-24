@@ -199,3 +199,16 @@ def test_calendar_delta_and_td_come_from_the_model(monkeypatch):
             assert r.td == pytest.approx(r.theta / abs(r.delta))
         else:
             assert abs(r.delta) < config.TD_MIN_DELTA
+
+
+def test_call_minus_put_matches_parity_by_finite_differences():
+    """C - P = e^(-rT)(F - K): its change per SPX point is the delta gap, its change per day the theta gap."""
+    import math
+    from app.core import config, pricing
+    spot, k, t, rate = 7237.0, 7200.0, 30 / 365, config.RATE
+    q = 0.013
+    fwd = lambda s, tt: s * math.exp((rate - q) * tt)
+    gap = lambda s, tt: float(pricing.bs_call(fwd(s, tt), k, tt, 0.2) - pricing.bs_put(fwd(s, tt), k, tt, 0.2))
+    d_delta, d_theta = pricing.call_minus_put(pricing.dividend_yield(fwd(spot, t), spot, t), k, t, spot)
+    assert d_delta == pytest.approx((gap(spot + 0.5, t) - gap(spot - 0.5, t)) / 1.0, abs=1e-6)
+    assert d_theta == pytest.approx(gap(spot, t - 1 / 365) - gap(spot, t), abs=1e-3)   # a one-day step vs the derivative

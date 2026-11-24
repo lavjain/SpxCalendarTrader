@@ -4,15 +4,15 @@
   <p class="muted">No calendars found for the comparison.</p>
 {% else %}
 <div class="text-xs muted mb-1">SPX {{ c.spx | num(2) }} · {{ c.time | etime }} · {{ c.width }}-Day Width · One Contract Each{% if c.overridden %} · Strike Typed By You{% endif %}</div>
-<table class="grid-table" id="compare-table">
+<table class="grid-table" id="compare-table" data-strike="{{ c.strike | int if c.strike else '' }}">
   <thead><tr>
     <th class="text-center">Strike</th><th class="text-center">Week</th><th class="text-center">Short Expiry</th><th class="text-center">Long Expiry</th>
     <th class="text-center">Price</th><th class="text-center">Bid / Ask</th><th class="text-center">Delta</th><th class="text-center">Gamma</th><th class="text-center">Theta</th><th class="text-center">Vega</th><th class="text-center">Short IV</th><th class="text-center">Long IV</th><th class="text-center">Skew</th>
   </tr></thead>
   <tbody>
   {% for r in c.rows %}
-    <tr>
-      <td class="text-left whitespace-nowrap">{{ r.strike | strike }} Put</td>
+    <tr{% if r.right == 'C' and (loop.first or c.rows[loop.index0 - 1].right != 'C') %} class="call-start"{% endif %}>
+      <td class="text-left whitespace-nowrap">{{ r.strike | strike }} {{ 'Call' if r.right == 'C' else 'Put' }}</td>
       <td>{{ (r.target_dte / 7) | round | int }}</td>
       <td class="text-left whitespace-nowrap">{{ r.short_expiry | edate }} <span class="muted">· {{ r.short_dte }} DTE</span></td>
       <td class="text-left whitespace-nowrap">{{ r.long_expiry | edate }} <span class="muted">· {{ r.long_dte }} DTE</span></td>
