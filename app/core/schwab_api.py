@@ -51,6 +51,7 @@ AUTH_URL = "https://api.schwabapi.com/v1/oauth/authorize"
 TOKEN_URL = "https://api.schwabapi.com/v1/oauth/token"
 CHAINS_URL = "https://api.schwabapi.com/marketdata/v1/chains"
 QUOTES_URL = "https://api.schwabapi.com/marketdata/v1/quotes"
+PRICE_HISTORY_URL = "https://api.schwabapi.com/marketdata/v1/pricehistory"
 # The token is a secret and must NOT land in the repo. Keep it in the home directory
 # (~/.schwab/), outside the working tree.
 TOKEN_PATH = os.path.expanduser(
@@ -482,6 +483,28 @@ def get_quotes(symbols, use_cache=True):
         out[sym] = {"bid": _num(q.get("bidPrice")), "ask": _num(q.get("askPrice")),
                     "mark": _num(q.get("mark")), "last": _num(q.get("lastPrice"))}
     return out
+
+
+def parse_daily_closes(data):
+    """[(iso date, close)] oldest first from a price-history reply. Candle times are epoch milliseconds;
+    the date is the New York calendar date."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    tz = ZoneInfo(config.MARKET_TZ)
+    out = []
+    for c in (data or {}).get("candles") or []:
+        close, ms = c.get("close"), c.get("datetime")
+        if close is None or ms is None:
+            continue
+        out.append((datetime.fromtimestamp(ms / 1000, tz).date().isoformat(), float(close)))
+    return sorted(out)
+
+
+def get_daily_closes(symbol="$SPX", use_cache=True):
+    """About a year of daily closes for `symbol`: [(iso date, close)], oldest first."""
+    url = PRICE_HISTORY_URL + "?" + urllib.parse.urlencode({
+        "symbol": symbol, "periodType": "year", "period": 1, "frequencyType": "daily", "frequency": 1})
+    return parse_daily_closes(_get_json(url, use_cache=use_cache))
 
 
 def parse_atm_rows(chain, dte_max=60):

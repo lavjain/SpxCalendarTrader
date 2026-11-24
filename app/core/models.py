@@ -227,6 +227,7 @@ class ComparisonResult(BaseModel):
     spx: float
     width: int
     strike: float | None = None      # the one strike every row uses
+    overridden: bool = False         # the strike was typed by the user, not the starred row's
     rows: list[ComparisonRow]
 
 
@@ -249,3 +250,19 @@ class RiskProfile(BaseModel):
     delta: float
     theta: float
     vega: float
+
+
+class SmaRow(BaseModel):
+    days: int
+    value: float
+    pct_from: float                  # SPX now vs the average, in percent (positive = SPX is above it)
+    side: Literal["above", "below"]
+
+
+class SpxAverages(BaseModel):
+    """Simple moving averages of SPX daily closes, against the latest SPX price."""
+    time: str
+    spx: float | None = None
+    last_close_date: str | None = None   # the newest completed daily close used
+    rows: list[SmaRow] = []
+    missing: list[int] = []          # windows with too few closes to average

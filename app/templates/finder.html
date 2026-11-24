@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Finder · SPX Calendar Trader{% endblock %}
 {% block content %}
-  <div class="mb-3 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"><div class="min-w-0">
+  <div class="mb-3 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start"><div class="min-w-0">
     <details class="rounded border border-slate-200 dark:border-slate-700 p-3" id="compare-box">
       <summary class="cursor-pointer font-semibold">Weekly Comparison {{ info('weekly_comparison') }} <span class="muted font-normal text-sm">· How the price and greeks change as the short expiry moves out</span></summary>
-      <div id="compare-body" class="mt-3 overflow-x-auto" hx-post="/partials/compare" hx-swap="innerHTML"
-           hx-trigger="load[document.getElementById('compare-box').open], toggle[document.getElementById('compare-box').open] from:#compare-box, htmx:afterSwap[detail.target.id=='results'&&document.getElementById('compare-box').open] from:#results"
-           hx-vals='js:{strike: (document.querySelector("#calendars tr.strike-row[data-starred]") || {dataset: {}}).dataset.strike || ""}'>
+      <div class="mt-2 flex items-center gap-2 text-sm">
+        <label for="compare-strike" class="label" style="margin:0">Strike Override {{ info('compare_strike') }}</label>
+        <input id="compare-strike" type="number" step="5" min="1000" placeholder="Starred" class="field w-28 text-right">
+        <button type="button" id="compare-strike-reset" class="btn btn-light hidden">Reset</button>
+      </div>
+      <div id="compare-body" class="mt-3 overflow-x-auto" hx-post="/partials/compare" hx-swap="innerHTML" hx-vals="js:compareVals()"
+           hx-trigger="load[document.getElementById('compare-box').open], toggle[document.getElementById('compare-box').open] from:#compare-box, change from:#compare-strike, htmx:afterSwap[detail.target.id=='results'&&document.getElementById('compare-box').open] from:#results">
         <span class="muted text-sm">Loading…</span></div>
     </details>
-  </div></div>
+  </div>
+  <div class="min-w-0" id="sma-body" hx-post="/partials/spx-averages" hx-swap="innerHTML"
+       hx-trigger="load, htmx:afterSwap[detail.target.id=='results'] from:#results"></div></div>
   {% include "partials/_finder_filters.html" %}
   <div id="banner" class="my-2 hidden rounded border border-red-500/50 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-300" role="alert"></div>
   <div id="results" data-refresh-s="{{ finder_refresh_s }}" data-snapshot-id="{{ results.snapshot_id if results else '' }}">

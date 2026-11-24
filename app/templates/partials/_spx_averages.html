@@ -1,0 +1,20 @@
+{# SpxAverages: 10/20/50-day simple moving averages of SPX daily closes, beside the Weekly Comparison. #}
+{% set a = averages %}
+<div class="rounded border border-slate-200 dark:border-slate-700 p-3" id="sma-box">
+  <div class="font-semibold">SPX Moving Averages {{ info('spx_averages') }}</div>
+  {% if not a.rows %}
+    <p class="muted text-sm mt-2">Not enough daily closes yet{% if a.missing %} for the {{ a.missing | join(', ') }}-day averages{% endif %}.</p>
+  {% else %}
+  <div class="text-xs muted mb-1">SPX {{ a.spx | num(2) }}{% if a.last_close_date %} · Closes Through {{ a.last_close_date | mdate }}{% endif %}</div>
+  <table class="grid-table" id="sma-table">
+    <thead><tr><th class="text-left">Average</th><th>Level</th><th>SPX vs Average</th></tr></thead>
+    <tbody>
+    {% for r in a.rows %}
+      <tr><td class="text-left">{{ r.days }}-Day</td><td>{{ r.value | num(2) }}</td>
+          <td>{{ r.pct_from | signed(2) }}% <span class="muted">{{ r.side }}</span></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if a.missing %}<div class="muted text-xs mt-1">No {{ a.missing | join(', ') }}-day average: too few closes.</div>{% endif %}
+  {% endif %}
+</div>

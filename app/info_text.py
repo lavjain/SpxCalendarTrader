@@ -27,6 +27,8 @@ INFO: dict[str, tuple[str, str]] = {
     "risk_sd": ("±1 SD", "The shaded band is one standard deviation of SPX to the short expiry, from the short leg's implied volatility. About two thirds of outcomes land inside it."),
     # open trade dialog
     "open_levels": ("Target and Flag", "Target is the calendar price a set percentage above your fill: a good time to close. Flag is the price the same kind of distance below it: the position is flagged for a look there. Both percentages are set in the config; the app places no orders."),
+    "spx_averages": ("SPX Moving Averages", "Simple moving averages of the last 10, 20 and 50 daily SPX closes (today's unfinished candle is left out), and how far SPX trades above or below each."),
+    "compare_strike": ("Strike Override", "Leave blank to use the starred row's strike. Type a strike (to the nearest 5) to compare that one strike in every week instead; the comparison updates when you leave the box."),
     # weekly comparison
     "weekly_comparison": ("Weekly Comparison", "The same 7-day calendar at one strike, the starred row's, for the Friday nearest 7, 14, 21, 28, 35 and 42 days out. It shows how price, greeks and skew change as the short expiry moves out, for one contract."),
 }

@@ -3,7 +3,7 @@
 {% if not c.rows %}
   <p class="muted">No calendars found for the comparison.</p>
 {% else %}
-<div class="text-xs muted mb-1">SPX {{ c.spx | num(2) }} · {{ c.time | etime }} · {{ c.width }}-Day Width · One Contract Each</div>
+<div class="text-xs muted mb-1">SPX {{ c.spx | num(2) }} · {{ c.time | etime }} · {{ c.width }}-Day Width · One Contract Each{% if c.overridden %} · Strike Typed By You{% endif %}</div>
 <table class="grid-table" id="compare-table">
   <thead><tr>
     <th class="text-center">Strike</th><th class="text-center">Week</th><th class="text-center">Short Expiry</th><th class="text-center">Long Expiry</th>

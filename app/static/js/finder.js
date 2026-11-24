@@ -13,6 +13,21 @@ showUpdated(document.getElementById("updated-at")?.dataset.iso);
 
 // The Weekly Comparison starts collapsed and stays however the user leaves it (remembered in this browser).
 // It only pulls while open; opening it fires the toggle event, which loads it.
+// The strike the Weekly Comparison uses: the box if something is typed there, else the starred row's.
+window.compareVals = () => {
+  const typed = (document.getElementById("compare-strike") || {}).value || "";
+  const starred = (document.querySelector("#calendars tr.strike-row[data-starred]") || { dataset: {} }).dataset.strike || "";
+  return typed ? { strike: typed, override: "1" } : { strike: starred, override: "" };
+};
+const strikeBox = document.getElementById("compare-strike"), strikeReset = document.getElementById("compare-strike-reset");
+if (strikeBox) {
+  strikeBox.addEventListener("input", () => strikeReset.classList.toggle("hidden", !strikeBox.value));
+  strikeReset.addEventListener("click", () => {
+    strikeBox.value = ""; strikeReset.classList.add("hidden");
+    strikeBox.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
 const cmpBox = document.getElementById("compare-box");
 if (cmpBox) {
   try { if (localStorage.getItem("compareOpen") === "1") cmpBox.open = true; } catch (e) { /* storage unavailable */ }

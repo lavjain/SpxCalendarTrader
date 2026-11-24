@@ -1,5 +1,5 @@
 """HTMX fragments under /partials. They only render a stored snapshot: no Schwab calls, no calculation.
-The one exception is POST /partials/compare, which runs the Weekly Comparison (one chain pull) and renders it."""
+The exceptions are POST /partials/compare (the Weekly Comparison, one chain pull) and POST /partials/spx-averages (daily closes), which pull from Schwab and render."""
 from urllib.parse import parse_qs
 
 from fastapi import APIRouter, HTTPException, Query, Request
@@ -59,13 +59,24 @@ async def calendar_panel(request: Request, snapshot_id: str, short: str, long: s
 async def compare(request: Request):
     """`strike`: the starred row of the open pair (sent by the page); blank = the starred row of the pair nearest 30 DTE."""
     # htmx posts a urlencoded body; parsed by hand so the app needs no python-multipart
-    strike = (parse_qs((await request.body()).decode()).get("strike") or [""])[0]
+    form = parse_qs((await request.body()).decode())
+    strike = (form.get("strike") or [""])[0]
+    exact = (form.get("override") or [""])[0] == "1"          # the strike was typed in the box: keep it
     try:
         wanted = float(strike) if strike.strip() else None
     except ValueError:
         raise HTTPException(status_code=422, detail="strike must be a number") from None
     try:
-        result = await asyncio.to_thread(services.get_dte_comparison, strike=wanted)
+        result = await asyncio.to_thread(services.get_dte_comparison, strike=wanted, exact=exact and wanted is not None)
     except SchwabError as e:
         raise HTTPException(status_code=502, detail=str(e)) from None
     return templates.TemplateResponse(request, "partials/_compare.html", {"comparison": result})
+
+
+@router.post("/spx-averages", response_class=HTMLResponse)
+async def spx_averages(request: Request):
+    try:
+        result = await asyncio.to_thread(services.get_spx_averages)
+    except SchwabError as e:
+        raise HTTPException(status_code=502, detail=str(e)) from None
+    return templates.TemplateResponse(request, "partials/_spx_averages.html", {"averages": result})

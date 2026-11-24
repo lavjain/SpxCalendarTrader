@@ -62,6 +62,7 @@ def test_finder_page_renders_both_states(snap):
     empty = render("finder.html", results=None, **base)
     assert 'hx-post="/partials/compare"' in empty and 'data-refresh-s="60"' in empty and "↻ Compare" not in empty
     assert 'id="compare-box">' in empty and 'id="compare-box" open' not in empty
+    assert 'id="compare-strike"' in empty and 'hx-post="/partials/spx-averages"' in empty
     assert "Press" in empty and "unavailable" in empty and 'id="refresh"' in empty and "Holdings" in empty
     assert empty.index('id="refresh"') < empty.index('id="updated-at"') and "Pulled" not in empty
     full = render("finder.html", results=vm.results_context(snap), **{**base, "last_refresh": snap.result.time})
@@ -178,3 +179,13 @@ def test_both_finder_tables_show_a_bid_ask_column(snap):
         assert "Bid / Ask" in html and html.index("Price") < html.index("Bid / Ask"), name
     r = ctx["open_pair"].rows[0]
     assert f"${r.bid:,.2f} / ${r.ask:,.2f}" in render("partials/_strike_rows.html", **ctx)
+
+
+def test_spx_averages_panel_and_strike_override_box():
+    from app.core.models import SmaRow, SpxAverages
+    a = SpxAverages(time="2026-11-23T10:00:00-05:00", spx=7000.0, last_close_date="2026-11-20",
+                    rows=[SmaRow(days=10, value=6950.0, pct_from=0.72, side="above"),
+                          SmaRow(days=50, value=7100.0, pct_from=-1.41, side="below")], missing=[20])
+    html = render("partials/_spx_averages.html", averages=a)
+    assert 'id="sma-table"' in html and "10-Day" in html and "50-Day" in html and "below" in html and "No 20-day average" in html
+    assert "Not enough daily closes" in render("partials/_spx_averages.html", averages=SpxAverages(time="t", missing=[10, 20, 50]))

@@ -15,7 +15,7 @@ from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries, previous_trading_day
 from app.core.calendar_math import _whole
 from app.core.models import (CalendarRow, ComparisonResult, ComparisonRow, ExpirationsResult, ExpiryPair, FinderResult, HolidayNote, OpenTradeResult,
-                             OptionQuote, PairSummary, QuoteSpread, RiskProfile, Spot, TosOrder, Trade)
+                             OptionQuote, PairSummary, QuoteSpread, RiskProfile, SmaRow, Spot, SpxAverages, TosOrder, Trade)
 from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
 SYMBOL = "$SPX"
@@ -202,12 +202,13 @@ def _holiday_notes(dte_range) -> list[HolidayNote]:
 
 
 def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
-                       strike_sets=config.STRIKE_SETS, strike=None) -> ComparisonResult:
+                       strike_sets=config.STRIKE_SETS, strike=None, exact=False) -> ComparisonResult:
     """How the price and greeks change as the short expiry moves out: one fixed strike for every row, for each
     target DTE the nearest Friday (each Friday used once), `width` days wide, one contract. The strike is `strike`
     (the Finder's starred row) rounded to the nearest multiple of 25; without one, the starred strike of the pair
     nearest config.SHORT_DTE_TARGET. One chain pull (cached for the second look); nothing is logged or saved.
-    The Finder's own DTE filter is not involved."""
+    The Finder's own DTE filter is not involved. `exact`: the strike was typed by the user, so keep it (to the
+    nearest 5, SPX's strike grid) instead of rounding to 25."""
     lo, hi = config.SHORT_DTE_LIMITS
     dte_range = (lo, min(hi, max(targets) + 7))
     if strike is None:
@@ -217,8 +218,9 @@ def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
             return ComparisonResult(time=first.time, spx=first.spx, width=width, strike=None, rows=[])
         ref = min(starred, key=lambda p: abs(p.short_dte - config.SHORT_DTE_TARGET))
         strike = ref.near_target_delta.strike
-    strike = float(round(strike / 25) * 25)
-    res = get_finder(dte_range, (width,), ("25",), "contracts", 1, only_strike=strike)
+    step = 5 if exact else 25
+    strike = float(round(strike / step) * step)
+    res = get_finder(dte_range, (width,), (str(step),), "contracts", 1, only_strike=strike)
     pairs = [p for p in res.pairs if p.rows]
     chosen, used = [], set()
     for t in targets:
@@ -235,7 +237,7 @@ def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
             target_dte=t, short_expiry=p.short_expiry, long_expiry=p.long_expiry, short_dte=p.short_dte,
             long_dte=p.long_dte, strike=r.strike, bid=r.bid, ask=r.ask, delta=r.delta, gamma=r.gamma,
             theta=r.theta, vega=r.vega, short_iv=r.short_iv, long_iv=r.long_iv, skew=r.skew))
-    return ComparisonResult(time=res.time, spx=res.spx, width=width, strike=strike, rows=rows)
+    return ComparisonResult(time=res.time, spx=res.spx, width=width, strike=strike, overridden=exact, rows=rows)
 
 
 # ---------------------------------------------------------------- break-even diagnostics
@@ -332,6 +334,39 @@ def get_risk_profile(row: CalendarRow, spot: float, half_range: float = 300.0, p
         today=today, at_expiry=expiry, sd_low=spot * math.exp(-sd), sd_high=spot * math.exp(sd),
         break_evens=row.break_evens, cost=cost, max_profit=float(peak), max_loss=-cost, pl_now=float(now),
         delta=row.delta, theta=row.theta, vega=row.vega)
+
+
+_bars = {"at": 0.0, "closes": []}
+
+
+def _completed_closes(now=None):
+    """Daily closes without today's candle while the market is still open (a partial day is not a close)."""
+    import time as _time
+    if _bars["closes"] == [] or _time.time() - _bars["at"] > config.BARS_CACHE_S:
+        _bars["closes"], _bars["at"] = schwab_api.get_daily_closes("$SPX"), _time.time()
+    now = now or datetime.now(ZoneInfo(config.MARKET_TZ))
+    today = now.date().isoformat()
+    closed = now.hour * 60 + now.minute >= 16 * 60 + 15
+    return [(d, c) for d, c in _bars["closes"] if d < today or (d == today and closed)]
+
+
+def get_spx_averages(windows=config.SMA_DAYS) -> SpxAverages:
+    """10/20/50-day simple moving averages of SPX daily closes and where SPX trades against each."""
+    from app.core.indicators import simple_moving_average
+    now = datetime.now(ZoneInfo(config.MARKET_TZ))
+    bars = _completed_closes(now)
+    closes = [c for _, c in bars]
+    spot = _px(schwab_api.get_quotes(["$SPX"]).get("$SPX", {}))
+    rows, missing = [], []
+    for n in windows:
+        v = simple_moving_average(closes, n)
+        if v is None:
+            missing.append(n)
+        elif spot:
+            pct = (spot / v - 1.0) * 100.0
+            rows.append(SmaRow(days=n, value=v, pct_from=pct, side="above" if pct >= 0 else "below"))
+    return SpxAverages(time=now.isoformat(timespec="seconds"), spx=spot, rows=rows, missing=missing,
+                       last_close_date=bars[-1][0] if bars else None)
 
 
 def get_spx_history(range: str = "3M"):
