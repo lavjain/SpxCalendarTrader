@@ -8,6 +8,7 @@ from scipy.stats import norm
 from scipy.optimize import brentq
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # repo root
+from app.core import config  # the delta band and target the real Finder uses
 from app.core.calendar_math import Leg, Calendar  # the repo's own sizing/greeks/skew math
 
 R, Q = 0.040, 0.013
@@ -86,7 +87,7 @@ def leg_obj(q):
     return Leg(q["dte"], q["mark"], q["delta"], q["gamma"], q["theta"], q["vega"], q["iv"])
 
 
-def finder(S, now, atm_s, atm_l, band=(0.35, 0.45), width=7, friday=None, sets=STRIKE_SETS):
+def finder(S, now, atm_s, atm_l, band=config.DELTA_BAND, width=7, friday=None, sets=STRIKE_SETS):
     today = now.date()
     se, le = pick_expiries(today, width, friday)
     rows = []
@@ -103,7 +104,7 @@ def finder(S, now, atm_s, atm_l, band=(0.35, 0.45), width=7, friday=None, sets=S
         rows.append(dict(strike=K, s=s, l=l, cal=c,
                          bid=round(l["bid"] - s["ask"], 2), ask=round(l["ask"] - s["bid"], 2)))
     best = max(rows, key=lambda r: r["cal"].skew)
-    near = min(rows, key=lambda r: abs(abs(r["s"]["delta"]) - 0.40))
+    near = min(rows, key=lambda r: abs(abs(r["s"]["delta"]) - config.DELTA_TARGET))
     for r in rows:
         r["is_best_skew"] = r is best
         r["is_near_target_delta"] = r is near

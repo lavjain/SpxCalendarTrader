@@ -15,7 +15,7 @@ The repo holds only this app. It starts from three working pieces:
 | File | What it gives you |
 | --- | --- |
 | `schwab_api.py` | Schwab login, weekly token refresh, chain pull (fixed in week 1) |
-| `calendar_math.py` | The Excel sheet's columns: Price, Contracts, Margin, Greeks, Skew, T/D, Θ/Mgn, with a 16-row self-test against a reference sheet |
+| `calendar_math.py` | The Excel sheet's columns: Price, Contracts, Margin, Greeks, Skew, T/D (theta ÷ the absolute value of position delta), Θ/Mgn, with a 16-row self-test against a reference sheet |
 | `README.md` | Schwab developer-app and callback-URL setup steps |
 
 ```
@@ -98,7 +98,7 @@ The filters:
 **Calendars table (left).** Press Refresh and it pulls the chain and fills it:
 - **One row per short/long pair**, at that pair's ~45Δ strike. The first cell shows both expiries ("Fri Feb 12 → Fri Feb 19") with the DTEs and the number of strikes under them; then the ~45Δ strike, Contracts, Price, Theta, Vega, Skew, Θ/Mgn and **Best skew** (the highest skew among the pair's strikes, and at which strike). Margin is in the strike rows and the panel (it is about the same for every row when sizing by margin).
 - **Split into one segment per width** (a header row such as "7-day width · 2 pairs"), narrowest first. Click a column header to sort within each segment, for example by Best skew.
-- **Click a pair and its strikes open underneath it** (▸ / ▾), indented with a blue edge: every strike from 35Δ to 45Δ with the sheet's columns (Strike, Short Δ, Contracts, Price, Margin, Delta, Gamma, Theta, Vega, Skew, T/D, Θ/Mgn). The strike nearest 40Δ is starred. T/D shows "—" when position delta is near zero, where it means nothing. One pair is open at a time.
+- **Click a pair and its strikes open underneath it** (▸ / ▾), indented with a blue edge: every strike from 40Δ to 50Δ with the sheet's columns (Strike, Short Δ, Contracts, Price, Margin, Delta, Gamma, Theta, Vega, Skew, T/D, Θ/Mgn). The strike nearest 40Δ is starred. T/D shows "—" when position delta is near zero, where it means nothing. One pair is open at a time.
 - **Markers instead of filled rows:** an amber left edge on the highest-skew pair and on the highest-skew strike in the open pair; a blue tint and blue left edge on the selected pair and strike. Rows have thin separators and no vertical gridlines; numbers are right-aligned with tabular digits; the header row stays in place while the table scrolls.
 - **Click a strike** to show it in the panel on the right.
 
