@@ -1,0 +1,24 @@
+{# WeeklyComparison: the target-delta calendar for the Friday nearest each target DTE: bid/ask and greeks, one contract each. #}
+{% set c = comparison %}
+{% if not c.rows %}
+  <p class="muted">No calendars found for the comparison.</p>
+{% else %}
+<div class="text-xs muted mb-1">SPX {{ c.spx | num(2) }} · {{ c.time | etime }} · {{ c.width }}-Day Width · One Contract Each</div>
+<table class="grid-table" id="compare-table">
+  <thead><tr>
+    <th class="text-left">Target DTE</th><th class="text-left">Expiries</th><th>Strike</th>
+    <th>Bid / Ask</th><th>Delta</th><th>Gamma</th><th>Theta</th><th>Vega</th>
+  </tr></thead>
+  <tbody>
+  {% for r in c.rows %}
+    <tr>
+      <td class="text-left">{{ r.target_dte }}</td>
+      <td class="text-left">{{ r.short_expiry | edate }} → {{ r.long_expiry | edate }}<div class="muted text-xs">{{ r.short_dte }} / {{ r.long_dte }} DTE</div></td>
+      <td>{{ r.strike | strike }}</td>
+      <td>{{ r.bid | money }} / {{ r.ask | money }}</td>
+      <td>{{ r.delta | signed(2) }}</td><td>{{ r.gamma | gamma(4) }}</td><td>{{ r.theta | num(1) }}</td><td>{{ r.vega | num(1) }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}

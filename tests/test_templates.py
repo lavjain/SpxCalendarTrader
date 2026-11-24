@@ -97,3 +97,15 @@ def test_holiday_note_shows_under_the_width_chips(snap):
                 holidays=[HolidayNote(date="2026-12-25", name="Christmas Day", moves_to="2026-12-24")])
     html = render("finder.html", results=None, **base)
     assert "Holiday Dec 25 (Christmas Day)" in html and "Move To" not in html and 'id="width-notes"' in html
+
+
+def test_weekly_comparison_table_renders_bid_ask_and_greeks(snap):
+    from app.core.models import ComparisonResult, ComparisonRow
+    row = dict(short_expiry="2026-12-18", long_expiry="2026-12-24", short_dte=24, long_dte=30, strike=7210.0)
+    c = ComparisonResult(time="2026-11-24T10:00:00-05:00", spx=7240.0, width=7, rows=[
+        ComparisonRow(target_dte=21, bid=7.05, ask=7.25, delta=-0.18, gamma=-0.0056, theta=30.6, vega=58.6, **row),
+        ComparisonRow(target_dte=28, bid=None, ask=None, delta=-0.2, gamma=-0.004, theta=25.0, vega=70.0, **row)])
+    html = render("partials/_compare.html", comparison=c)
+    assert 'id="compare-table"' in html and "$7.05 / $7.25" in html and "Bid / Ask" in html
+    assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Skew" not in html and html.count("<tr>") == 3
+    assert "No calendars found" in render("partials/_compare.html", comparison=c.model_copy(update={"rows": []}))

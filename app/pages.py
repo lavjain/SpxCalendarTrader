@@ -47,5 +47,5 @@ async def finder_page(request: Request):
            "unavailable_widths": exp.unavailable_widths, "holidays": exp.holidays, "dte_limits": config.SHORT_DTE_LIMITS,
            "results": view_models.results_context(snap) if snap else None,
            "default_margin": config.MARGIN, "default_contracts": config.DEFAULT_CONTRACTS,
-           "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
+           "compare_width": config.COMPARE_WIDTH, "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
     return templates.TemplateResponse(request, "finder.html", ctx)

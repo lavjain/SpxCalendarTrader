@@ -14,7 +14,7 @@ from app.core import config, pricing, schwab_api, tos
 from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries, previous_trading_day
 from app.core.calendar_math import _whole
-from app.core.models import (CalendarRow, ExpirationsResult, ExpiryPair, FinderResult, HolidayNote, OpenTradeResult,
+from app.core.models import (CalendarRow, ComparisonResult, ComparisonRow, ExpirationsResult, ExpiryPair, FinderResult, HolidayNote, OpenTradeResult,
                              OptionQuote, PairSummary, QuoteSpread, Spot, TosOrder, Trade)
 from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
@@ -187,6 +187,34 @@ def _holiday_notes(dte_range) -> list[HolidayNote]:
                                            moves_to=previous_trading_day(d).isoformat())
         friday += timedelta(days=7)
     return [found[d] for d in sorted(found)]
+
+
+def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
+                       strike_sets=config.STRIKE_SETS) -> ComparisonResult:
+    """How the price and greeks change as the short expiry moves out: for each target DTE the nearest Friday (each
+    Friday used once), `width` days wide, at the strike nearest the target delta, for one contract. One chain
+    pull; nothing is logged or saved. The Finder's own DTE filter is not involved."""
+    lo, hi = config.SHORT_DTE_LIMITS
+    res = get_finder((lo, min(hi, max(targets) + 7)), (width,), strike_sets, "contracts", 1)
+    pairs = [p for p in res.pairs if p.near_target_delta]
+    chosen, used = [], set()
+    for t in targets:
+        free = [p for p in pairs if p.short_expiry not in used]
+        if not free:
+            break
+        p = min(free, key=lambda x: (abs(x.short_dte - t), x.short_dte))
+        used.add(p.short_expiry)
+        chosen.append((t, p))
+    rows = []
+    for t, p in chosen:
+        r = p.near_target_delta
+        bid = r.long.bid - r.short.ask if None not in (r.long.bid, r.short.ask) else None
+        ask = r.long.ask - r.short.bid if None not in (r.long.ask, r.short.bid) else None
+        rows.append(ComparisonRow(
+            target_dte=t, short_expiry=p.short_expiry, long_expiry=p.long_expiry, short_dte=p.short_dte,
+            long_dte=p.long_dte, strike=r.strike, bid=bid, ask=ask, delta=r.delta, gamma=r.gamma,
+            theta=r.theta, vega=r.vega))
+    return ComparisonResult(time=res.time, spx=res.spx, width=width, rows=rows)
 
 
 # ---------------------------------------------------------------- break-even diagnostics

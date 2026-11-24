@@ -1,8 +1,13 @@
-"""HTMX fragments under /partials. They only render a stored snapshot: no Schwab calls, no calculation."""
+"""HTMX fragments under /partials. They only render a stored snapshot: no Schwab calls, no calculation.
+The one exception is POST /partials/compare, which runs the Weekly Comparison (one chain pull) and renders it."""
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
 
+import asyncio
+
 from app import view_models
+from app.core import services
+from app.core.schwab_api import SchwabError
 from app.pages import templates
 from app.schemas import FinderSnapshot
 
@@ -43,3 +48,12 @@ async def strike_rows(request: Request, snapshot_id: str, short: str, long: str,
 async def calendar_panel(request: Request, snapshot_id: str, short: str, long: str, strike: float | None = None):
     ctx = view_models.panel_context(_snapshot(request, snapshot_id), short, long, strike)
     return templates.TemplateResponse(request, "partials/_calendar_panel.html", ctx)
+
+
+@router.post("/compare", response_class=HTMLResponse)
+async def compare(request: Request):
+    try:
+        result = await asyncio.to_thread(services.get_dte_comparison)
+    except SchwabError as e:
+        raise HTTPException(status_code=502, detail=str(e)) from None
+    return templates.TemplateResponse(request, "partials/_compare.html", {"comparison": result})

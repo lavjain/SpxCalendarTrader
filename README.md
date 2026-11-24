@@ -22,6 +22,7 @@ A web app for finding and paper-trading ~45Δ SPX put calendars, using live opti
 ## What it does
 
 - **Finder:** 40–50Δ put calendars sized to $10,000 margin (or any amount, or a fixed number of contracts), with greeks and term-structure skew. Filters choose the short leg's DTE (1–8 weeks out; default ~30 days), the days between short and long (3–7; default 7) and which strikes to show (10s and/or 25s).
+- **Weekly Comparison:** under the Finder, a separate table of the ~45Δ 7-day calendar for the Friday nearest 7, 14, 21, 28, 35 and 42 DTE: bid/ask, delta, gamma, theta and vega for one contract, to see how they change with time without setting the short expiry.
 - **Holdings:** open paper trades with P/L, break-evens, Vol P&L (how much of today's move came from volatility) and ±10% flags.
 - **Performance:** results by month and week, and which entry conditions (skew, VIX, volatility at entry, short DTE, width, days held, day of week) made money.
 
