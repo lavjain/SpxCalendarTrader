@@ -677,20 +677,20 @@ def filter_bar():
             + grp("Strikes", strike_chip("10") + strike_chip("25"))
             + grp("Size by", f'<div class="seg"><span class="on" style="padding:4px 10px;font-size:12.5px">Margin</span><span style="padding:4px 10px;font-size:12.5px">Contracts</span></div>'
                   f'<div class="input" style="width:92px;padding:4px 8px;font-size:13px">{money(MARGIN)}</div>')
-            + f'<div style="margin-left:auto;align-self:center" class="btnrow"><span class="muted" style="font-size:12px;white-space:nowrap">Updated 11:05:12 AM</span><span class="btn primary" style="padding:6px 14px">↻ Refresh</span></div></div>')
+            + f'<div style="margin-left:32px;align-self:center" class="btnrow"><span class="btn primary" style="padding:6px 14px">↻ Refresh</span><span class="muted" style="font-size:12px;white-space:nowrap">Updated 8:05:12 AM PST</span></div></div>')
 
 def status_strip(items):
     return '<div class="strip">' + "".join(f'<span>{a} <b>{b}</b></span>' for a, b in items) + '</div>'
 
 def detail_ladder(P):
-    hdr = "".join(f"<th>{h}</th>" for h in ["Strike", "Short Δ", "Ctr", "Price", "Margin", "Delta", "Gamma", "Theta", "Vega", "Skew", "T/D", "Θ/Mgn"])
+    hdr = "".join(f"<th>{h}</th>" for h in ["Strike", "Short Δ", "Ctr", "Price", "Margin", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew", "T/D", "Θ/Mgn"])
     rows = ""
     for r in P["sec"]:
         c = r["cal"]; star = " ★" if r is P["near"] else ""
         klass = " ".join(k for k, on in (("best", r is P["best"]), ("sel", r["is_sel"])) if on)
         rows += (f"<tr class='{klass}'><td>{r['strike']}{star}</td><td>{abs(r['s']['delta'])*100:.1f}</td><td>{c.contracts}</td><td>{c.debit:.2f}</td>"
                  f"<td>{c.margin:,.0f}</td><td>{c.delta:.1f}</td><td>{c.gamma:.2f}</td><td>{c.theta:.0f}</td><td>{c.vega:.0f}</td>"
-                 f"<td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{'—' if abs(c.delta) < 0.5 else f'{c.td:.0f}'}</td><td>{c.theta_margin*100:.2f}%</td></tr>")
+                 f"<td>{r['s']['iv']*100:.2f}%</td><td>{r['l']['iv']*100:.2f}%</td><td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{'—' if abs(c.delta) < 0.5 else f'{c.td:.0f}'}</td><td>{c.theta_margin*100:.2f}%</td></tr>")
     return (f"<tr><td colspan=9 style='padding:0;border:none;text-align:left'><div class='ladder'>"
             f"<div style='font-size:12px;color:#94A3B8;margin-bottom:4px'>All {len(P['sec'])} strikes of this pair in the {config.DELTA_BAND_LABEL} band · ★ nearest {config.DELTA_LABEL} · amber edge: highest skew · click a strike to select it</div>"
             f"<table><tr>{hdr}</tr>{rows}</table></div></td></tr>")
@@ -700,7 +700,7 @@ def overview_box():
     for r in ROWS: pairs.setdefault((r["short_exp"], r["long_exp"]), []).append(r)
     ov = []
     for (se, le), sec in pairs.items():
-        near = min(sec, key=lambda x: abs(abs(x["s"]["delta"]) - config.DELTA_TARGET)); best = max(sec, key=lambda x: x["cal"].skew)
+        near = min([x for x in sec if x["strike"] % config.STAR_STRIKE_MULTIPLE == 0] or sec, key=lambda x: abs(abs(x["s"]["delta"]) - config.DELTA_TARGET)); best = max(sec, key=lambda x: x["cal"].skew)
         ov.append(dict(se=se, le=le, sec=sec, near=near, best=best, sel=any(x["is_sel"] for x in sec)))
     ov.sort(key=lambda p: p["best"]["cal"].skew, reverse=True); top = ov[0]
     hdr = "".join(f"<th{' class=l' if h == 'Short → Long' else ''}>{h}</th>" for h in
@@ -764,11 +764,41 @@ def finder_panel(tab="Risk profile"):
             f'<h3 style="font-size:14px;margin:14px 0 6px">Legs</h3>{legs_table(K, se, le, s, l)}'
             f'<div class="hint">The panel stays in view while the tables scroll. Open trade… opens the confirmation with Copy to TOS and Paste from TOS.</div></div>')
 
-def finder_body(tab="Risk profile"):
+COMPARE_DTES = (7, 14, 21, 28, 35, 42)   # same targets as config.COMPARE_DTES
+
+def compare_box(open_=False):
+    """Weekly Comparison: one strike (the starred row's, to the nearest 25) for the Friday nearest each target DTE, one contract."""
+    K = int(round(SEL["strike"] / 25) * 25)
+    today = NOW.date()
+    fridays = [today + timedelta(days=d) for d in range(7, 57) if (today + timedelta(days=d)).weekday() == 4]
+    used, body = set(), ""
+    for t in COMPARE_DTES:
+        free = [f for f in fridays if f not in used]
+        fr = min(free, key=lambda f: (abs((f - today).days - t), (f - today).days)); used.add(fr)
+        se, le = pick_expiries(today, 7, fr)
+        s, l = leg_quote(S_NOW, K, today, se, ATM_S), leg_quote(S_NOW, K, today, le, ATM_L)
+        g = lambda k: (l[k] - s[k]) * 100
+        body += (f"<tr><td class=l style='white-space:nowrap'>{K:,} Put</td><td>{t // 7}</td>"
+                 f"<td class=l style='white-space:nowrap'>{se:%a %b %-d} <span class=muted>· {s['dte']} DTE</span></td>"
+                 f"<td class=l style='white-space:nowrap'>{le:%a %b %-d} <span class=muted>· {l['dte']} DTE</span></td>"
+                 f"<td style='white-space:nowrap'>{l['bid'] - s['ask']:.2f} / {l['ask'] - s['bid']:.2f}</td><td>{g('delta'):+.2f}</td><td>{g('gamma'):.4f}</td><td>{g('theta'):.1f}</td><td>{g('vega'):.1f}</td>"
+                 f"<td>{s['iv']*100:.1f}%</td><td>{l['iv']*100:.1f}%</td><td>{(s['iv'] - l['iv'])*100:+.1f}</td></tr>")
+    hdr = "".join(f"<th style='text-align:center'>{h}</th>"
+                  for h in ("Strike", "Week", "Short Expiry", "Long Expiry", "Bid / Ask", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew"))
+    if not open_:      # collapsed by default; the page remembers how the user leaves it
+        return ('<div class="box" style="margin-bottom:14px;width:808px;box-sizing:border-box;padding:9px 14px"><b>▸ Weekly Comparison</b> '
+                '<span class="muted" style="font-size:12.5px">· How the price and greeks change as the short expiry moves out</span></div>')
+    return (f'<div class="box" style="margin-bottom:14px;width:808px;box-sizing:border-box"><h3>▾ Weekly Comparison <span class="muted" style="font-weight:400;font-size:12.5px">'
+            f'· How the price and greeks change as the short expiry moves out</span></h3>'
+            f'<div class="muted" style="font-size:12px;margin-bottom:6px">SPX {S_NOW:,.2f} · {NOW:%-I:%M %p} ET · 7-Day Width · One Contract Each</div>'
+            f'<style>.cmp th,.cmp td{{text-align:center !important}}</style><table class="cmp"><tr>{hdr}</tr>{body}</table>'
+            f'</div>')
+
+def finder_body(tab="Risk profile", compare_open=False):
     strip = status_strip([("Tue Jan 12, 11:05 AM ET", ""), ("SPX", f"{S_NOW:,.2f}"),
                           ("Short expiries", " · ".join(f"{fr:%b %-d} ({(fr - NOW.date()).days}d)" for fr in FRIDAYS)),
                           ("Widths", ", ".join(f"{w}d" for w in WIDTHS_ON)), ("Sized by", f"margin {money(MARGIN)}")])
-    return filter_bar() + strip + f'<div class="grid2"><div>{overview_box()}</div><div style="position:sticky;top:12px">{finder_panel(tab)}</div></div>'
+    return compare_box(compare_open) + filter_bar() + strip + f'<div class="grid2"><div>{overview_box()}</div><div style="position:sticky;top:12px">{finder_panel(tab)}</div></div>'
 
 def holdings_body(columns_open=False, on=None):
     H = holdings_rows(); H0 = H[0]
@@ -830,6 +860,7 @@ if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True); BUILD.mkdir(exist_ok=True)
     pages = {
         "finder": page("Finder", finder_body(), "simulated SPX chain priced with Black-Scholes; not real quotes."),
+        "finder-compare": page("Finder", finder_body(compare_open=True), "simulated SPX chain priced with Black-Scholes; not real quotes."),
         "finder-spx": page("Finder", finder_body("SPX chart"), "simulated SPX chain and daily bars; not real quotes."),
         "open-trade": dialog_page(dialog_body(), "simulated SPX chain priced with Black-Scholes; not real quotes."),
         "paste-trade": dialog_page(paste_dialog_body(), "simulated quotes; not a real trade."),

@@ -213,12 +213,16 @@ class ComparisonRow(BaseModel):
     gamma: float
     theta: float
     vega: float
+    short_iv: float                  # percent, the IVs the row was priced with
+    long_iv: float
+    skew: float                      # short IV - long IV, in points
 
 
 class ComparisonResult(BaseModel):
     time: str
     spx: float
     width: int
+    strike: float | None = None      # the one strike every row uses
     rows: list[ComparisonRow]
 
 

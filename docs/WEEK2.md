@@ -80,5 +80,5 @@ Week 1 was all `app/core/` (plain Python). This week adds the web layer around i
 3. **Spot, VIX and VIX9D from one `get_quotes` call**, not from the chain's `underlyingPrice`, so the status strip and `finder_log` use the quote Schwab updates most often.
 4. **Filters in `app/pages.py`** (Jinja filters and `page_context`), so the layout in CLAUDE.md doesn't gain a file.
 5. **Refresh is a POST** (`/api/finder/refresh`) because it writes `finder_log`; the GET only reads a stored snapshot.
-6. **T/D shows "—"** when the position delta is under 2 (`config.TD_MIN_DELTA`). T/D is theta divided by the **absolute** position delta (changed in week 3), so it has the same sign as theta.
+6. **T/D shows "—"** when the absolute position delta is under 0.5 (`config.TD_MIN_DELTA`, was 2). T/D is theta divided by the **absolute** position delta (changed in week 3), so it has the same sign as theta.
 7. **Open trade… is visible but disabled** this week, so the panel matches the mockup.

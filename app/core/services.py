@@ -69,10 +69,11 @@ def _spot(chain) -> float:
 
 def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
                strike_sets=config.STRIKE_SETS, size_mode="margin",
-               size_value=config.MARGIN) -> FinderResult:
+               size_value=config.MARGIN, only_strike=None) -> FinderResult:
     """Pick expiry pairs, pull the chain, and return one PairSummary per pair with a CalendarRow
     for every strike in config.DELTA_BAND. Per pair: one `is_near_target_delta` row (the name is historical: short delta nearest config.DELTA_TARGET)
-    and one `is_best_skew` row (highest short IV - long IV)."""
+    and one `is_best_skew` row (highest short IV - long IV). `only_strike` keeps just that strike in every pair,
+    whatever its delta (the Weekly Comparison)."""
     if size_mode not in config.SIZE_MODES:
         raise ValueError(f"size_mode must be one of {config.SIZE_MODES}")
     if size_value <= 0 or (size_mode == "contracts" and int(size_value) != size_value):
@@ -88,7 +89,9 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
     put_chain = schwab_api.get_chain(SYMBOL, pairs, today=today)
     call_chain = schwab_api.get_call_chain(SYMBOL, pairs)
     spx = _spot(put_chain)
-    puts = schwab_api.parse(put_chain, pairs, strike_sets)
+    puts = schwab_api.parse(put_chain, pairs, strike_sets, (0.0, 1.0) if only_strike else config.DELTA_BAND)
+    if only_strike:
+        puts = [q for q in puts if q.strike == only_strike]
     parity = schwab_api.parse_parity_quotes(put_chain, call_chain, pairs)
 
     def forward(expiry):
@@ -138,7 +141,9 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             rows.append(row)
         near = best = None
         if rows:
-            near = min(rows, key=lambda r: abs(abs(r.short.delta) - config.DELTA_TARGET))
+            m = config.STAR_STRIKE_MULTIPLE
+            starrable = [r for r in rows if m and r.strike % m == 0] or rows       # no such strike in the band: any
+            near = min(starrable, key=lambda r: abs(abs(r.short.delta) - config.DELTA_TARGET))
             best = max(rows, key=lambda r: r.skew)
             near.is_near_target_delta, best.is_best_skew = True, True
         be = near.break_evens if near else None
@@ -191,13 +196,24 @@ def _holiday_notes(dte_range) -> list[HolidayNote]:
 
 
 def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
-                       strike_sets=config.STRIKE_SETS) -> ComparisonResult:
-    """How the price and greeks change as the short expiry moves out: for each target DTE the nearest Friday (each
-    Friday used once), `width` days wide, at the strike nearest the target delta, for one contract. One chain
-    pull; nothing is logged or saved. The Finder's own DTE filter is not involved."""
+                       strike_sets=config.STRIKE_SETS, strike=None) -> ComparisonResult:
+    """How the price and greeks change as the short expiry moves out: one fixed strike for every row, for each
+    target DTE the nearest Friday (each Friday used once), `width` days wide, one contract. The strike is `strike`
+    (the Finder's starred row) rounded to the nearest multiple of 25; without one, the starred strike of the pair
+    nearest config.SHORT_DTE_TARGET. One chain pull (cached for the second look); nothing is logged or saved.
+    The Finder's own DTE filter is not involved."""
     lo, hi = config.SHORT_DTE_LIMITS
-    res = get_finder((lo, min(hi, max(targets) + 7)), (width,), strike_sets, "contracts", 1)
-    pairs = [p for p in res.pairs if p.near_target_delta]
+    dte_range = (lo, min(hi, max(targets) + 7))
+    if strike is None:
+        first = get_finder(dte_range, (width,), strike_sets, "contracts", 1)
+        starred = [p for p in first.pairs if p.near_target_delta]
+        if not starred:
+            return ComparisonResult(time=first.time, spx=first.spx, width=width, strike=None, rows=[])
+        ref = min(starred, key=lambda p: abs(p.short_dte - config.SHORT_DTE_TARGET))
+        strike = ref.near_target_delta.strike
+    strike = float(round(strike / 25) * 25)
+    res = get_finder(dte_range, (width,), ("25",), "contracts", 1, only_strike=strike)
+    pairs = [p for p in res.pairs if p.rows]
     chosen, used = [], set()
     for t in targets:
         free = [p for p in pairs if p.short_expiry not in used]
@@ -208,14 +224,14 @@ def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
         chosen.append((t, p))
     rows = []
     for t, p in chosen:
-        r = p.near_target_delta
+        r = p.rows[0]
         bid = r.long.bid - r.short.ask if None not in (r.long.bid, r.short.ask) else None
         ask = r.long.ask - r.short.bid if None not in (r.long.ask, r.short.bid) else None
         rows.append(ComparisonRow(
             target_dte=t, short_expiry=p.short_expiry, long_expiry=p.long_expiry, short_dte=p.short_dte,
             long_dte=p.long_dte, strike=r.strike, bid=bid, ask=ask, delta=r.delta, gamma=r.gamma,
-            theta=r.theta, vega=r.vega))
-    return ComparisonResult(time=res.time, spx=res.spx, width=width, rows=rows)
+            theta=r.theta, vega=r.vega, short_iv=r.short_iv, long_iv=r.long_iv, skew=r.skew))
+    return ComparisonResult(time=res.time, spx=res.spx, width=width, strike=strike, rows=rows)
 
 
 # ---------------------------------------------------------------- break-even diagnostics

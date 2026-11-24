@@ -99,3 +99,19 @@ def test_risk_profile_endpoint(client):
     assert client.get("/api/risk-profile", params={**q, "snapshot_id": "nope"}).status_code == 404
     assert client.get("/api/risk-profile", params={**q, "strike": 1.0}).status_code == 404
     assert client.get("/api/risk-profile", params={**q, "half_range": 0}).status_code == 422
+
+
+def test_compare_accepts_the_starred_strike_from_the_page(client):
+    r = client.post("/partials/compare", data={"strike": "6790"})
+    assert r.status_code == 200 and "compare-table" in r.text
+    assert client.post("/partials/compare", data={"strike": "abc"}).status_code == 422
+
+
+def test_static_files_are_revalidated_not_cached(client):
+    r = client.get("/static/js/finder.js")
+    assert r.status_code == 200 and r.headers["cache-control"] == "no-cache"
+
+
+def test_page_links_scripts_with_a_version_so_edits_are_never_stale(client):
+    html = client.get("/").text if client.get("/").status_code == 200 else client.get("/finder").text
+    assert "/static/js/finder.js?v=" in html and "/static/css/style.css?v=" in html

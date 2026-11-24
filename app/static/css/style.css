@@ -30,3 +30,7 @@ tr.strike-rows > td { padding: 0 0 0 18px; }
 .nested th, .nested td { padding: 3px 6px; }
 .tile { border: 1px solid rgb(148 163 184 / .35); border-radius: 6px; padding: 6px 8px; }
 .tile .value { font-size: 1rem; font-weight: 600; }
+
+/* Weekly Comparison: headers and values share one centred alignment (the id beats .grid-table th/td and the text-left helpers) */
+#compare-table th, #compare-table td { text-align: center; }
+#compare-table td:nth-child(5), #compare-table th:nth-child(5) { min-width: 9.5rem; white-space: nowrap; }

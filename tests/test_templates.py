@@ -16,6 +16,7 @@ for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "g
     T.env.filters[n] = getattr(formatting, n)
 T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 T.env.globals["url_for"] = lambda name, **kw: "/static/" + kw.get("path", "")
+T.env.globals["static_url"] = lambda path: "/static/" + path
 
 
 @pytest.fixture
@@ -54,10 +55,13 @@ def test_finder_page_renders_both_states(snap):
     filters = FinderFilters()
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=filters, widths_all=config.WIDTHS, unavailable_widths=[7], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                quote_interval_s=2, finder_refresh_s=60, fill_offset=config.FILL_OFFSET,
                 default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     empty = render("finder.html", results=None, **base)
+    assert 'hx-post="/partials/compare"' in empty and 'data-refresh-s="60"' in empty and "↻ Compare" not in empty
+    assert 'id="compare-box">' in empty and 'id="compare-box" open' not in empty
     assert "Press" in empty and "unavailable" in empty and 'id="refresh"' in empty and "Holdings" in empty
+    assert empty.index('id="refresh"') < empty.index('id="updated-at"') and "Pulled" not in empty
     full = render("finder.html", results=vm.results_context(snap), **{**base, "last_refresh": snap.result.time})
     assert "calendars-table" in full and "ET" in full
 
@@ -71,7 +75,7 @@ def test_no_unformatted_floats_leak(snap):
 def test_the_open_trade_button_carries_the_calendar_and_the_dialog_is_on_the_page(snap):
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                quote_interval_s=2, finder_refresh_s=60, fill_offset=config.FILL_OFFSET,
                 default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     full = render("finder.html", results=vm.results_context(snap), **base)
     assert 'id="open-dialog"' in full and 'data-interval-ms="2000"' in full and "js/opentrade.js" in full
@@ -82,7 +86,7 @@ def test_the_open_trade_button_carries_the_calendar_and_the_dialog_is_on_the_pag
 def test_size_by_select_carries_the_defaults_for_each_mode(snap):
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                quote_interval_s=2, finder_refresh_s=60, fill_offset=config.FILL_OFFSET,
                 default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     html = render("finder.html", results=None, **base)
     assert 'data-default-contracts="10"' in html and 'data-default-margin="10000"' in html
@@ -92,7 +96,7 @@ def test_holiday_note_shows_under_the_width_chips(snap):
     from app.core.models import HolidayNote
     base = dict(active_tab="finder", version="0.1", account="Paper", feature_analyzer=False, last_refresh=None,
                 filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[], dte_limits=config.SHORT_DTE_LIMITS,
-                quote_interval_s=2, fill_offset=config.FILL_OFFSET,
+                quote_interval_s=2, finder_refresh_s=60, fill_offset=config.FILL_OFFSET,
                 default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS,
                 holidays=[HolidayNote(date="2026-12-25", name="Christmas Day", moves_to="2026-12-24")])
     html = render("finder.html", results=None, **base)
@@ -101,13 +105,13 @@ def test_holiday_note_shows_under_the_width_chips(snap):
 
 def test_weekly_comparison_table_renders_bid_ask_and_greeks(snap):
     from app.core.models import ComparisonResult, ComparisonRow
-    row = dict(short_expiry="2026-12-18", long_expiry="2026-12-24", short_dte=24, long_dte=30, strike=7210.0)
+    row = dict(short_expiry="2026-12-18", long_expiry="2026-12-24", short_dte=24, long_dte=30, strike=7210.0, short_iv=14.2, long_iv=13.6, skew=0.6)
     c = ComparisonResult(time="2026-11-24T10:00:00-05:00", spx=7240.0, width=7, rows=[
         ComparisonRow(target_dte=21, bid=7.05, ask=7.25, delta=-0.18, gamma=-0.0056, theta=30.6, vega=58.6, **row),
         ComparisonRow(target_dte=28, bid=None, ask=None, delta=-0.2, gamma=-0.004, theta=25.0, vega=70.0, **row)])
     html = render("partials/_compare.html", comparison=c)
     assert 'id="compare-table"' in html and "$7.05 / $7.25" in html and "Bid / Ask" in html
-    assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Skew" not in html and html.count("<tr>") == 3
+    assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Short IV" in html and "Long IV" in html and "Skew" in html and "14.2%" in html and html.count("<tr>") == 3
     assert "No calendars found" in render("partials/_compare.html", comparison=c.model_copy(update={"rows": []}))
 
 
@@ -115,3 +119,42 @@ def test_calendar_panel_has_legs_and_risk_profile_tabs(snap):
     html = render("partials/_results.html", results=vm.results_context(snap))
     assert 'data-tab="legs"' in html and 'data-tab="risk"' in html
     assert 'id="risk-canvas"' in html and 'data-range="300"' in html
+
+
+
+def test_results_keep_the_open_pair_and_fall_back_when_it_is_gone(snap):
+    base = vm.results_context(snap)
+    other = next(p for p in snap.result.pairs if p.rows and f"{p.short_expiry}|{p.long_expiry}" != base["open_key"])
+    key = f"{other.short_expiry}|{other.long_expiry}"
+    kept = vm.results_context(snap, None, key, other.rows[0].strike)
+    assert kept["open_key"] == key and kept["selected_strike"] == other.rows[0].strike
+    gone = vm.results_context(snap, None, "2000-01-07|2000-01-14", 1.0)
+    assert gone["open_key"] == base["open_key"] and gone["selected_strike"] == base["selected_strike"]
+
+
+def test_weekly_comparison_labels_rows_by_week_number():
+    from app.core.models import ComparisonResult, ComparisonRow
+    row = dict(short_expiry="2026-12-18", long_expiry="2026-12-24", short_dte=24, long_dte=30, strike=7210.0,
+               bid=7.0, ask=7.2, delta=-0.2, gamma=-0.005, theta=30.0, vega=60.0, short_iv=14.0, long_iv=13.5, skew=0.5)
+    c = ComparisonResult(time="2026-11-24T10:00:00-05:00", spx=7240.0, width=7,
+                         rows=[ComparisonRow(target_dte=t, **row) for t in (7, 14, 42)])
+    html = render("partials/_compare.html", comparison=c)
+    assert ">Week</th>" in html and "<td>1</td>" in html and "<td>2</td>" in html and "<td>6</td>" in html and "Target DTE" not in html
+
+
+def test_collapsing_the_open_pair_closes_the_table_but_keeps_the_panel(snap):
+    base = vm.results_context(snap)
+    out = vm.results_context(snap, None, vm.COLLAPSED, None, base["open_key"])
+    assert out["open_pair"] is None and out["open_key"] is None
+    assert out["pair"] is base["open_pair"] and out["row"] is not None          # the panel keeps its calendar
+    html = render("partials/_calendars_table.html", **out)
+    assert "strike-rows" not in html and "▾" not in html
+    assert vm.results_context(snap, None, vm.COLLAPSED)["pair"] is not None     # no panel given: the default
+
+
+def test_strike_rows_show_both_ivs_before_the_skew(snap):
+    ctx = vm.results_context(snap)
+    html = render("partials/_strike_rows.html", **ctx)
+    assert html.index("Short IV") < html.index("Long IV") < html.index(">Skew<")
+    r = ctx["open_pair"].rows[0]
+    assert f"{r.short_iv:.2f}%" in html and f"{r.long_iv:.2f}%" in html

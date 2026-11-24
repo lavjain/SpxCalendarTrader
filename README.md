@@ -12,7 +12,8 @@ A web app for finding and paper-trading ~45Δ SPX put calendars, using live opti
 |---|---|---|
 | 1 | • Schwab login and live option chains<br>• Calendar math (sizing, greeks, skew), checked against a reference sheet<br>• `cli candidates` prints today's calendars | Done |
 | 2 | • The Finder page: filters, sortable pairs, strike rows, selected-calendar panel<br>• Auto-refresh when a filter changes<br>• Snapshots saved to `data/snapshots.json`<br>• Model gamma and delta (Schwab rounds them to 3 decimals) | Done, pushed |
-| 3 | • [Plan](docs/WEEK3.md) steps 1–7: leg symbols and stability check, `trades` table, `quote_spread` / `open_trade` services, API, Open Trade dialog (live quote every 2 s, suggested fill at mid + $0.10, Confirm saves a trade with its entry snapshot), Copy to TOS, Paste from TOS<br>• Finder lists 40–50Δ strikes, target 45Δ; T/D uses absolute delta<br>• Size By starts at 10 contracts; DTE sliders push each other; holiday note under Days Between<br>• **Weekly Comparison** table: bid/ask and greeks of the 7-day calendar for the Friday nearest 7–42 DTE<br>• Stability wait switched off for now<br>• Not yet: risk profile tab, ⓘ popovers, wrap-up run | Steps 1–7 built and tested in a sandbox; not yet run in a browser; not pushed |
+| 3 | • [Plan](docs/WEEK3.md) steps 1–7: leg symbols and stability check, `trades` table, `quote_spread` / `open_trade` services, API, Open Trade dialog (live quote every 2 s, suggested fill at mid + $0.10, Confirm saves a trade with its entry snapshot), Copy to TOS, Paste from TOS<br>• Finder lists 40–50Δ strikes, target 45Δ; T/D uses absolute delta<br>• Size By starts at 10 contracts; DTE sliders push each other; holiday note under Days Between<br>• **Weekly Comparison** table above the Finder settings: collapsed by default (remembers how you leave it), updates with every Finder refresh; bid/ask and greeks of the 7-day calendar at one strike (the starred row's, to the nearest 25) for the Friday nearest 7–42 DTE<br>• **Whole Finder page auto-refreshes every 60 s** (`config.FINDER_REFRESH_S`, 0 = off): only while the tab is visible and no dialog is open; keeps your open pair, strike and sort
+• Stability wait switched off for now<br>• Not yet: risk profile tab, ⓘ popovers, wrap-up run | Steps 1–7 built and tested in a sandbox; not yet run in a browser; not pushed |
 | 4–6 | • Holdings and closing trades (week 4)<br>• Performance (weeks 5–6) | Planned |
 
 **Screens vs. the mockups.** The Finder in the running app follows the mockup below, with these differences: labels use Title Case; contracts are rounded to the nearest whole number (at least 1) instead of up; gamma and delta come from the model; and the filters refresh the table by themselves. The stability check in the Open Trade dialog tests each leg's bid-ask (at most 10% of that leg's price) rather than the whole calendar's, because the calendar's own bid-ask is the sum of both legs. The Finder lists 40–50Δ strikes with 45Δ as the target, and the screenshots show that. The Holdings, Close, Performance and TOS screens are still mockups.
@@ -22,7 +23,7 @@ A web app for finding and paper-trading ~45Δ SPX put calendars, using live opti
 ## What it does
 
 - **Finder:** 40–50Δ put calendars sized to $10,000 margin (or any amount, or a fixed number of contracts), with greeks and term-structure skew. Filters choose the short leg's DTE (1–8 weeks out; default ~30 days), the days between short and long (3–7; default 7) and which strikes to show (10s and/or 25s).
-- **Weekly Comparison:** under the Finder, a separate table of the ~45Δ 7-day calendar for the Friday nearest 7, 14, 21, 28, 35 and 42 DTE: bid/ask, delta, gamma, theta and vega for one contract, to see how they change with time without setting the short expiry.
+- **Weekly Comparison:** above the Finder settings (same width as the Calendars table), a separate table of the 7-day calendar at the starred row's strike (the star sits on the strike nearest 45Δ among multiples of 25, `config.STAR_STRIKE_MULTIPLE`), for the Friday nearest 7, 14, 21, 28, 35 and 42 DTE: bid/ask, delta, gamma, theta, vega, both IVs and the skew for one contract, to see how they change with time without setting the short expiry. It fills in by itself and updates with every Finder refresh. The whole Finder page refreshes itself every `config.FINDER_REFRESH_S` seconds (60) while the tab is visible and no dialog is open, keeping your open pair, strike and sort.
 - **Holdings:** open paper trades with P/L, break-evens, Vol P&L (how much of today's move came from volatility) and ±10% flags.
 - **Performance:** results by month and week, and which entry conditions (skew, VIX, volatility at entry, short DTE, width, days held, day of week) made money.
 
@@ -41,6 +42,10 @@ Every screen has a header with the Finder / Holdings / Performance tabs, the acc
 The panel's second tab shows a daily SPX chart (3 months by default) with the selected calendar's strike, break-evens and expiries drawn on:
 
 ![Finder with the SPX chart tab](docs/images/finder-spx.png)
+
+The **Weekly Comparison** above the filters starts collapsed (the main screenshot) and remembers how you leave it; expanded it looks like this:
+
+![Finder with the Weekly Comparison open](docs/images/finder-compare.png)
 
 **Opening a trade:** the fill waits for a stable mid, then suggests mid + $0.10, which you can edit before confirming. **Copy to TOS** copies the order line to paste into thinkorswim.
 

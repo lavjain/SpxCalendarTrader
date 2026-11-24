@@ -1,26 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Finder · SPX Calendar Trader{% endblock %}
 {% block content %}
+  <div class="mb-3 grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"><div class="min-w-0">
+    <details class="rounded border border-slate-200 dark:border-slate-700 p-3" id="compare-box">
+      <summary class="cursor-pointer font-semibold">Weekly Comparison <span class="muted font-normal text-sm">· How the price and greeks change as the short expiry moves out</span></summary>
+      <div id="compare-body" class="mt-3 overflow-x-auto" hx-post="/partials/compare" hx-swap="innerHTML"
+           hx-trigger="load[document.getElementById('compare-box').open], toggle[document.getElementById('compare-box').open] from:#compare-box, htmx:afterSwap[detail.target.id=='results'&&document.getElementById('compare-box').open] from:#results"
+           hx-vals='js:{strike: (document.querySelector("#calendars tr.strike-row[data-starred]") || {dataset: {}}).dataset.strike || ""}'>
+        <span class="muted text-sm">Loading…</span></div>
+    </details>
+  </div></div>
   {% include "partials/_finder_filters.html" %}
   <div id="banner" class="my-2 hidden rounded border border-red-500/50 bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-300" role="alert"></div>
-  <div id="results" data-snapshot-id="{{ results.snapshot_id if results else '' }}">
+  <div id="results" data-refresh-s="{{ finder_refresh_s }}" data-snapshot-id="{{ results.snapshot_id if results else '' }}">
     {% if results %}
       {% include "partials/_results.html" %}
     {% else %}
       <p class="mt-6 text-center text-slate-500 dark:text-slate-400">Press <strong>↻ Refresh</strong> to pull today's calendars.</p>
     {% endif %}
   </div>
-  <details class="mt-6 rounded border border-slate-200 dark:border-slate-700 p-3" id="compare-box">
-    <summary class="cursor-pointer font-semibold">Weekly Comparison <span class="muted font-normal text-sm">· How the price and greeks change as the short expiry moves out</span></summary>
-    <div class="mt-2 flex items-center gap-3">
-      <button type="button" class="btn btn-light" hx-post="/partials/compare" hx-target="#compare-body" hx-swap="innerHTML"
-              hx-disabled-elt="this" hx-indicator="#compare-note">↻ Compare</button>
-      <span id="compare-note" class="text-xs muted">Pulls one chain: bid/ask and greeks of the Friday nearest 7, 14, 21, 28, 35 and 42 DTE, {{ compare_width }} days wide, at the target-delta strike, for one contract. Independent of the filters above.</span>
-    </div>
-    <div id="compare-body" class="mt-3 overflow-x-auto"></div>
-  </details>
   {% include "partials/_open_dialog.html" %}
 {% endblock %}
-{% block scripts %}<script type="module" src="{{ url_for('static', path='js/finder.js') }}"></script>
-<script type="module" src="{{ url_for('static', path='js/opentrade.js') }}"></script>
-<script type="module" src="{{ url_for('static', path='js/riskprofile.js') }}"></script>{% endblock %}
+{% block scripts %}<script type="module" src="{{ static_url('js/finder.js') }}"></script>
+<script type="module" src="{{ static_url('js/opentrade.js') }}"></script>
+<script type="module" src="{{ static_url('js/riskprofile.js') }}"></script>{% endblock %}

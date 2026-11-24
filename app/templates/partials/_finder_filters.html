@@ -40,8 +40,8 @@
       <input id="size-value" type="number" min="1" step="1" value="{{ filters.size_value | int }}" class="field w-24 text-right">
     </div>
   </div>
-  <div class="ml-auto flex items-center gap-3 self-center">
-    <span id="pulled-at" class="text-xs text-slate-500 dark:text-slate-400">{{ ('Pulled ' ~ (last_refresh | etime)) if last_refresh else '' }}</span>
+  <div class="ml-8 flex items-center gap-3 self-center">
     <button id="refresh" type="button" class="btn btn-light">↻ Refresh</button>
+    <span id="updated-at" class="text-xs text-slate-500 dark:text-slate-400" data-iso="{{ last_refresh or '' }}"></span>
   </div>
 </form>

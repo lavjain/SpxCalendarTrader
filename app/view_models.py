@@ -85,21 +85,34 @@ def status_strip(snap: FinderSnapshot) -> dict:
             "vix": spot.vix if spot else None, "shorts": shorts, "filters": res.filters}
 
 
+COLLAPSED = "-"      # open="-": no pair open in the table (clicking the open pair again)
+
+
 def results_context(snap: FinderSnapshot, sort: str | None = None, open_key: str | None = None,
-                    strike: float | None = None) -> dict:
+                    strike: float | None = None, panel_key: str | None = None) -> dict:
     """Everything _results.html / _calendars_table.html need. With no selection given, the default pair is
-    open with its target-delta strike selected."""
-    if open_key:
-        short, _, long = open_key.partition("|")
-        pair = find_pair(snap, short, long)
+    open with its target-delta strike selected. open_key COLLAPSED shows the table with no pair open; the panel
+    then keeps `panel_key` (the calendar it was showing) or the default."""
+    collapsed = open_key == COLLAPSED
+    open_pair = None
+    if open_key and not collapsed:
+        open_pair = find_pair(snap, *open_key.partition("|")[::2])
+    if collapsed:
+        shown = find_pair(snap, *panel_key.partition("|")[::2]) if panel_key else None
+        if shown is None:
+            shown, strike = default_pair(snap), None
     else:
-        pair = default_pair(snap)
-    row = find_row(pair, strike)
+        if open_pair is None:
+            open_pair = default_pair(snap)
+            if open_key:
+                strike = None          # the pair is gone (a new pull): the old strike belongs to it
+        shown = open_pair
+    row = find_row(shown, strike)
     sort_name, sort_desc = parse_sort(sort)
     return {"snapshot_id": snap.snapshot_id, "strip": status_strip(snap), "segments": segments(snap, sort),
             "sort": sort or "date", "sort_name": sort_name, "sort_desc": sort_desc, "best_key": best_skew_key(snap),
-            "open_pair": pair, "open_key": pair_key(pair) if pair else None, "row": row,
-            "selected_strike": row.strike if row else None, "pair": pair, "fill_offset": config.FILL_OFFSET,
+            "open_pair": open_pair, "open_key": pair_key(open_pair) if open_pair else None, "row": row,
+            "selected_strike": row.strike if row else None, "pair": shown, "fill_offset": config.FILL_OFFSET,
             **_size(snap),
             "has_pairs": bool(snap.result.pairs)}
 

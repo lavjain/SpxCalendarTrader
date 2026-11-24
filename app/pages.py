@@ -18,6 +18,15 @@ for _name in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime"
     templates.env.filters[_name] = getattr(formatting, _name)
 templates.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 
+
+def static_url(path: str) -> str:
+    """/static/<path>?v=<file mtime>: an edited script or style gets a new address, so the browser cannot keep an old copy."""
+    f = Path(__file__).parent / "static" / path
+    return f"/static/{path}?v={int(f.stat().st_mtime)}" if f.exists() else f"/static/{path}"
+
+
+templates.env.globals["static_url"] = static_url
+
 router = APIRouter()
 
 
@@ -47,5 +56,5 @@ async def finder_page(request: Request):
            "unavailable_widths": exp.unavailable_widths, "holidays": exp.holidays, "dte_limits": config.SHORT_DTE_LIMITS,
            "results": view_models.results_context(snap) if snap else None,
            "default_margin": config.MARGIN, "default_contracts": config.DEFAULT_CONTRACTS,
-           "compare_width": config.COMPARE_WIDTH, "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
+           "compare_width": config.COMPARE_WIDTH, "finder_refresh_s": config.FINDER_REFRESH_S, "quote_interval_s": config.QUOTE_INTERVAL_S, "fill_offset": config.FILL_OFFSET}
     return templates.TemplateResponse(request, "finder.html", ctx)

@@ -1,5 +1,7 @@
 """HTMX fragments under /partials. They only render a stored snapshot: no Schwab calls, no calculation.
 The one exception is POST /partials/compare, which runs the Weekly Comparison (one chain pull) and renders it."""
+from urllib.parse import parse_qs
+
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
 
@@ -23,8 +25,11 @@ def _snapshot(request: Request, snapshot_id: str) -> FinderSnapshot:
 
 
 @router.get("/results", response_class=HTMLResponse)
-async def results(request: Request, snapshot_id: str, sort: str | None = None):
-    ctx = view_models.results_context(_snapshot(request, snapshot_id), sort)
+async def results(request: Request, snapshot_id: str, sort: str | None = None,
+                  open_key: str | None = Query(None, alias="open"), strike: float | None = None,
+                  panel: str | None = None):
+    """`open`, `strike` and `panel` keep the user's open pair, strike and shown calendar through an automatic refresh."""
+    ctx = view_models.results_context(_snapshot(request, snapshot_id), sort, open_key, strike, panel)
     return templates.TemplateResponse(request, "partials/_results.html", {"results": ctx})
 
 
@@ -52,8 +57,15 @@ async def calendar_panel(request: Request, snapshot_id: str, short: str, long: s
 
 @router.post("/compare", response_class=HTMLResponse)
 async def compare(request: Request):
+    """`strike`: the starred row of the open pair (sent by the page); blank = the starred row of the pair nearest 30 DTE."""
+    # htmx posts a urlencoded body; parsed by hand so the app needs no python-multipart
+    strike = (parse_qs((await request.body()).decode()).get("strike") or [""])[0]
     try:
-        result = await asyncio.to_thread(services.get_dte_comparison)
+        wanted = float(strike) if strike.strip() else None
+    except ValueError:
+        raise HTTPException(status_code=422, detail="strike must be a number") from None
+    try:
+        result = await asyncio.to_thread(services.get_dte_comparison, strike=wanted)
     except SchwabError as e:
         raise HTTPException(status_code=502, detail=str(e)) from None
     return templates.TemplateResponse(request, "partials/_compare.html", {"comparison": result})

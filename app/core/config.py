@@ -10,6 +10,8 @@ FILL_OFFSET = 0.10                   # open at mid + 0.10, close at mid - 0.10
 
 # --- what the Finder looks for
 DELTA_TARGET = 0.45                  # the strike the Finder stars and the Open Trade dialog starts from
+STAR_STRIKE_MULTIPLE = 25            # the starred strike is the one nearest DELTA_TARGET among multiples of this (None = any strike);
+                                     # it is also the strike the Weekly Comparison uses
 DELTA_BAND = (0.40, 0.50)            # short-put deltas the Finder lists
 DELTA_LABEL = "45Δ"                  # shown in headings (keep in step with DELTA_TARGET)
 DELTA_BAND_LABEL = "40–50Δ"
@@ -19,6 +21,7 @@ SHORT_DTE_LIMITS = (7, 56)
 WIDTHS = (3, 4, 5, 6, 7)             # days between short and long expiry
 WIDTHS_DEFAULT = (7,)
 COMPARE_DTES = (7, 14, 21, 28, 35, 42)   # the Weekly Comparison table: the Friday nearest each of these
+FINDER_REFRESH_S = 60                # the Finder page (tables, panel and Weekly Comparison) refreshes itself this often, in seconds, while the tab is visible; 0 = off
 COMPARE_WIDTH = 7                    # ...with this many days between short and long
 STRIKE_SETS = ("10", "25")           # multiples of 10 and/or 25; default both
 MAX_DTE = 63                         # 56 + 7
@@ -36,7 +39,7 @@ WAIT_TIMEOUT_S = 60
 FLAG_LOSS = -0.10
 FLAG_TARGET = 0.10
 MAX_DELTA_PER_CONTRACT = 2.0
-TD_MIN_DELTA = 2.0                   # below this position delta, T/D means nothing (shown as a dash)
+TD_MIN_DELTA = 0.5                   # below this absolute position delta T/D means nothing (shown as a dash); the sign of delta does not matter
 
 # --- market time and polling
 CLOSE_SNAPSHOT_ET = "16:15"

@@ -19,7 +19,7 @@
     };
   </script>
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+  <link rel="stylesheet" href="{{ static_url('css/style.css') }}">
 </head>
 <body class="bg-white text-slate-800 dark:bg-slate-900 dark:text-slate-200 min-h-screen flex flex-col">
   {% include "_header.html" %}
@@ -27,7 +27,7 @@
     {% block content %}{% endblock %}
   </main>
   {% include "_footer.html" %}
-  <script type="module" src="{{ url_for('static', path='js/lib/theme.js') }}"></script>
+  <script type="module" src="{{ static_url('js/lib/theme.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -39,7 +39,9 @@ def test_summary_matches_its_rows(mocked):
     assert p.near_target_delta == near
     assert (p.best_skew, p.best_skew_strike) == (best.skew, best.strike)
     assert best.skew == max(r.skew for r in p.rows)
-    assert abs(abs(near.short.delta) - config.DELTA_TARGET) == min(abs(abs(r.short.delta) - config.DELTA_TARGET) for r in p.rows)
+    on_grid = [r for r in p.rows if r.strike % config.STAR_STRIKE_MULTIPLE == 0] or p.rows
+    assert near.strike % config.STAR_STRIKE_MULTIPLE == 0 or on_grid is p.rows
+    assert abs(abs(near.short.delta) - config.DELTA_TARGET) == min(abs(abs(r.short.delta) - config.DELTA_TARGET) for r in on_grid)
     assert all(r.short.strike == r.long.strike == r.strike for r in p.rows)
 
 
@@ -130,7 +132,9 @@ from types import SimpleNamespace
 
 def test_td_is_none_when_position_delta_is_near_zero():
     assert services._td(SimpleNamespace(delta=0.0, td=float("nan"))) is None
-    assert services._td(SimpleNamespace(delta=-1.0, td=-528.0)) is None
+    assert services._td(SimpleNamespace(delta=-0.3, td=-528.0)) is None
+    assert services._td(SimpleNamespace(delta=-1.0, td=-528.0)) == -528.0      # a small negative delta still shows
+    assert services._td(SimpleNamespace(delta=1.0, td=528.0)) == 528.0
     assert services._td(SimpleNamespace(delta=-6.0, td=-87.0)) == -87.0
 
 
@@ -196,6 +200,7 @@ def test_weekly_comparison_picks_each_friday_once_and_prices_one_contract(mocked
     assert res.width == 7 and res.rows
     assert len({r.short_expiry for r in res.rows}) == len(res.rows)             # no Friday used twice
     first = res.rows[0]
+    assert all(r.skew == pytest.approx(r.short_iv - r.long_iv) for r in res.rows)
     assert all(r.bid is not None and r.ask is not None and r.bid < r.ask for r in res.rows)
     assert all(0.0 < abs(r.delta) < 5 and r.theta > 0 and r.vega > 0 for r in res.rows)     # one contract
     one = services.get_finder((7, 49), (7,), size_mode="contracts", size_value=1)
@@ -203,3 +208,22 @@ def test_weekly_comparison_picks_each_friday_once_and_prices_one_contract(mocked
     assert (first.strike, first.theta, first.vega, first.gamma, first.delta) == (near.strike, near.theta, near.vega, near.gamma, near.delta)
     assert first.bid == pytest.approx(near.long.bid - near.short.ask)
     assert first.ask == pytest.approx(near.long.ask - near.short.bid)
+
+
+def test_weekly_comparison_uses_one_strike_rounded_to_25(mocked, monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    res = services.get_dte_comparison(targets=(21, 28, 35), width=7, strike=6790.0)
+    assert res.strike == 6800.0 and {r.strike for r in res.rows} == {6800.0}
+    auto = services.get_dte_comparison(targets=(21, 28, 35), width=7)
+    assert auto.strike % 25 == 0 and {r.strike for r in auto.rows} == {auto.strike}
+
+
+def test_the_star_sits_on_a_multiple_of_25_so_it_matches_the_weekly_comparison(mocked, monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    res = services.get_finder(dte_range=(7, 56), widths=(7,))
+    for p in res.pairs:
+        if p.near_target_delta and any(r.strike % 25 == 0 for r in p.rows):
+            assert p.near_target_delta.strike % 25 == 0
+    cmp = services.get_dte_comparison(targets=(21, 28), width=7)
+    ref = min((p for p in res.pairs if p.near_target_delta), key=lambda p: abs(p.short_dte - config.SHORT_DTE_TARGET))
+    assert cmp.strike == ref.near_target_delta.strike

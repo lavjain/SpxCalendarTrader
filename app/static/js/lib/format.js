@@ -62,6 +62,14 @@ export function etime(iso) {
   return `${h % 12 || 12}:${iso.slice(14, 16)}:${iso.slice(17, 19)} ${h < 12 ? "AM" : "PM"} ET`;
 }
 
+// Time of a timestamp in the browser's own time zone, e.g. "9:21:05 PM PST" (display only; the ISO string is unchanged).
+export function localtime(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", timeZoneName: "short" });
+}
+
 export function gamma(x, digits = 3) {
   if (x === null || x === undefined) return DASH;
   return Math.abs(x) < 0.001 ? "0.00" : num(x, digits);

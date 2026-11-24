@@ -104,7 +104,8 @@ def finder(S, now, atm_s, atm_l, band=config.DELTA_BAND, width=7, friday=None, s
         rows.append(dict(strike=K, s=s, l=l, cal=c,
                          bid=round(l["bid"] - s["ask"], 2), ask=round(l["ask"] - s["bid"], 2)))
     best = max(rows, key=lambda r: r["cal"].skew)
-    near = min(rows, key=lambda r: abs(abs(r["s"]["delta"]) - config.DELTA_TARGET))
+    starrable = [r for r in rows if config.STAR_STRIKE_MULTIPLE and r["strike"] % config.STAR_STRIKE_MULTIPLE == 0] or rows   # same rule as the app
+    near = min(starrable, key=lambda r: abs(abs(r["s"]["delta"]) - config.DELTA_TARGET))
     for r in rows:
         r["is_best_skew"] = r is best
         r["is_near_target_delta"] = r is near

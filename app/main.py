@@ -22,6 +22,14 @@ def create_app(db_path: str | None = None, snapshot_path: str | None = None) -> 
     app.state.snapshots = SnapshotStore(path=snapshot_path or get_settings().snapshot_path)
 
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+    @app.middleware("http")
+    async def revalidate_static(request: Request, call_next):
+        """Scripts and styles are re-checked on every load (a cheap 304), so an edit is never hidden by the browser cache."""
+        response = await call_next(request)
+        if request.url.path.startswith("/static/"):
+            response.headers["Cache-Control"] = "no-cache"
+        return response
     app.include_router(api.router)
     app.include_router(partials.router)
     app.include_router(pages.router)
