@@ -8,13 +8,13 @@
 <table class="grid-table" id="calendars-table" data-sort-name="{{ sort_name }}" data-sort-desc="{{ 'true' if sort_desc else 'false' }}">
   <thead>
     <tr>
-      {{ head('Expiries', 'date', true) }}{{ head('~' ~ delta_label ~ ' Strike', 'strike') }}{{ head('Ctr', 'contracts') }}{{ head('Price', 'price') }}
+      {{ head('Expiries', 'date', true) }}{{ head('~' ~ delta_label ~ ' Strike', 'strike') }}{{ head('Ctr', 'contracts') }}{{ head('Price', 'price') }}<th class="text-right">Bid / Ask</th>
       {{ head('Θ', 'theta') }}{{ head('Vega', 'vega') }}{{ head('Skew', 'skew') }}{{ head('Θ/Mgn', 'theta_margin') }}{{ head('Best Skew', 'best_skew') }}
     </tr>
   </thead>
   <tbody>
   {% for seg in segments %}
-    <tr class="segment"><td colspan="9">{{ seg.width }}-Day Width · {{ seg.pairs | length }} Pair{{ 's' if seg.pairs | length != 1 }}</td></tr>
+    <tr class="segment"><td colspan="10">{{ seg.width }}-Day Width · {{ seg.pairs | length }} Pair{{ 's' if seg.pairs | length != 1 }}</td></tr>
     {% for p in seg.pairs %}
       {% set key = p.short_expiry ~ '|' ~ p.long_expiry %}
       {% set n = p.near_target_delta %}
@@ -25,15 +25,15 @@
           <div class="muted text-xs">{{ p.short_dte }} / {{ p.long_dte }} DTE · {{ p.strike_count }} Strike{{ 's' if p.strike_count != 1 }}</div>
         </td>
         {% if n %}
-        <td>{{ n.strike | strike }}</td><td>{{ n.contracts }}</td><td>{{ n.price | money }}</td>
+        <td>{{ n.strike | strike }}</td><td>{{ n.contracts }}</td><td>{{ n.price | money }}</td><td class="whitespace-nowrap">{{ n.bid | money }} / {{ n.ask | money }}</td>
         <td>{{ n.theta | num }}</td><td>{{ n.vega | num }}</td><td>{{ n.skew | pts }}</td><td>{{ n.theta_margin | num(4) }}</td>
         <td>{{ p.best_skew | pts }} <span class="muted">@ {{ p.best_skew_strike | strike }}</span></td>
         {% else %}
-        <td colspan="8" class="muted text-left">No {{ delta_band_label }} Strikes on the Selected Spacing</td>
+        <td colspan="9" class="muted text-left">No {{ delta_band_label }} Strikes on the Selected Spacing</td>
         {% endif %}
       </tr>
       {% if key == open_key %}
-      <tr class="strike-rows" data-for="{{ key }}"><td colspan="9">{% include "partials/_strike_rows.html" %}</td></tr>
+      <tr class="strike-rows" data-for="{{ key }}"><td colspan="10">{% include "partials/_strike_rows.html" %}</td></tr>
       {% endif %}
     {% endfor %}
   {% endfor %}

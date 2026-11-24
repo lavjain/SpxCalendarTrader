@@ -236,3 +236,9 @@ def test_quote_spread_gives_target_and_flag_prices_from_the_fill(monkeypatch):
     assert q.target_price == pytest.approx(6.50 * (1 + config.FLAG_TARGET), abs=0.025)
     assert q.flag_price == pytest.approx(6.50 * (1 + config.FLAG_LOSS), abs=0.025)
     assert q.flag_price < 6.50 < q.target_price
+
+
+def test_rows_carry_the_calendar_bid_and_ask(mocked):
+    for r in flat(services.get_finder()):
+        assert r.bid == pytest.approx(r.long.bid - r.short.ask) and r.ask == pytest.approx(r.long.ask - r.short.bid)
+        assert r.bid < r.ask

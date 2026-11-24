@@ -683,15 +683,15 @@ def status_strip(items):
     return '<div class="strip">' + "".join(f'<span>{a} <b>{b}</b></span>' for a, b in items) + '</div>'
 
 def detail_ladder(P):
-    hdr = "".join(f"<th>{h}</th>" for h in ["Strike", "Short Δ", "Ctr", "Price", "Margin", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew", "T/D", "Θ/Mgn"])
+    hdr = "".join(f"<th>{h}</th>" for h in ["Strike", "Short Δ", "Ctr", "Price", "Bid / Ask", "Margin", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew", "T/D", "Θ/Mgn"])
     rows = ""
     for r in P["sec"]:
         c = r["cal"]; star = " ★" if r is P["near"] else ""
         klass = " ".join(k for k, on in (("best", r is P["best"]), ("sel", r["is_sel"])) if on)
-        rows += (f"<tr class='{klass}'><td>{r['strike']}{star}</td><td>{abs(r['s']['delta'])*100:.1f}</td><td>{c.contracts}</td><td>{c.debit:.2f}</td>"
+        rows += (f"<tr class='{klass}'><td>{r['strike']}{star}</td><td>{abs(r['s']['delta'])*100:.1f}</td><td>{c.contracts}</td><td>{c.debit:.2f}</td><td style='white-space:nowrap'>{r['bid']:.2f} / {r['ask']:.2f}</td>"
                  f"<td>{c.margin:,.0f}</td><td>{c.delta:.1f}</td><td>{c.gamma:.2f}</td><td>{c.theta:.0f}</td><td>{c.vega:.0f}</td>"
                  f"<td>{r['s']['iv']*100:.2f}%</td><td>{r['l']['iv']*100:.2f}%</td><td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{'—' if abs(c.delta) < 0.5 else f'{c.td:.0f}'}</td><td>{c.theta_margin*100:.2f}%</td></tr>")
-    return (f"<tr><td colspan=9 style='padding:0;border:none;text-align:left'><div class='ladder'>"
+    return (f"<tr><td colspan=10 style='padding:0;border:none;text-align:left'><div class='ladder'>"
             f"<div style='font-size:12px;color:#94A3B8;margin-bottom:4px'>All {len(P['sec'])} strikes of this pair in the {config.DELTA_BAND_LABEL} band · ★ nearest {config.DELTA_LABEL} · amber edge: highest skew · click a strike to select it</div>"
             f"<table><tr>{hdr}</tr>{rows}</table></div></td></tr>")
 
@@ -704,16 +704,16 @@ def overview_box():
         ov.append(dict(se=se, le=le, sec=sec, near=near, best=best, sel=any(x["is_sel"] for x in sec)))
     ov.sort(key=lambda p: p["best"]["cal"].skew, reverse=True); top = ov[0]
     hdr = "".join(f"<th{' class=l' if h == 'Short → Long' else ''}>{h}</th>" for h in
-                  ["Short → Long", f"~{config.DELTA_LABEL}", "Ctr", "Price", "Theta", "Vega", "Skew", "Θ/Mgn", "Best skew ▼"])
+                  ["Short → Long", f"~{config.DELTA_LABEL}", "Ctr", "Price", "Bid / Ask", "Theta", "Vega", "Skew", "Θ/Mgn", "Best skew ▼"])
     body = ""
     for w in sorted({p["near"]["width"] for p in ov}):
         seg = [p for p in ov if p["near"]["width"] == w]
-        body += f"<tr class='seghead'><td colspan=9>{w}-day width <span style='font-weight:400;color:#94A3B8'>· {len(seg)} pair{'s' if len(seg) != 1 else ''}</span></td></tr>"
+        body += f"<tr class='seghead'><td colspan=10>{w}-day width <span style='font-weight:400;color:#94A3B8'>· {len(seg)} pair{'s' if len(seg) != 1 else ''}</span></td></tr>"
         for p in seg:
             c = p["near"]["cal"]; klass = " ".join(k for k, on in (("best", p is top), ("sel", p["sel"])) if on)
             caret = "▾" if p["sel"] else "▸"
             body += (f"<tr class='{klass}'><td class=l><span class=muted>{caret}</span> {p['se']:%a %b %-d} → {p['le']:%a %b %-d}<span class='two' style='padding-left:14px'>{c.s.dte} / {c.l.dte} DTE · {len(p['sec'])} strikes</span></td>"
-                     f"<td>{p['near']['strike']}</td><td>{c.contracts}</td><td>{c.debit:.2f}</td><td>{c.theta:.0f}</td><td>{c.vega:.0f}</td>"
+                     f"<td>{p['near']['strike']}</td><td>{c.contracts}</td><td>{c.debit:.2f}</td><td style='white-space:nowrap'>{p['near']['bid']:.2f} / {p['near']['ask']:.2f}</td><td>{c.theta:.0f}</td><td>{c.vega:.0f}</td>"
                      f"<td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{c.theta_margin*100:.2f}%</td>"
                      f"<td class='{cls(round(p['best']['cal'].skew,2))}'>{sgn(p['best']['cal'].skew)} <span class=muted>@ {p['best']['strike']}</span></td></tr>")
             if p["sel"]: body += detail_ladder(p)

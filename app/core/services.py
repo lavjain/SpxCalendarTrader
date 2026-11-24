@@ -47,11 +47,17 @@ def _calendar(short: OptionQuote, long: OptionQuote, pair: ExpiryPair, size_mode
     return cal if cal.contracts > 0 else None
 
 
+def _spread_side(a, b):
+    """The calendar's bid or ask per share from one leg's quote and the other's (None if either is missing)."""
+    return float(a - b) if a is not None and b is not None else None
+
+
 def _row(short, long, pair, cal, short_iv, long_iv, implied) -> CalendarRow:
     """short_iv / long_iv are the IVs used (mid-implied when available, else Schwab's)."""
     return CalendarRow(
         strike=short.strike, width=pair.width, short=short, long=long, contracts=cal.contracts,
-        price=float(cal.debit), margin=float(cal.margin), delta=float(cal.delta),
+        price=float(cal.debit), bid=_spread_side(long.bid, short.ask), ask=_spread_side(long.ask, short.bid),
+        margin=float(cal.margin), delta=float(cal.delta),
         gamma=float(cal.gamma), theta=float(cal.theta), vega=float(cal.vega),
         short_iv=float(short_iv), long_iv=float(long_iv),
         short_vega=float(short.vega or 0.0), long_vega=float(long.vega or 0.0),
@@ -225,11 +231,9 @@ def get_dte_comparison(targets=config.COMPARE_DTES, width=config.COMPARE_WIDTH,
     rows = []
     for t, p in chosen:
         r = p.rows[0]
-        bid = r.long.bid - r.short.ask if None not in (r.long.bid, r.short.ask) else None
-        ask = r.long.ask - r.short.bid if None not in (r.long.ask, r.short.bid) else None
         rows.append(ComparisonRow(
             target_dte=t, short_expiry=p.short_expiry, long_expiry=p.long_expiry, short_dte=p.short_dte,
-            long_dte=p.long_dte, strike=r.strike, bid=bid, ask=ask, delta=r.delta, gamma=r.gamma,
+            long_dte=p.long_dte, strike=r.strike, bid=r.bid, ask=r.ask, delta=r.delta, gamma=r.gamma,
             theta=r.theta, vega=r.vega, short_iv=r.short_iv, long_iv=r.long_iv, skew=r.skew))
     return ComparisonResult(time=res.time, spx=res.spx, width=width, strike=strike, rows=rows)
 

@@ -44,6 +44,8 @@ class CalendarRow(BaseModel):
     long: OptionQuote
     contracts: int
     price: float                     # calendar debit per share
+    bid: float | None = None         # the calendar's bid per share: long bid - short ask
+    ask: float | None = None         # long ask - short bid
     margin: float
     delta: float
     gamma: float

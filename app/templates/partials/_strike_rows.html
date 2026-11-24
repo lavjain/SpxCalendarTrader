@@ -2,7 +2,7 @@
 {% set p = open_pair %}
 <table class="grid-table nested" data-for="{{ open_key }}">
   <thead><tr>
-    <th class="text-left">Strike</th><th>Short Δ</th><th>Ctr</th><th>Price</th><th>Margin</th><th>Delta</th><th>Gamma</th>
+    <th class="text-left">Strike</th><th>Short Δ</th><th>Ctr</th><th>Price</th><th>Bid / Ask</th><th>Margin</th><th>Delta</th><th>Gamma</th>
     <th>Theta</th><th>Vega</th><th>Short IV</th><th>Long IV</th><th>Skew</th><th>T/D</th><th>Θ/Mgn</th>
   </tr></thead>
   <tbody>
@@ -11,7 +11,7 @@
         hx-get="/partials/calendar-panel?snapshot_id={{ snapshot_id }}&short={{ p.short_expiry }}&long={{ p.long_expiry }}&strike={{ x.strike }}"
         hx-target="#panel" hx-swap="innerHTML">
       <td class="text-left">{{ x.strike | strike }}{% if x.is_near_target_delta %} <span class="text-amber-500" title="Nearest {{ delta_label }} on a multiple of 25: the strike the Weekly Comparison uses">★</span>{% endif %}</td>
-      <td>{{ x.short.delta | num(2) }}</td><td>{{ x.contracts }}</td><td>{{ x.price | money }}</td><td>{{ x.margin | money(0) }}</td>
+      <td>{{ x.short.delta | num(2) }}</td><td>{{ x.contracts }}</td><td>{{ x.price | money }}</td><td class="whitespace-nowrap">{{ x.bid | money }} / {{ x.ask | money }}</td><td>{{ x.margin | money(0) }}</td>
       <td>{{ x.delta | num(1) }}</td><td>{{ x.gamma | gamma }}</td><td>{{ x.theta | num }}</td><td>{{ x.vega | num }}</td>
       <td>{{ x.short_iv | num(2) }}%</td><td>{{ x.long_iv | num(2) }}%</td><td>{{ x.skew | pts }}</td><td>{{ x.td | num(2) }}</td><td>{{ x.theta_margin | num(4) }}</td>
     </tr>

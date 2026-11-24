@@ -169,3 +169,12 @@ def test_open_dialog_has_target_flag_levels_and_the_keep_waiting_prompt(snap):
                   default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
     assert 'id="od-target"' in html and 'id="od-flag"' in html and "+10%" in html and "-10%" in html
     assert 'id="od-keep"' in html and 'id="od-giveup-cancel"' in html
+
+
+def test_both_finder_tables_show_a_bid_ask_column(snap):
+    ctx = vm.results_context(snap)
+    for name in ("partials/_calendars_table.html", "partials/_strike_rows.html"):
+        html = render(name, **ctx)
+        assert "Bid / Ask" in html and html.index("Price") < html.index("Bid / Ask"), name
+    r = ctx["open_pair"].rows[0]
+    assert f"${r.bid:,.2f} / ${r.ask:,.2f}" in render("partials/_strike_rows.html", **ctx)
