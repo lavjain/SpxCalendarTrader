@@ -386,6 +386,8 @@ Done when you can refresh, pick a 45Δ calendar and commit it in under a minute.
 
 ### Week 4 — Holdings screen (Dec 15–21)
 
+Step-by-step version: [WEEK4.md](WEEK4.md).
+
 - [ ] Holdings table: days in trade, cost, value now, P/L $ and %, break-evens, SPX distance
 - [ ] LOSS > 10%, +10% TARGET and DELTA > 2 flags; Delta / contract column
 - [ ] Vol P&L today column, using the previous close from the trade's `marks` rows; marks rows store both vegas and Vol P&L

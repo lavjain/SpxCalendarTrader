@@ -9,7 +9,7 @@ Updated at the end of every work session (≤ 20 lines). Newest first.
 - Unverified live: `get_call_chain_at` (Schwab `strike=` filter) and `get_daily_closes` (`periodType=year`) worked on your page on Nov 24; nothing else is outstanding there.
 - Not done: Size By box in the dialog, fill-time box and delta warning on Paste, Paste for a different calendar, Risk Profile +3/+5-day lines, SD toggle.
 - Yours: Open Trade → Confirm once in the browser (`sqlite3 data/paper_trades.db "select * from trades;"`); three real-quote runs; `tests/fixtures/tos_order_samples.txt`; check `config.HOLIDAY_NAMES`; regenerate the mockup images (`uv run --group mockups python docs/mockups/render.py`) and commit; push.
-- Next: week 4 per docs/PLAN.md (Holdings table, flags, Close trade…, Notes, Columns popover); start `docs/WEEK4.md` from the plan.
+- Next: week 4, step by step in `docs/WEEK4.md` (value an open trade, schema v4 with close columns and `marks`, `get_holdings`, `close_trade`, Holdings page, Close Trade dialog, Notes, Columns; slip order 11, 10, 9).
 
 ## 2026-11-23 — week 3 steps 1–9 built (needs your first run in a browser)
 - Done and committed (one commit per plan step): leg symbols + stability check, `trades` table (schema v3), `quote_spread`/`open_trade` services, `/api/quote-spread` + `/api/trades`, Open Trade dialog, Copy to TOS, Paste from TOS. 241 py tests + 37 js tests pass in a sandbox; the route tests (FastAPI) and the dialog have NOT run in a browser yet.
