@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 from starlette.templating import Jinja2Templates
 
-from app import formatting, view_models
+from app import formatting, info_text, view_models
 from app.core import config, services
 from app.schemas import FinderFilters
 from app.settings import app_version, get_settings
@@ -26,6 +26,7 @@ def static_url(path: str) -> str:
 
 
 templates.env.globals["static_url"] = static_url
+templates.env.globals["info"] = info_text.info
 
 router = APIRouter()
 

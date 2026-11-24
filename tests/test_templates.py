@@ -4,7 +4,7 @@ from datetime import date
 import pytest
 from starlette.templating import Jinja2Templates
 
-from app import formatting, view_models as vm
+from app import formatting, info_text, view_models as vm
 from app.core import config, schwab_api, services
 from app.snapshots import SnapshotStore
 from app.schemas import FinderFilters
@@ -17,6 +17,7 @@ for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "g
 T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
 T.env.globals["url_for"] = lambda name, **kw: "/static/" + kw.get("path", "")
 T.env.globals["static_url"] = lambda path: "/static/" + path
+T.env.globals["info"] = info_text.info
 
 
 @pytest.fixture

@@ -19,15 +19,15 @@
             {% if not row.short.symbol or not row.long.symbol %}disabled title="This quote has no option symbols: press Refresh"{% endif %}>Open Trade…</button>
   </div>
   <div class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2" id="tiles">
-    <div class="tile"><div class="label">Cost</div><div class="value">{{ cost | money(0) }}</div></div>
-    <div class="tile"><div class="label">Break-Evens</div>
+    <div class="tile"><div class="label">Cost {{ info('cost') }}</div><div class="value">{{ cost | money(0) }}</div></div>
+    <div class="tile"><div class="label">Break-Evens {{ info('break_evens') }}</div>
       <div class="value">{% if row.break_evens %}{{ row.break_evens.lower | num }} / {{ row.break_evens.upper | num }}{% else %}—{% endif %}</div>
       {% if row.break_evens %}<div class="muted text-xs">{{ ((row.break_evens.lower - row.strike) / row.strike) | pct }} / {{ ((row.break_evens.upper - row.strike) / row.strike) | pct(1) }} at {{ row.break_evens.at_date | edate }}</div>{% endif %}</div>
-    <div class="tile"><div class="label">Delta</div><div class="value">{{ row.delta | signed(1) }}</div></div>
-    <div class="tile"><div class="label">Gamma</div><div class="value">{{ row.gamma | num(6) }}</div></div>
-    <div class="tile"><div class="label">Theta / Day</div><div class="value">{{ row.theta | money(0) }}</div></div>
-    <div class="tile"><div class="label">Vega / Pt</div><div class="value">{{ row.vega | money(0) }}</div></div>
-    <div class="tile"><div class="label">Margin</div><div class="value">{{ row.margin | money(0) }}</div></div>
+    <div class="tile"><div class="label">Delta {{ info('delta') }}</div><div class="value">{{ row.delta | signed(1) }}</div></div>
+    <div class="tile"><div class="label">Gamma {{ info('gamma') }}</div><div class="value">{{ row.gamma | num(6) }}</div></div>
+    <div class="tile"><div class="label">Theta / Day {{ info('theta') }}</div><div class="value">{{ row.theta | money(0) }}</div></div>
+    <div class="tile"><div class="label">Vega / Pt {{ info('vega') }}</div><div class="value">{{ row.vega | money(0) }}</div></div>
+    <div class="tile"><div class="label">Margin {{ info('margin') }}</div><div class="value">{{ row.margin | money(0) }}</div></div>
   </div>
   <div class="mt-3 flex gap-2" role="tablist">
     <button type="button" class="chip chip-on" data-tab="legs" role="tab">Legs</button>

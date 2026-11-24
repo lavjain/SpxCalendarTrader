@@ -28,6 +28,7 @@
   </main>
   {% include "_footer.html" %}
   <script type="module" src="{{ static_url('js/lib/theme.js') }}"></script>
+  <script type="module">import { installPopovers } from "{{ static_url('js/lib/popover.js') }}"; installPopovers();</script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -379,7 +379,7 @@ Step-by-step version: [WEEK3.md](WEEK3.md). `[x]` done, `[~]` partly done (see t
 - [x] Copy to TOS button in the open dialog (`tos_order` from the service)
 - [~] Paste from TOS in the open dialog, below Copy to TOS: `parse_tos_order()` with tests (good lines and each kind of bad one), the checks, editable fill price and time, entry snapshot from the nearest saved refresh, `price_source = "pasted"`
 - [ ] Risk profile tab in the Finder panel (moved from week 2, which was the fullest week):  `get_risk_profile()` (Today and At-short-expiry lines, profit/loss shading, ±1 SD band, break-evens, tiles) at `GET /api/risk-profile`, painted on canvas by `charts/riskgraph.js` (read-only: hover crosshair, zoom, pan)
-- [ ] ⓘ popovers on the Finder's tiles and controls (moved from week 2)
+- [x] ⓘ popovers on the Finder's tiles and controls (moved from week 2)
 
 Done when you can refresh, pick a 45Δ calendar and commit it in under a minute.
 

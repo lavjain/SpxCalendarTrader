@@ -1,14 +1,14 @@
 {# FinderFilters: saved in the app database (settings table) as you change them. #}
 <form id="filters" class="flex flex-wrap items-start gap-x-6 gap-y-2 text-sm" onsubmit="return false">
   <div class="text-center">
-    <div class="label">Short DTE <span id="dte-label" class="font-mono text-slate-700 dark:text-slate-200">{{ filters.dte_min }}–{{ filters.dte_max }}</span></div>
+    <div class="label">Short DTE {{ info('short_dte') }} <span id="dte-label" class="font-mono text-slate-700 dark:text-slate-200">{{ filters.dte_min }}–{{ filters.dte_max }}</span></div>
     <div class="flex items-center justify-center gap-2">
       <input id="dte-min" type="range" min="{{ dte_limits[0] }}" max="{{ dte_limits[1] }}" value="{{ filters.dte_min }}" class="accent-primary w-28" aria-label="Shortest short-leg DTE">
       <input id="dte-max" type="range" min="{{ dte_limits[0] }}" max="{{ dte_limits[1] }}" value="{{ filters.dte_max }}" class="accent-primary w-28" aria-label="Longest short-leg DTE">
     </div>
   </div>
   <div class="text-center">
-    <div class="label">Days Between Short and Long</div>
+    <div class="label">Days Between Short and Long {{ info('width') }}</div>
     <div class="flex justify-center gap-1" id="width-chips">
       {% for w in widths_all %}
       <label class="chip-wrap" title="{{ 'No expiry for this width this week' if w in unavailable_widths else '' }}">
@@ -20,7 +20,7 @@
     <div id="width-notes" class="text-xs muted mt-1">{% for h in holidays | default([]) %}<div>Holiday {{ h.date | mdate }} ({{ h.name }})</div>{% endfor %}</div>
   </div>
   <div class="text-center">
-    <div class="label">Strikes</div>
+    <div class="label">Strikes {{ info('strikes') }}</div>
     <div class="flex justify-center gap-1" id="strike-chips">
       {% for s in ['10', '25'] %}
       <label class="chip-wrap">
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="text-center">
-    <div class="label">Size By</div>
+    <div class="label">Size By {{ info('size_by') }}</div>
     <div class="flex justify-center gap-1">
       <select id="size-mode" class="field" data-default-margin="{{ default_margin }}" data-default-contracts="{{ default_contracts }}">
         <option value="margin" {{ 'selected' if filters.size_mode == 'margin' }}>Margin $</option>

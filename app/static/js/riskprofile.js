@@ -1,5 +1,6 @@
 // Legs / Risk Profile tabs of the calendar panel. The panel is swapped by HTMX, so everything is delegated.
 import { RiskGraph } from "./charts/riskgraph.js";
+import { money } from "./lib/format.js";
 
 let graph = null, range = 300;
 const $ = (s) => document.querySelector(s);
@@ -11,8 +12,13 @@ async function load() {
   const err = $("#risk-error"); err.classList.add("hidden");
   const res = await fetch(`/api/risk-profile?${q}`);
   if (!res.ok) { err.textContent = (await res.json().catch(() => ({}))).detail || "Could not load the risk profile"; err.classList.remove("hidden"); return; }
+  const data = await res.json();
+  const sm = (v) => (v < 0 ? "−" : "+") + money(Math.abs(v), 0);
+  $("#rt-max-profit").textContent = sm(data.max_profit);
+  $("#rt-max-loss").textContent = sm(data.max_loss);
+  $("#rt-pl-now").textContent = sm(data.pl_now);
   graph = new RiskGraph($("#risk-canvas"));
-  graph.set(await res.json());
+  graph.set(data);
 }
 
 function tab(name) {

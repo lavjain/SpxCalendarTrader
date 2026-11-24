@@ -34,3 +34,13 @@ tr.strike-rows > td { padding: 0 0 0 18px; }
 /* Weekly Comparison: headers and values share one centred alignment (the id beats .grid-table th/td and the text-left helpers) */
 #compare-table th, #compare-table td { text-align: center; }
 #compare-table td:nth-child(5), #compare-table th:nth-child(5) { min-width: 9.5rem; white-space: nowrap; }
+
+/* ⓘ popovers (static/js/lib/popover.js) */
+.info-btn { display: inline-block; margin-left: 2px; padding: 0 2px; border-radius: 4px; font-size: .8rem; line-height: 1; text-transform: none; letter-spacing: 0; color: rgb(100 116 139); cursor: pointer; vertical-align: baseline; }
+.dark .info-btn { color: rgb(148 163 184); }
+.info-btn:hover { color: #1C83E1; }
+.info-btn:focus-visible { outline: 2px solid #1C83E1; }
+.info-pop { position: fixed; z-index: 50; max-width: 18rem; padding: 8px 10px; border-radius: 8px; font-size: .8rem; font-weight: 400; text-transform: none; letter-spacing: 0; line-height: 1.35; background: #fff; color: #334155; border: 1px solid rgb(148 163 184 / .6); box-shadow: 0 6px 20px rgb(0 0 0 / .25); }
+.dark .info-pop { background: #0f172a; color: #cbd5e1; border-color: #334155; }
+.info-pop-title { font-weight: 600; margin-bottom: 2px; }
+.info-pop[hidden] { display: none; }
