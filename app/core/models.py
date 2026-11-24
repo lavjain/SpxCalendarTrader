@@ -182,6 +182,8 @@ class QuoteSpread(BaseModel):
     contracts: int | None = None     # for the requested size, at the mid
     cost: float | None = None        # contracts x fill price x 100 (fill = the typed price, else the suggestion)
     margin: float | None = None      # contracts x mid x 100
+    target_price: float | None = None   # the calendar price that is +FLAG_TARGET above the fill
+    flag_price: float | None = None     # ...and the price that is FLAG_LOSS below it (the position gets flagged there)
 
 
 class OpenTradeResult(BaseModel):

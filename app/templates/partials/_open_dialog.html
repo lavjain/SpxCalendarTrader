@@ -20,6 +20,11 @@
       <div class="tile"><div class="label">Cost</div><div class="value" id="od-cost">—</div></div>
       <div class="tile"><div class="label">Margin</div><div class="value" id="od-margin">—</div></div>
     </div>
+    <div class="text-sm" id="od-levels">Target <span id="od-target" class="font-semibold">—</span> ({{ '%+d' | format(target_pct) }}%) · Flag <span id="od-flag" class="font-semibold">—</span> ({{ '%+d' | format(loss_pct) }}%) {{ info('open_levels') }}</div>
+    <div id="od-giveup" class="hidden rounded border border-amber-500/50 bg-amber-500/10 px-3 py-2 text-sm" role="alert">
+      <div id="od-giveup-text">Still not stable after a minute.</div>
+      <div class="mt-2 flex gap-2"><button type="button" class="btn btn-light" id="od-keep">Keep Waiting</button><button type="button" class="btn" id="od-giveup-cancel">Cancel</button></div>
+    </div>
     <div id="od-note" class="text-sm text-amber-600 dark:text-amber-400 hidden" role="status"></div>
     <div id="od-error" class="text-sm text-red-600 dark:text-red-300 hidden" role="alert"></div>
     <div class="flex flex-wrap items-center gap-2">

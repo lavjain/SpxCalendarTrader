@@ -14,7 +14,8 @@ from tests.test_services import CHAIN
 T = Jinja2Templates(directory=str(Path(__file__).parent.parent / "app" / "templates"))
 for n in ("money", "pct", "signed", "pts", "num", "edate", "strike", "etime", "gamma", "mdate"):
     T.env.filters[n] = getattr(formatting, n)
-T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL)
+T.env.globals.update(delta_label=config.DELTA_LABEL, delta_band_label=config.DELTA_BAND_LABEL,
+                     target_pct=round(config.FLAG_TARGET * 100), loss_pct=round(config.FLAG_LOSS * 100))
 T.env.globals["url_for"] = lambda name, **kw: "/static/" + kw.get("path", "")
 T.env.globals["static_url"] = lambda path: "/static/" + path
 T.env.globals["info"] = info_text.info
@@ -159,3 +160,12 @@ def test_strike_rows_show_both_ivs_before_the_skew(snap):
     assert html.index("Short IV") < html.index("Long IV") < html.index(">Skew<")
     r = ctx["open_pair"].rows[0]
     assert f"{r.short_iv:.2f}%" in html and f"{r.long_iv:.2f}%" in html
+
+
+def test_open_dialog_has_target_flag_levels_and_the_keep_waiting_prompt(snap):
+    html = render("finder.html", results=None, active_tab="finder", version="0.1", account="Paper", feature_analyzer=False,
+                  last_refresh=None, filters=FinderFilters(), widths_all=config.WIDTHS, unavailable_widths=[7],
+                  dte_limits=config.SHORT_DTE_LIMITS, quote_interval_s=2, finder_refresh_s=60, fill_offset=config.FILL_OFFSET,
+                  default_margin=config.MARGIN, default_contracts=config.DEFAULT_CONTRACTS)
+    assert 'id="od-target"' in html and 'id="od-flag"' in html and "+10%" in html and "-10%" in html
+    assert 'id="od-keep"' in html and 'id="od-giveup-cancel"' in html

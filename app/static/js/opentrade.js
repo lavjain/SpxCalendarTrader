@@ -21,19 +21,26 @@ function render(q) {
   if (!userPrice && q.suggested_price != null) $("od-price").value = q.suggested_price.toFixed(2);
   $("od-contracts").textContent = q.contracts == null ? DASH : num(q.contracts);
   $("od-cost").textContent = money(q.cost, 0); $("od-margin").textContent = money(q.margin, 0);
+  $("od-target").textContent = money(q.target_price); $("od-flag").textContent = money(q.flag_price);
+  const giveUp = q.stability_required && q.give_up && !userPrice;
+  $("od-giveup").classList.toggle("hidden", !giveUp);
+  if (giveUp) $("od-giveup-text").textContent = `Still not stable after ${Math.round(q.seconds_waiting)} seconds. ${q.waiting_reason || ""}`;
   const waiting = q.stability_required && !q.is_stable;
   show("od-note", waiting ? q.waiting_reason : "");
   const ready = q.contracts != null && typedPrice() != null && (!waiting || userPrice);
   $("od-confirm").disabled = !ready || saving;
 }
 
+let keepWaiting = false;     // sent once after the user presses Keep Waiting: the server restarts its stability clock
+
 async function poll() {
   if (!dlg.open) return;
+  const kw = keepWaiting; keepWaiting = false;
   try {
     const res = await fetch("/api/quote-spread", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ short_symbol: cal.shortSymbol, long_symbol: cal.longSymbol, size_mode: cal.sizeMode,
-                             size_value: cal.sizeValue, fill_price: userPrice ? typedPrice() : null }),
+                             size_value: cal.sizeValue, fill_price: userPrice ? typedPrice() : null, keep_waiting: kw }),
     });
     if (!res.ok) throw new Error(await errorText(res));
     show("od-error", ""); render(await res.json());
@@ -113,6 +120,8 @@ document.addEventListener("click", (ev) => {
   if (btn && !btn.disabled) openDialog(btn);
 });
 $("od-cancel").addEventListener("click", closeDialog);
+$("od-giveup-cancel").addEventListener("click", closeDialog);
+$("od-keep").addEventListener("click", () => { keepWaiting = true; $("od-giveup").classList.add("hidden"); });
 dlg.addEventListener("close", () => clearTimeout(timer));
 $("od-confirm").addEventListener("click", confirm);
 $("od-copy").addEventListener("click", copyToTos);

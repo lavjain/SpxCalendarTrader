@@ -25,6 +25,8 @@ INFO: dict[str, tuple[str, str]] = {
     "risk_today": ("Today", "P/L if SPX jumped to each level right now and nothing else changed. Each leg keeps its implied volatility."),
     "risk_expiry": ("At Short Expiry", "P/L at each SPX level on the day the short leg expires, with the long leg still alive and priced by Black-Scholes."),
     "risk_sd": ("±1 SD", "The shaded band is one standard deviation of SPX to the short expiry, from the short leg's implied volatility. About two thirds of outcomes land inside it."),
+    # open trade dialog
+    "open_levels": ("Target and Flag", "Target is the calendar price a set percentage above your fill: a good time to close. Flag is the price the same kind of distance below it: the position is flagged for a look there. Both percentages are set in the config; the app places no orders."),
     # weekly comparison
     "weekly_comparison": ("Weekly Comparison", "The same 7-day calendar at one strike, the starred row's, for the Friday nearest 7, 14, 21, 28, 35 and 42 days out. It shows how price, greeks and skew change as the short expiry moves out, for one contract."),
 }

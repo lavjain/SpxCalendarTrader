@@ -227,3 +227,12 @@ def test_the_star_sits_on_a_multiple_of_25_so_it_matches_the_weekly_comparison(m
     cmp = services.get_dte_comparison(targets=(21, 28), width=7)
     ref = min((p for p in res.pairs if p.near_target_delta), key=lambda p: abs(p.short_dte - config.SHORT_DTE_TARGET))
     assert cmp.strike == ref.near_target_delta.strike
+
+
+def test_quote_spread_gives_target_and_flag_prices_from_the_fill(monkeypatch):
+    monkeypatch.setattr(services.schwab_api, "get_quotes", lambda syms, use_cache=True: {
+        "S": {"bid": 11.0, "ask": 11.2}, "L": {"bid": 17.0, "ask": 17.4}})
+    q = services.quote_spread("S", "L", "contracts", 10, fill_price=6.50)
+    assert q.target_price == pytest.approx(6.50 * (1 + config.FLAG_TARGET), abs=0.025)
+    assert q.flag_price == pytest.approx(6.50 * (1 + config.FLAG_LOSS), abs=0.025)
+    assert q.flag_price < 6.50 < q.target_price

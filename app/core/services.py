@@ -378,7 +378,9 @@ def quote_spread(short_symbol: str, long_symbol: str, size_mode: str = "margin",
         seconds_waiting=round(waited, 1), stability_required=config.REQUIRE_STABLE, give_up=(not result.is_stable and waited >= config.WAIT_TIMEOUT_S),
         range_low=result.range_low, range_high=result.range_high, contracts=contracts,
         cost=(contracts * price * 100.0) if contracts and price else None,
-        margin=(contracts * cq.mid * 100.0) if contracts and cq.mid is not None else None)
+        margin=(contracts * cq.mid * 100.0) if contracts and cq.mid is not None else None,
+        target_price=_tick(price * (1 + config.FLAG_TARGET)) if price else None,
+        flag_price=_tick(price * (1 + config.FLAG_LOSS)) if price else None)
 
 
 def tos_order(side: str, contracts: int, short_expiry: str, long_expiry: str, strike: float, price: float) -> str:
