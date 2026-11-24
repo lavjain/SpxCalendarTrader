@@ -2,12 +2,13 @@
 
 Updated at the end of every work session (≤ 20 lines). Newest first.
 
-## 2026-11-23 — week 3 steps 1–7 built (needs your first run of the dialog)
+## 2026-11-23 — week 3 steps 1–9 built (needs your first run in a browser)
 - Done and committed (one commit per plan step): leg symbols + stability check, `trades` table (schema v3), `quote_spread`/`open_trade` services, `/api/quote-spread` + `/api/trades`, Open Trade dialog, Copy to TOS, Paste from TOS. 241 py tests + 37 js tests pass in a sandbox; the route tests (FastAPI) and the dialog have NOT run in a browser yet.
 - Decided Nov 23: stability wait switched off (`config.REQUIRE_STABLE = False`); bid-ask limit is per leg; Finder lists 40–50Δ with 45Δ target (`near_target_delta`, `is_near_target_delta` column); T/D = theta / |delta|; Size By to Contracts starts at 10; DTE sliders push each other; holiday note under Days Between.
-- Not done: risk profile tab and ⓘ popovers (steps 8–9), the "Still not stable" Keep Waiting prompt, Paste for a different calendar / fill time, entry snapshot from `finder_log`, the wrap-up run of three real trades.
+- Also built since: Risk Profile tab (step 8), ⓘ popovers (step 9), Weekly Comparison (collapsed, one strike = the starred row on a multiple of 25), page auto-refresh every 60 s (`FINDER_REFRESH_S`), Target/Flag prices and Keep Waiting prompt in the dialog, click an open pair to collapse it, T/D dash only under |delta| 0.5.
+- Not done: Paste for a different calendar / fill time, entry snapshot from `finder_log`, the wrap-up run of three real trades.
 - Yours: add `tests/fixtures/tos_order_samples.txt` (Copy/Paste format is from docs/PLAN.md, unchecked against real lines); re-run `uv run --group mockups python docs/mockups/render.py` and commit the new PNGs; check the holiday names in `config.HOLIDAY_NAMES`; push the local commits.
-- First run: `uv run pytest` (route tests run for the first time), then Finder → Refresh → Open Trade…, then `sqlite3 data/paper_trades.db "select * from trades;"`.
+- First run: `uv run pytest` (route tests and the new `node --test tests/js/*.test.mjs` run for the first time; hard-refresh the browser), then Finder → Refresh → Open Trade…, then `sqlite3 data/paper_trades.db "select * from trades;"`.
 
 ## 2026-11-23 — week 2 built (needs your first run)
 - Done and tested in a sandbox (166 py tests + 29 js tests): td dash near zero delta, IVs implied from mids, per-row break-evens, `get_spot`, `get_expirations`; `app/` FastAPI factory (`create_app`), `/api` health, spot, expirations, finder refresh/get, settings; SQLite `Store` (settings, `finder_log`, one row per strike); snapshots in memory (5, 10 min) and saved to data/snapshots.json (one file, newest 20); shared Python/JS formatters; Finder page (filters, status strip, Calendars table with strike rows, calendar panel with tiles and legs).

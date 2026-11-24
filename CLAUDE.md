@@ -32,6 +32,8 @@ app/
     schwab_api.py    # Schwab OAuth, weekly token, chain + quote + price-history pulls, cache, rate limiter
     calendar_math.py # calendar sizing/greeks/skew columns (+ 16-row self-test)
     expiries.py      # short Fridays, long dates by width, holidays
+    stability.py     # is the quoted calendar price steady? (config.REQUIRE_STABLE, off for now)
+    tos.py           # write and read thinkorswim calendar order lines
     pricing.py       # Black-Scholes (numpy/scipy), forward from put-call parity, P/L curves, break-evens
     store.py         # SQLite: trades, marks, finder_log, spx_daily, settings
   templates/
@@ -39,8 +41,8 @@ app/
     finder.html, holdings.html, performance.html
     partials/        # _status_strip.html, _calendars_table.html, _strike_rows.html, _calendar_panel.html, _legs_table.html, _holdings_table.html, _trade_panel.html, _closed_table.html, _summary_cards.html, _perf_*.html, dialogs
   static/
-    js/finder.js, js/holdings.js, js/performance.js
-    js/lib/          # api.js (fetch helpers), format.js, theme.js, info.js (ⓘ popovers), poll.js
+    js/finder.js, js/opentrade.js, js/riskprofile.js, js/holdings.js, js/performance.js
+    js/lib/          # api.js (fetch helpers), format.js, theme.js, popover.js (ⓘ popovers), poll.js
     js/charts/       # riskgraph.js (canvas), spxchart.js (Lightweight Charts)
     css/style.css
 tests/               # pytest (+ FastAPI TestClient); tests/js/ for node --test (DOM-free modules only)

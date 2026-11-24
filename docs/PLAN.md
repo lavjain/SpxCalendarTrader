@@ -370,7 +370,7 @@ Status (Nov 23): everything above is built and committed except the last box (a 
 
 ### Week 3 — Opening paper trades (Dec 8–14)
 
-Step-by-step version: [WEEK3.md](WEEK3.md). `[x]` done, `[~]` partly done (see the Status section of WEEK3.md: the stability wait is switched off, the dialog has no Size By box of its own, Paste must match the dialog's calendar and has no fill-time box).
+Step-by-step version: [WEEK3.md](WEEK3.md). `[x]` done, `[~]` partly done (see the Status section of WEEK3.md: the stability wait is switched off, the dialog has no Size By box of its own and no +3/+5-day risk lines, Paste must match the dialog's calendar and has no fill-time box).
 
 - [x] `trades` rows carry an `account` column (default "Paper"), ready for multiple accounts later
 - [x] Open trade… in the Finder's panel opens a confirmation ("Open trade"), and Confirm saves the trade and its entry snapshot (time, SPX, VIX, VIX9D, short and long IV, skew, break-evens, Vol P&L at entry, width, short DTE, sizing) to the `trades` table
@@ -378,7 +378,7 @@ Step-by-step version: [WEEK3.md](WEEK3.md). `[x]` done, `[~]` partly done (see t
 - [~] Size by override in the open dialog
 - [x] Copy to TOS button in the open dialog (`tos_order` from the service)
 - [~] Paste from TOS in the open dialog, below Copy to TOS: `parse_tos_order()` with tests (good lines and each kind of bad one), the checks, editable fill price and time, entry snapshot from the nearest saved refresh, `price_source = "pasted"`
-- [ ] Risk profile tab in the Finder panel (moved from week 2, which was the fullest week):  `get_risk_profile()` (Today and At-short-expiry lines, profit/loss shading, ±1 SD band, break-evens, tiles) at `GET /api/risk-profile`, painted on canvas by `charts/riskgraph.js` (read-only: hover crosshair, zoom, pan)
+- [x] Risk profile tab in the Finder panel (moved from week 2, which was the fullest week):  `get_risk_profile()` (Today and At-short-expiry lines, profit/loss shading, ±1 SD band, break-evens, tiles) at `GET /api/risk-profile`, painted on canvas by `charts/riskgraph.js` (read-only: hover crosshair, zoom, pan)
 - [x] ⓘ popovers on the Finder's tiles and controls (moved from week 2)
 
 Done when you can refresh, pick a 45Δ calendar and commit it in under a minute.

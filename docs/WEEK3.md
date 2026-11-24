@@ -78,13 +78,16 @@ Week 2 gave the Finder: filters, the Calendars table, strike rows and the select
 
 ## Status (Nov 23, 2026)
 
-Steps 1–7 are built, one commit each. Steps 8 (risk profile tab) and 9 (ⓘ popovers) are not started; they were the slip candidates. Step 10 (wrap-up) is partly done: this section, the README progress table and the config names.
+Steps 1–9 are built (one commit each for Steps 1–9, plus follow-up commits). Step 10 (wrap-up) is done except the parts only you can do: the three real-quote runs and `tests/fixtures/tos_order_samples.txt`. Nothing here has been run in a browser or against live Schwab quotes yet; everything was tested in a sandbox without FastAPI, so run `uv run pytest` and `node --test tests/js/*.test.mjs` first.
 
 **Built differently from the steps above:**
 
-- **The stability wait is deferred.** `config.REQUIRE_STABLE = False`: the dialog shows a live quote every 2 s and Confirm works at once; the stability check and its tests stay in the code and switch on with the flag. Revisit when SPX moves within its expected change. The "Still not stable after 60 seconds: Keep Waiting / Cancel" prompt is not in the dialog yet (the service already returns `give_up`).
+- **The stability wait is deferred.** `config.REQUIRE_STABLE = False`: the dialog shows a live quote every 2 s and Confirm works at once; the stability check and its tests stay in the code and switch on with the flag. Revisit when SPX moves within its expected change. The "Still not stable after N seconds: Keep Waiting / Cancel" prompt is in the dialog and only appears when the flag is on.
 - **The 10% bid-ask limit applies to each leg**, not to the calendar: the calendar's bid-ask is the sum of both legs (about 20% of its mid on SPX) and would never pass.
-- **The dialog is loaded with the page, not by HTMX.** The Open Trade button carries the calendar in `data-` attributes and `static/js/opentrade.js` fills a `<dialog>` from `POST /api/quote-spread`. It has no Size By box (contracts follow the Finder's Size By) and no target/flag lines yet.
+- **The dialog is loaded with the page, not by HTMX.** The Open Trade button carries the calendar in `data-` attributes and `static/js/opentrade.js` fills a `<dialog>` from `POST /api/quote-spread`. It has no Size By box (contracts follow the Finder's Size By). It shows the Target and Flag prices (the fill ±10%, `FLAG_TARGET` / `FLAG_LOSS`).
+- **Risk Profile** (Step 8) is a tab beside Legs in the calendar panel: canvas chart (Today, At Short Expiry, ±1 SD, break-evens; hover, scroll to zoom, drag to pan), range chips ±150/±300/±500, and Max Profit / Max Loss / P/L If Closed Now tiles. It reprices the calendar with Black-Scholes at each leg's mid-implied IV (never from greeks) and needs the put-call-parity forward, so a calendar without one gets a message instead. The +3/+5-day lines of the mockup are not built.
+- **ⓘ popovers** (Step 9): `app/info_text.py` holds the words, `static/js/lib/popover.js` shows them; on the filter labels, panel tiles, Risk Profile controls, the Weekly Comparison and the Open Trade levels. A test fails if a template uses a missing key or a text is unused.
+- **Not built:** a Size By box inside the dialog, the fill-time box and delta warning on Paste, and Paste for a different calendar (it is refused, as above).
 - **Copy to TOS is `POST /api/tos-order`**; Paste is `POST /api/tos-order/parse`. Both use the format in `docs/PLAN.md`, not yet checked against `tests/fixtures/tos_order_samples.txt` (still to be added by you).
 - **Paste from TOS must match the dialog's calendar** (same expiries and strike); a line for another calendar is refused, a SELL line is refused. The entry snapshot comes from the current Finder snapshot, not from `finder_log`, and there is no fill-time box, so trades placed elsewhere "from any row" and earlier fills wait for a later week.
 
