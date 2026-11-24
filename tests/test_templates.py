@@ -109,3 +109,9 @@ def test_weekly_comparison_table_renders_bid_ask_and_greeks(snap):
     assert 'id="compare-table"' in html and "$7.05 / $7.25" in html and "Bid / Ask" in html
     assert all(h in html for h in ("Delta", "Gamma", "Theta", "Vega")) and "Skew" not in html and html.count("<tr>") == 3
     assert "No calendars found" in render("partials/_compare.html", comparison=c.model_copy(update={"rows": []}))
+
+
+def test_calendar_panel_has_legs_and_risk_profile_tabs(snap):
+    html = render("partials/_results.html", results=vm.results_context(snap))
+    assert 'data-tab="legs"' in html and 'data-tab="risk"' in html
+    assert 'id="risk-canvas"' in html and 'data-range="300"' in html

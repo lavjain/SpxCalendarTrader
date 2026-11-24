@@ -15,7 +15,7 @@ from app.core.calendar_math import Calendar, Leg
 from app.core.expiries import market_today, pick_expiries, previous_trading_day
 from app.core.calendar_math import _whole
 from app.core.models import (CalendarRow, ComparisonResult, ComparisonRow, ExpirationsResult, ExpiryPair, FinderResult, HolidayNote, OpenTradeResult,
-                             OptionQuote, PairSummary, QuoteSpread, Spot, TosOrder, Trade)
+                             OptionQuote, PairSummary, QuoteSpread, RiskProfile, Spot, TosOrder, Trade)
 from app.core.stability import StabilityTracker, calendar_quote_from_prices
 
 SYMBOL = "$SPX"
@@ -115,6 +115,7 @@ def get_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
             if not cal:
                 continue
             row = _row(*legs, pair, cal, s_iv, l_iv, implied)
+            row.long_forward = f_long
             if config.MODEL_GREEKS and f_short and f_long and implied[0] and implied[1]:
                 # Schwab's gamma has 3 decimals (0.001 on both legs, so the difference is exactly 0):
                 # use the model gamma at the mid-implied IVs instead
@@ -286,9 +287,31 @@ def get_performance(account: str = "Paper", period: str = "all", group: str = "m
     raise NotImplementedError("get_performance: weeks 5-6")
 
 
-def get_risk_profile(trade_id: int | None = None, calendar: CalendarRow | None = None):
-    """In: a saved trade or a Finder CalendarRow. Out: RiskProfile (SPX grid, curves, break-evens)."""
-    raise NotImplementedError("get_risk_profile: week 3")
+def get_risk_profile(row: CalendarRow, spot: float, half_range: float = 300.0, points: int = 121,
+                     as_of: date | None = None) -> RiskProfile:
+    """Reprice the calendar with Black-Scholes on an SPX grid (never from greeks): the P/L today and at the short
+    expiry, the +-1 SD band to the short expiry, break-evens and the tiles. `row` comes from a Finder snapshot."""
+    if row.long_forward is None:
+        raise ValueError("No put-call-parity forward for this calendar, so it cannot be repriced")
+    if half_range <= 0 or points < 3:
+        raise ValueError("The range must be above zero and the grid at least 3 points")
+    as_of = as_of or market_today()
+    short_exp = date.fromisoformat(row.short.expiry)
+    mult = row.contracts * 100.0
+    centre = round(spot / 5) * 5
+    grid = [centre - half_range + 2 * half_range * i / (points - 1) for i in range(points)]
+    today = [v * mult for v in pricing.pl_curve(row, grid, spot, row.long_forward, as_of, as_of)]
+    expiry = [v * mult for v in pricing.pl_curve(row, grid, spot, row.long_forward, as_of)]
+    wide = [row.strike * (0.7 + 0.6 * i / 600) for i in range(601)]     # the peak may sit outside a narrow grid
+    peak = max(pricing.pl_curve(row, wide, spot, row.long_forward, as_of)) * mult
+    now = pricing.pl_curve(row, [spot], spot, row.long_forward, as_of, as_of)[0] * mult
+    sd = (row.short_iv / 100.0) * math.sqrt(pricing.years(as_of, short_exp))
+    cost = mult * (row.price + config.FILL_OFFSET)
+    return RiskProfile(
+        spot=spot, as_of=as_of.isoformat(), short_expiry=row.short.expiry, contracts=row.contracts, spx=grid,
+        today=today, at_expiry=expiry, sd_low=spot * math.exp(-sd), sd_high=spot * math.exp(sd),
+        break_evens=row.break_evens, cost=cost, max_profit=float(peak), max_loss=-cost, pl_now=float(now),
+        delta=row.delta, theta=row.theta, vega=row.vega)
 
 
 def get_spx_history(range: str = "3M"):

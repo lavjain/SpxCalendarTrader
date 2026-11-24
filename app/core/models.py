@@ -60,6 +60,7 @@ class CalendarRow(BaseModel):
     theta_margin: float
     iv_ratio: float | None = None    # short IV / long IV
     break_evens: BreakEvens | None = None   # at the short expiry, for this strike
+    long_forward: float | None = None   # put-call-parity forward of the long expiry: the risk profile reprices from it
     is_best_skew: bool = False
     is_near_target_delta: bool = False
 
@@ -219,3 +220,24 @@ class ComparisonResult(BaseModel):
     spx: float
     width: int
     rows: list[ComparisonRow]
+
+
+class RiskProfile(BaseModel):
+    """P/L of the calendar over SPX, for the whole position (dollars). Plain lists of floats for the canvas."""
+    spot: float
+    as_of: str
+    short_expiry: str
+    contracts: int
+    spx: list[float]
+    today: list[float]               # P/L if SPX moved there today (each leg's IV held fixed)
+    at_expiry: list[float]           # P/L at the short expiry
+    sd_low: float                    # +-1 standard deviation to the short expiry, from the short leg's IV
+    sd_high: float
+    break_evens: BreakEvens | None = None
+    cost: float                      # debit paid, including the fill offset
+    max_profit: float
+    max_loss: float                  # = -cost
+    pl_now: float                    # P/L at today's SPX: about minus the fill offset, because mid is the fair price
+    delta: float
+    theta: float
+    vega: float

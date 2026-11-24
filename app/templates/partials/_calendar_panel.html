@@ -29,6 +29,13 @@
     <div class="tile"><div class="label">Vega / Pt</div><div class="value">{{ row.vega | money(0) }}</div></div>
     <div class="tile"><div class="label">Margin</div><div class="value">{{ row.margin | money(0) }}</div></div>
   </div>
-  {% include "partials/_legs_table.html" %}
+  <div class="mt-3 flex gap-2" role="tablist">
+    <button type="button" class="chip chip-on" data-tab="legs" role="tab">Legs</button>
+    <button type="button" class="chip" data-tab="risk" role="tab">Risk Profile</button>
+  </div>
+  <div id="tab-legs">{% include "partials/_legs_table.html" %}</div>
+  <div id="tab-risk" class="hidden mt-3">
+    {% include "partials/_risk_profile.html" %}
+  </div>
 </div>
 {% endif %}

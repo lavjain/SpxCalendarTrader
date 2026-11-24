@@ -3,6 +3,7 @@ import asyncio
 from fastapi import APIRouter, HTTPException, Request
 
 from app.core import services
+from app.finder_flow import find_calendar
 from app.core.models import OpenTradeResult, Trade
 from app.core.schwab_api import SchwabError
 from app.core.store import DuplicateTradeError
@@ -11,20 +12,11 @@ from app.schemas import OpenTradeRequest
 router = APIRouter()
 
 
-def _find(snap, req: OpenTradeRequest):
-    for pair in snap.result.pairs:
-        if pair.short_expiry == req.short_expiry and pair.long_expiry == req.long_expiry:
-            for row in pair.rows:
-                if abs(row.strike - req.strike) < 1e-6:
-                    return pair, row
-    return None, None
-
-
 def _open(st, req: OpenTradeRequest) -> OpenTradeResult:
     snap = st.snapshots.get(req.snapshot_id)
     if snap is None:
         raise HTTPException(404, "That Finder snapshot expired or the server restarted: press Refresh and try again")
-    pair, row = _find(snap, req)
+    pair, row = find_calendar(snap, req.short_expiry, req.long_expiry, req.strike)
     if row is None:
         raise HTTPException(404, "That calendar is not in the snapshot")
     try:

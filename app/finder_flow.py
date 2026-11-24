@@ -12,6 +12,16 @@ from app.snapshots import SnapshotStore
 log = logging.getLogger(__name__)
 
 
+def find_calendar(snap: FinderSnapshot, short_expiry: str, long_expiry: str, strike: float):
+    """(pair, row) of one calendar in a stored snapshot, or (None, None)."""
+    for pair in snap.result.pairs:
+        if pair.short_expiry == short_expiry and pair.long_expiry == long_expiry:
+            for row in pair.rows:
+                if abs(row.strike - strike) < 1e-6:
+                    return pair, row
+    return None, None
+
+
 def refresh_finder(filters: FinderFilters, store: Store, snapshots: SnapshotStore) -> FinderSnapshot:
     """Blocking (Schwab calls): the routes run it with asyncio.to_thread."""
     result = services.get_finder(filters.dte_range, tuple(filters.widths), tuple(filters.strike_sets),

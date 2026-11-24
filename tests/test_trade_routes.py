@@ -89,3 +89,13 @@ def test_compare_endpoint_returns_rows_without_saving_a_snapshot(client):
     assert r.status_code == 200 and r.json()["width"] == 7
     assert client.get("/api/finder").status_code == 404                  # the comparison is not a Finder snapshot
     assert "compare-table" in client.post("/partials/compare").text
+
+
+def test_risk_profile_endpoint(client):
+    sid, pair, row = _calendar(client)
+    q = {"snapshot_id": sid, "short": pair["short_expiry"], "long": pair["long_expiry"], "strike": row["strike"]}
+    r = client.get("/api/risk-profile", params=q)
+    assert r.status_code == 200 and len(r.json()["spx"]) == len(r.json()["today"]) > 10
+    assert client.get("/api/risk-profile", params={**q, "snapshot_id": "nope"}).status_code == 404
+    assert client.get("/api/risk-profile", params={**q, "strike": 1.0}).status_code == 404
+    assert client.get("/api/risk-profile", params={**q, "half_range": 0}).status_code == 422

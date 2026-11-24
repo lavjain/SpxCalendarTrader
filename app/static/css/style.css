@@ -10,6 +10,7 @@
 .field { background: transparent; border: 1px solid rgb(148 163 184 / .5); border-radius: 6px; padding: 3px 8px; }
 .dark .field option { background: #0f172a; }
 .chip { display: inline-block; padding: 2px 10px; border-radius: 999px; border: 1px solid rgb(148 163 184 / .5); cursor: pointer; font-size: .8rem; }
+.chip-on { background: #1C83E1; border-color: #1C83E1; color: #fff; }
 .chip.unavailable { opacity: .4; border-style: dashed; text-decoration: line-through; }
 .peer:checked + .chip { background: #1C83E1; border-color: #1C83E1; color: #fff; }
 .peer:focus-visible + .chip { outline: 2px solid #1C83E1; }
