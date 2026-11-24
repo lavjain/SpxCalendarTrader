@@ -766,33 +766,64 @@ def finder_panel(tab="Risk profile"):
 
 COMPARE_DTES = (7, 14, 21, 28, 35, 42)   # same targets as config.COMPARE_DTES
 
+def call_quote(put, S, K, dte):
+    """The call at the same strike and expiry from a put quote, by put-call parity (the mockup's market has no separate call surface):
+    C = P + S e^(-qT) - K e^(-rT); delta and theta shift by the same parity terms; IV, gamma and vega are shared."""
+    T = dte / 365
+    mark = round((put["mark"] + S * math.exp(-Q * T) - K * math.exp(-R * T)) / 0.05) * 0.05
+    half = put["ask"] - put["mark"]
+    return dict(put, mark=mark, bid=mark - half, ask=mark + half, delta=put["delta"] + math.exp(-Q * T),
+                theta=put["theta"] + (Q * S * math.exp(-Q * T) - R * K * math.exp(-R * T)) / 365)
+
+
+def sma_box():
+    """SPX 10/20/50-day simple moving averages of the daily closes, beside the Weekly Comparison."""
+    closes = [b["c"] for b in spx_history()]
+    rows = ""
+    for n in config.SMA_DAYS:
+        v = sum(closes[-n:]) / n; pct = (S_NOW / v - 1) * 100
+        rows += f"<tr><td class=l>{n}-Day</td><td>{v:,.2f}</td><td>{pct:+.2f}% <span class=muted>{'above' if pct >= 0 else 'below'}</span></td></tr>"
+    return ('<div class="box" style="box-sizing:border-box;padding:9px 14px"><b>SPX Moving Averages</b> <span class="muted">ⓘ</span>'
+            f'<div class="muted" style="font-size:12px;margin:4px 0 6px">SPX {S_NOW:,.2f} · Closes Through {(NOW.date() - timedelta(days=1)):%b %-d}</div>'
+            f'<style>.sma th,.sma td{{text-align:center !important}}</style><table class="sma"><tr><th>Average</th><th>Level</th><th>SPX vs Average</th></tr>{rows}</table></div>')
+
+
 def compare_box(open_=False):
-    """Weekly Comparison: one strike (the starred row's, to the nearest 25) for the Friday nearest each target DTE, one contract."""
+    """Weekly Comparison: one strike (the starred row's, to the nearest 25) for the Friday nearest each target DTE, one contract:
+    the put calendars, then (under a thicker line) the call calendars at the same strike. The SMA box sits to its right."""
     K = int(round(SEL["strike"] / 25) * 25)
     today = NOW.date()
     fridays = [today + timedelta(days=d) for d in range(7, 57) if (today + timedelta(days=d)).weekday() == 4]
-    used, body = set(), ""
+    used, picks = set(), []
     for t in COMPARE_DTES:
         free = [f for f in fridays if f not in used]
         fr = min(free, key=lambda f: (abs((f - today).days - t), (f - today).days)); used.add(fr)
         se, le = pick_expiries(today, 7, fr)
-        s, l = leg_quote(S_NOW, K, today, se, ATM_S), leg_quote(S_NOW, K, today, le, ATM_L)
-        g = lambda k: (l[k] - s[k]) * 100
-        body += (f"<tr><td class=l style='white-space:nowrap'>{K:,} Put</td><td>{t // 7}</td>"
-                 f"<td class=l style='white-space:nowrap'>{se:%a %b %-d} <span class=muted>· {s['dte']} DTE</span></td>"
-                 f"<td class=l style='white-space:nowrap'>{le:%a %b %-d} <span class=muted>· {l['dte']} DTE</span></td>"
-                 f"<td style='white-space:nowrap'>{l['bid'] - s['ask']:.2f} / {l['ask'] - s['bid']:.2f}</td><td>{g('delta'):+.2f}</td><td>{g('gamma'):.4f}</td><td>{g('theta'):.1f}</td><td>{g('vega'):.1f}</td>"
-                 f"<td>{s['iv']*100:.1f}%</td><td>{l['iv']*100:.1f}%</td><td>{(s['iv'] - l['iv'])*100:+.1f}</td></tr>")
+        picks.append((t, se, le, leg_quote(S_NOW, K, today, se, ATM_S), leg_quote(S_NOW, K, today, le, ATM_L)))
+    body = ""
+    for kind in ("Put", "Call"):
+        for i, (t, se, le, s, l) in enumerate(picks):
+            if kind == "Call": s, l = call_quote(s, S_NOW, K, s["dte"]), call_quote(l, S_NOW, K, l["dte"])
+            g = lambda k: (l[k] - s[k]) * 100
+            top = " style='border-top:3px solid #475569'" if kind == "Call" and i == 0 else ""
+            body += (f"<tr{top}><td class=l style='white-space:nowrap'>{K:,} {kind}</td><td>{t // 7}</td>"
+                     f"<td class=l style='white-space:nowrap'>{se:%a %b %-d} <span class=muted>· {s['dte']} DTE</span></td>"
+                     f"<td class=l style='white-space:nowrap'>{le:%a %b %-d} <span class=muted>· {l['dte']} DTE</span></td>"
+                     f"<td>${l['mark'] - s['mark']:.2f}</td><td style='white-space:nowrap'>{l['bid'] - s['ask']:.2f} / {l['ask'] - s['bid']:.2f}</td>"
+                     f"<td>{g('delta'):+.2f}</td><td>{g('gamma'):.4f}</td><td>{g('theta'):.1f}</td><td>{g('vega'):.1f}</td>"
+                     f"<td>{s['iv']*100:.1f}%</td><td>{l['iv']*100:.1f}%</td><td>{(s['iv'] - l['iv'])*100:+.1f}</td></tr>")
     hdr = "".join(f"<th style='text-align:center'>{h}</th>"
-                  for h in ("Strike", "Week", "Short Expiry", "Long Expiry", "Bid / Ask", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew"))
+                  for h in ("Strike", "Week", "Short Expiry", "Long Expiry", "Price", "Bid / Ask", "Delta", "Gamma", "Theta", "Vega", "Short IV", "Long IV", "Skew"))
     if not open_:      # collapsed by default; the page remembers how the user leaves it
-        return ('<div class="box" style="margin-bottom:14px;width:808px;box-sizing:border-box;padding:9px 14px"><b>▸ Weekly Comparison</b> '
+        left = ('<div class="box" style="box-sizing:border-box;padding:9px 14px"><b>▸ Weekly Comparison</b> <span class="muted">ⓘ</span> '
                 '<span class="muted" style="font-size:12.5px">· How the price and greeks change as the short expiry moves out</span></div>')
-    return (f'<div class="box" style="margin-bottom:14px;width:808px;box-sizing:border-box"><h3>▾ Weekly Comparison <span class="muted" style="font-weight:400;font-size:12.5px">'
-            f'· How the price and greeks change as the short expiry moves out</span></h3>'
-            f'<div class="muted" style="font-size:12px;margin-bottom:6px">SPX {S_NOW:,.2f} · {NOW:%-I:%M %p} ET · 7-Day Width · One Contract Each</div>'
-            f'<style>.cmp th,.cmp td{{text-align:center !important}}</style><table class="cmp"><tr>{hdr}</tr>{body}</table>'
-            f'</div>')
+    else:
+        left = (f'<div class="box" style="box-sizing:border-box"><h3>▾ Weekly Comparison <span class="muted">ⓘ</span> <span class="muted" style="font-weight:400;font-size:12.5px">'
+                f'· How the price and greeks change as the short expiry moves out</span></h3>'
+                f'<div style="font-size:12.5px;margin-bottom:8px"><span class="muted">STRIKE OVERRIDE ⓘ</span> <span class="input" style="display:inline-block;width:64px;padding:3px 8px;text-align:right">{K}</span></div>'
+                f'<div class="muted" style="font-size:12px;margin-bottom:6px">SPX {S_NOW:,.2f} · {NOW:%-I:%M %p} ET · 7-Day Width · One Contract Each</div>'
+                f'<style>.cmp th,.cmp td{{text-align:center !important}}</style><table class="cmp"><tr>{hdr}</tr>{body}</table></div>')
+    return f'<div class="grid2" style="margin-bottom:14px"><div>{left}</div><div>{sma_box()}</div></div>'
 
 def finder_body(tab="Risk profile", compare_open=False):
     strip = status_strip([("Tue Jan 12, 11:05 AM ET", ""), ("SPX", f"{S_NOW:,.2f}"),
