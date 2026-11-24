@@ -74,7 +74,7 @@ tr.sel td{background:rgba(28,131,225,.16)} tr.sel td:first-child{box-shadow:inse
 .ptabs div{padding:7px 0;color:#94A3B8;font-size:13.5px;border-bottom:2px solid transparent} .ptabs div.on{color:#F1F5F9;border-bottom-color:#1C83E1;font-weight:600}
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
 .tile{min-width:0;overflow:hidden;border:1px solid #1E293B;border-radius:9px;padding:7px 10px;background:#0B1222} .tile .lab{font-size:11.5px;color:#94A3B8;white-space:nowrap} .tile .val{font-size:14.5px;font-weight:600;margin-top:2px;white-space:nowrap}
-.fbar{display:flex;align-items:center;gap:16px;padding:10px 16px;background:#0F172A;border:1px solid #1E293B;border-radius:12px;margin-bottom:8px}
+.fbar{display:flex;align-items:flex-start;gap:16px;padding:10px 16px;background:#0F172A;border:1px solid #1E293B;border-radius:12px;margin-bottom:8px}
 .fbar .grp{display:flex;align-items:center;gap:7px} .fbar .gl{font-size:12px;color:#94A3B8;white-space:nowrap}
 .fbar .chip{padding:3px 10px;font-size:12.5px}
 .strip{display:flex;gap:20px;align-items:baseline;padding:4px 4px 12px;font-size:13px;color:#94A3B8;white-space:nowrap} .strip b{color:#F1F5F9;font-weight:600}
@@ -283,6 +283,8 @@ def holdings_rows():
         close_px = round(t["value"] / (100 * n), 2)
         e_s = leg_quote(S0, K, d0, se, v0[0]); e_l = leg_quote(S0, K, d0, le, v0[1])
         out.append(dict(t, skew0=(e_s['iv'] - e_l['iv']) * 100, close_px=close_px, tos=tos_order("SELL", n, K, se, le, close_px), days=(today - d0).days, tdays=tdays, lo=lo, hi=hi, volpl=volpl, dpc=dpc, flags=" ".join(flags)))
+    for row, text in zip(out, NOTE_TEXTS):      # notes follow the trade order, so a change of delta target cannot orphan them
+        NOTE[row["K"]] = text
     return out
 
 # Holdings columns: key, label, shown by default, group. "Trade" is always shown and pinned on the left.
@@ -294,8 +296,9 @@ HCOLS = [("entered", "Entered", False, "Position"), ("days", "Days", True, "Posi
          ("siv", "Short IV", False, "Volatility"), ("liv", "Long IV", False, "Volatility"), ("skew", "Skew now", False, "Volatility"),
          ("skew0", "Skew at entry", True, "Volatility"), ("flag", "Flag", True, "Flags & notes"), ("notes", "Notes", True, "Flags & notes")]
 
-NOTE = {6730: "Entered after skew turned positive (+0.38); VIX 15.8. Sized to $10k.\nJan 11: up 7%. Holding for the +10% target; CPI Wednesday morning, decide before then.",
-        6740: "Took this one a day early; SPX was near the 20-day average."}   # one note per trade (by strike in the mockup)
+NOTE = {}   # strike -> note, filled in by holdings_rows(): the first trade and the second trade each get one
+NOTE_TEXTS = ["Entered after skew turned positive (+0.38); VIX 15.8. Sized to $10k.\nJan 11: up 7%. Holding for the +10% target; CPI Wednesday morning, decide before then.",
+              "Took this one a day early; SPX was near the 20-day average."]
 
 def note_box(text, placeholder, label):
     """A note box that grows with its text: one line when empty, as many lines as the note needs."""
@@ -374,7 +377,7 @@ def paste_dialog_body():
     lo, hi = break_evens(K, se, le, l1["iv"], px); skew0 = (s0["iv"] - l0["iv"]) * 100
     ok = lambda t: f'<div style="color:#4ADE80;font-size:13.5px;margin:3px 0">✓ {t}</div>'
     checks = "".join([ok(f"SPXW expiries {dstr(se)} and {dstr(le)} exist; long leg {(le - se).days} days after the short"),
-                      ok(f"Short leg {abs(s0['delta'])*100:.1f}Δ at entry, inside the 35–45Δ band"),
+                      ok(f"Short leg {abs(s0['delta'])*100:.1f}Δ at entry, inside the {config.DELTA_BAND_LABEL} band"),
                       ok("Not already in Holdings")])
     kv = lambda a, b: f"<td>{a}</td><td>{b}</td>"
     return f"""<div class="modal">
@@ -654,6 +657,12 @@ def risk_graph(K, se, le, today, price, n, v_s, v_l, s_now, now_pl=None, extra_d
     stats = dict(cost=price * 100 * n, max_profit=max(pl_exp), max_loss=-price * 100 * n, pl_now=pl_now[i_now], lo=lo, hi=hi, sd=sd)
     return svg(fig), stats
 
+def holiday_note():
+    """'Holiday Dec 25 (Christmas Day)' for each holiday near the Finder's DTE range, as the real Finder shows."""
+    today = NOW.date(); lo, hi = DTE_RANGE
+    near = sorted(h for h in HOLIDAYS if today + timedelta(days=lo) <= h <= today + timedelta(days=hi + 7))
+    return "".join(f'<div class="muted" style="font-size:11.5px">Holiday {h:%b} {h.day} ({config.HOLIDAY_NAMES[h.isoformat()]})</div>' for h in near)
+
 def filter_bar():
     lo, hi = DTE_RANGE; x = lambda d: (d - 7) / 49 * 150
     slider = (f'<div style="position:relative;width:150px;height:20px"><div style="position:absolute;top:8px;left:0;right:0;height:4px;background:#1E293B;border-radius:2px"></div>'
@@ -663,11 +672,12 @@ def filter_bar():
     grp = lambda label, body: f'<div class="grp"><span class="gl">{label}</span>{body}</div>'
     return (f'<div class="fbar">'
             + grp(f'Short DTE <b style="color:#F1F5F9">{lo}–{hi}</b>', slider)
-            + grp("Width", "".join(chip(w) for w in WIDTHS))
+            + (f'<div class="grp" style="flex-direction:column;align-items:flex-start;gap:4px"><div class="grp"><span class="gl">Days Between</span>'
+               + "".join(chip(w) for w in WIDTHS) + f'</div>{holiday_note()}</div>')
             + grp("Strikes", strike_chip("10") + strike_chip("25"))
             + grp("Size by", f'<div class="seg"><span class="on" style="padding:4px 10px;font-size:12.5px">Margin</span><span style="padding:4px 10px;font-size:12.5px">Contracts</span></div>'
                   f'<div class="input" style="width:92px;padding:4px 8px;font-size:13px">{money(MARGIN)}</div>')
-            + f'<div style="margin-left:auto" class="btnrow"><span class="muted" style="font-size:12px;white-space:nowrap">Updated 11:05:12 AM</span><span class="btn primary" style="padding:6px 14px">↻ Refresh</span></div></div>')
+            + f'<div style="margin-left:auto;align-self:center" class="btnrow"><span class="muted" style="font-size:12px;white-space:nowrap">Updated 11:05:12 AM</span><span class="btn primary" style="padding:6px 14px">↻ Refresh</span></div></div>')
 
 def status_strip(items):
     return '<div class="strip">' + "".join(f'<span>{a} <b>{b}</b></span>' for a, b in items) + '</div>'
@@ -682,7 +692,7 @@ def detail_ladder(P):
                  f"<td>{c.margin:,.0f}</td><td>{c.delta:.1f}</td><td>{c.gamma:.2f}</td><td>{c.theta:.0f}</td><td>{c.vega:.0f}</td>"
                  f"<td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{'—' if abs(c.delta) < 0.5 else f'{c.td:.0f}'}</td><td>{c.theta_margin*100:.2f}%</td></tr>")
     return (f"<tr><td colspan=9 style='padding:0;border:none;text-align:left'><div class='ladder'>"
-            f"<div style='font-size:12px;color:#94A3B8;margin-bottom:4px'>All {len(P['sec'])} strikes of this pair in the 35–45Δ band · ★ nearest 40Δ · amber edge: highest skew · click a strike to select it</div>"
+            f"<div style='font-size:12px;color:#94A3B8;margin-bottom:4px'>All {len(P['sec'])} strikes of this pair in the {config.DELTA_BAND_LABEL} band · ★ nearest {config.DELTA_LABEL} · amber edge: highest skew · click a strike to select it</div>"
             f"<table><tr>{hdr}</tr>{rows}</table></div></td></tr>")
 
 def overview_box():
@@ -690,11 +700,11 @@ def overview_box():
     for r in ROWS: pairs.setdefault((r["short_exp"], r["long_exp"]), []).append(r)
     ov = []
     for (se, le), sec in pairs.items():
-        near = min(sec, key=lambda x: abs(abs(x["s"]["delta"]) - 0.40)); best = max(sec, key=lambda x: x["cal"].skew)
+        near = min(sec, key=lambda x: abs(abs(x["s"]["delta"]) - config.DELTA_TARGET)); best = max(sec, key=lambda x: x["cal"].skew)
         ov.append(dict(se=se, le=le, sec=sec, near=near, best=best, sel=any(x["is_sel"] for x in sec)))
     ov.sort(key=lambda p: p["best"]["cal"].skew, reverse=True); top = ov[0]
     hdr = "".join(f"<th{' class=l' if h == 'Short → Long' else ''}>{h}</th>" for h in
-                  ["Short → Long", "~40Δ", "Ctr", "Price", "Theta", "Vega", "Skew", "Θ/Mgn", "Best skew ▼"])
+                  ["Short → Long", f"~{config.DELTA_LABEL}", "Ctr", "Price", "Theta", "Vega", "Skew", "Θ/Mgn", "Best skew ▼"])
     body = ""
     for w in sorted({p["near"]["width"] for p in ov}):
         seg = [p for p in ov if p["near"]["width"] == w]
@@ -707,7 +717,7 @@ def overview_box():
                      f"<td class='{cls(round(c.skew,2))}'>{sgn(c.skew)}</td><td>{c.theta_margin*100:.2f}%</td>"
                      f"<td class='{cls(round(p['best']['cal'].skew,2))}'>{sgn(p['best']['cal'].skew)} <span class=muted>@ {p['best']['strike']}</span></td></tr>")
             if p["sel"]: body += detail_ladder(p)
-    return (f'<div class="box"><div class="row" style="justify-content:space-between;align-items:baseline"><h3>Calendars <span class="muted" style="font-weight:400;font-size:12.5px">· one row per short/long pair at its ~40Δ strike · sized to {money(MARGIN)}</span></h3>'
+    return (f'<div class="box"><div class="row" style="justify-content:space-between;align-items:baseline"><h3>Calendars <span class="muted" style="font-weight:400;font-size:12.5px">· one row per short/long pair at its ~{config.DELTA_LABEL} strike · sized to {money(MARGIN)}</span></h3>'
             f'<span class="muted" style="font-size:12px">sorted by Best skew</span></div><table>{hdr and "<tr>" + hdr + "</tr>"}{body}</table>'
             f'<div class="hint">Click a pair to open its strikes underneath; click a strike to show it in the panel on the right. Amber edge: highest skew. Blue: selected. Headers sort within each width.</div></div>')
 

@@ -88,7 +88,7 @@ def status_strip(snap: FinderSnapshot) -> dict:
 def results_context(snap: FinderSnapshot, sort: str | None = None, open_key: str | None = None,
                     strike: float | None = None) -> dict:
     """Everything _results.html / _calendars_table.html need. With no selection given, the default pair is
-    open with its ~40-delta strike selected."""
+    open with its target-delta strike selected."""
     if open_key:
         short, _, long = open_key.partition("|")
         pair = find_pair(snap, short, long)

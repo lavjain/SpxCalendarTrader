@@ -193,7 +193,7 @@ def _holiday_notes(dte_range) -> list[HolidayNote]:
 
 def diagnose_finder(dte_range=config.SHORT_DTE_DEFAULT, widths=config.WIDTHS_DEFAULT,
                     strike_sets=config.STRIKE_SETS, pair_index=None, tos=None) -> dict:
-    """Why do the break-evens differ from thinkorswim? Returns the inputs behind the ~40-delta row of
+    """Why do the break-evens differ from thinkorswim? Returns the inputs behind the target-delta row of
     one pair (default: the short nearest 30 DTE) and the break-evens under variants: no fill offset,
     zero carry (forward = spot), and Schwab's IV field instead of the mid-implied IVs.
 
