@@ -21,7 +21,7 @@ INFO: dict[str, tuple[str, str]] = {
     "max_loss": ("Max Loss", "The debit paid. A long calendar cannot lose more than it cost."),
     "pl_now": ("P/L If Closed Now", "P/L if you closed at today's mid prices: about minus the fill offset, because a fair price gives nothing back yet."),
     # risk profile controls
-    "risk_range": ("Range", "How far each side of today's SPX the chart reaches. Scroll on the chart to zoom, drag to pan, double-click to reset."),
+    "risk_range": ("Range", "How far each side of today's SPX the chart reaches. Scroll on the SPX numbers under the chart to zoom, drag them to pan, double-click them to reset."),
     "risk_today": ("Today", "P/L if SPX jumped to each level right now and nothing else changed. Each leg keeps its implied volatility."),
     "risk_expiry": ("At Short Expiry", "P/L at each SPX level on the day the short leg expires, with the long leg still alive and priced by Black-Scholes."),
     "risk_sd": ("±1 SD", "The shaded band is one standard deviation of SPX to the short expiry, from the short leg's implied volatility. About two thirds of outcomes land inside it."),
