@@ -196,3 +196,26 @@ class TosOrder(BaseModel):
     long_expiry: str
     strike: float
     price: float
+
+
+class ComparisonRow(BaseModel):
+    """The target-delta calendar of one short expiry, for one contract (the Weekly Comparison)."""
+    target_dte: int                  # the DTE asked for; short_dte is the nearest Friday that exists
+    short_expiry: str
+    long_expiry: str
+    short_dte: int
+    long_dte: int
+    strike: float
+    bid: float | None                # the calendar's bid per share: long bid - short ask
+    ask: float | None                # long ask - short bid
+    delta: float                     # position greeks for one contract
+    gamma: float
+    theta: float
+    vega: float
+
+
+class ComparisonResult(BaseModel):
+    time: str
+    spx: float
+    width: int
+    rows: list[ComparisonRow]

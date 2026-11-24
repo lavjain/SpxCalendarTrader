@@ -82,3 +82,10 @@ def test_parse_endpoint_reads_a_line_and_explains_a_refusal(client):
     assert sell.status_code == 422 and "closing order" in sell.json()["detail"]
     other = client.post("/api/tos-order/parse", json={"text": line, "strike": 6790})
     assert other.status_code == 422 and "strike 6800" in other.json()["detail"]
+
+
+def test_compare_endpoint_returns_rows_without_saving_a_snapshot(client):
+    r = client.post("/api/compare")
+    assert r.status_code == 200 and r.json()["width"] == 7
+    assert client.get("/api/finder").status_code == 404                  # the comparison is not a Finder snapshot
+    assert "compare-table" in client.post("/partials/compare").text

@@ -188,3 +188,18 @@ def test_holiday_notes_name_the_holiday_and_where_the_expiry_moves(monkeypatch):
     assert (xmas.name, xmas.moves_to) == ("Christmas Day", "2026-12-24")
     assert services.get_expirations((7, 7)).holidays == []              # no holiday near the first Friday
     assert all(h.date in config.HOLIDAY_NAMES for h in services.get_expirations((7, 56)).holidays)
+
+
+def test_weekly_comparison_picks_each_friday_once_and_prices_one_contract(mocked, monkeypatch):
+    monkeypatch.setattr(services, "market_today", lambda: date(2026, 11, 24))
+    res = services.get_dte_comparison(targets=(21, 28, 35), width=7)
+    assert res.width == 7 and res.rows
+    assert len({r.short_expiry for r in res.rows}) == len(res.rows)             # no Friday used twice
+    first = res.rows[0]
+    assert all(r.bid is not None and r.ask is not None and r.bid < r.ask for r in res.rows)
+    assert all(0.0 < abs(r.delta) < 5 and r.theta > 0 and r.vega > 0 for r in res.rows)     # one contract
+    one = services.get_finder((7, 49), (7,), size_mode="contracts", size_value=1)
+    near = next(p.near_target_delta for p in one.pairs if p.short_expiry == first.short_expiry)
+    assert (first.strike, first.theta, first.vega, first.gamma, first.delta) == (near.strike, near.theta, near.vega, near.gamma, near.delta)
+    assert first.bid == pytest.approx(near.long.bid - near.short.ask)
+    assert first.ask == pytest.approx(near.long.ask - near.short.bid)
